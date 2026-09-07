@@ -1,0 +1,165 @@
+{
+  "songs": [
+    {
+      "id": "aranha",
+      "aliases": ["dona_aranha"],
+      "title": "Dona Aranha",
+      "bpm": 114,
+      "folder": "infanti_aranha",
+      "filePrefix": "aranha",
+      "theme": {
+        "sky": "#3d2a6b",
+        "horizon": "#7b4aa8",
+        "floor": "#4a7c4a",
+        "floorAccent": "#6aa35a",
+        "fog": "#2a1848",
+        "accent": "#c9f27a"
+      },
+      "stems": [
+        { "character": "boogar", "instrument": "drums", "genre": "pop", "compassos": 2 },
+        { "character": "boogar", "instrument": "tambourine", "genre": "samba", "compassos": 2 },
+        { "character": "ceval", "instrument": "bass", "genre": "pop", "compassos": 2 },
+        { "character": "ceval", "instrument": "cello", "genre": "classical", "compassos": 4 },
+        { "character": "dan", "instrument": "guitar", "genre": "pop", "compassos": 4 },
+        { "character": "dan", "instrument": "ukulele", "genre": "bossa", "compassos": 4 },
+        { "character": "esper", "instrument": "piano", "genre": "pop", "compassos": 4 },
+        { "character": "esper", "instrument": "xylophone", "genre": "kids", "compassos": 2 },
+        { "character": "gobu", "instrument": "trumpet", "genre": "jazz", "compassos": 4 },
+        { "character": "grompy", "instrument": "tuba", "genre": "march", "compassos": 4 },
+        { "character": "ohle", "instrument": "flute", "genre": "classical", "compassos": 4 },
+        { "character": "ohle", "instrument": "vocals", "genre": "pop", "compassos": 4 },
+        { "character": "rafog", "instrument": "electric_guitar", "genre": "rock", "compassos": 2 },
+        { "character": "teewong", "instrument": "saxophone", "genre": "jazz", "compassos": 4 },
+        { "character": "zoem", "instrument": "dj", "genre": "electronic", "compassos": 2 }
+      ]
+    },
+    {
+      "id": "canoa",
+      "aliases": [],
+      "title": "A Canoa Virou",
+      "bpm": 118,
+      "folder": "infanti_canoa",
+      "filePrefix": "canoa",
+      "theme": {
+        "sky": "#1d5f8a",
+        "horizon": "#4db7d4",
+        "floor": "#2f8f9a",
+        "floorAccent": "#57c4b0",
+        "fog": "#12384f",
+        "accent": "#ffe08a"
+      },
+      "stems": [
+        { "character": "boogar", "instrument": "drums", "genre": "samba", "compassos": 2 },
+        { "character": "boogar", "instrument": "shaker", "genre": "reggae", "compassos": 2 },
+        { "character": "ceval", "instrument": "bass", "genre": "reggae", "compassos": 2 },
+        { "character": "dan", "instrument": "guitar", "genre": "samba", "compassos": 4 },
+        { "character": "dan", "instrument": "ukulele", "genre": "pop", "compassos": 4 },
+        { "character": "esper", "instrument": "piano", "genre": "bossa", "compassos": 4 },
+        { "character": "esper", "instrument": "accordion", "genre": "forro", "compassos": 4 },
+        { "character": "gobu", "instrument": "trumpet", "genre": "salsa", "compassos": 4 },
+        { "character": "grompy", "instrument": "tuba", "genre": "samba", "compassos": 4 },
+        { "character": "ohle", "instrument": "flute", "genre": "bossa", "compassos": 4 },
+        { "character": "ohle", "instrument": "vocals", "genre": "samba", "compassos": 4 },
+        { "character": "rafog", "instrument": "electric_guitar", "genre": "reggae", "compassos": 4 },
+        { "character": "teewong", "instrument": "clarinet", "genre": "jazz", "compassos": 4 },
+        { "character": "zoem", "instrument": "synth", "genre": "electronic", "compassos": 2 }
+      ]
+    },
+    {
+      "id": "coelho",
+      "aliases": [],
+      "title": "Coelhinho da Páscoa",
+      "bpm": 96,
+      "folder": "infanti_coelho",
+      "filePrefix": "coelho",
+      "theme": {
+        "sky": "#f3c6d8",
+        "horizon": "#f7e3b0",
+        "floor": "#8bc48a",
+        "floorAccent": "#d5f2a8",
+        "fog": "#e8b8c8",
+        "accent": "#ff8dc7"
+      },
+      "stems": [
+        { "character": "boogar", "instrument": "drums", "genre": "pop", "compassos": 2 },
+        { "character": "boogar", "instrument": "triangle", "genre": "classical", "compassos": 4 },
+        { "character": "ceval", "instrument": "bass", "genre": "pop", "compassos": 4 },
+        { "character": "ceval", "instrument": "cello", "genre": "waltz", "compassos": 4 },
+        { "character": "dan", "instrument": "guitar", "genre": "folk", "compassos": 4 },
+        { "character": "dan", "instrument": "ukulele", "genre": "kids", "compassos": 4 },
+        { "character": "esper", "instrument": "piano", "genre": "waltz", "compassos": 4 },
+        { "character": "esper", "instrument": "xylophone", "genre": "kids", "compassos": 2 },
+        { "character": "gobu", "instrument": "trumpet", "genre": "pop", "compassos": 4 },
+        { "character": "grompy", "instrument": "accordion", "genre": "folk", "compassos": 4 },
+        { "character": "ohle", "instrument": "flute", "genre": "classical", "compassos": 4 },
+        { "character": "ohle", "instrument": "vocals", "genre": "kids", "compassos": 4 },
+        { "character": "teewong", "instrument": "clarinet", "genre": "classical", "compassos": 4 },
+        { "character": "zoem", "instrument": "synth", "genre": "pop", "compassos": 4 }
+      ]
+    },
+    {
+      "id": "pintinho",
+      "aliases": [],
+      "title": "Pintinho Amarelinho",
+      "bpm": 148,
+      "folder": "infanti_pintinho",
+      "filePrefix": "pintinho",
+      "theme": {
+        "sky": "#f7d35c",
+        "horizon": "#f6a53a",
+        "floor": "#c4a35a",
+        "floorAccent": "#e8d27a",
+        "fog": "#f0c14d",
+        "accent": "#ff6b35"
+      },
+      "stems": [
+        { "character": "boogar", "instrument": "drums", "genre": "funk", "compassos": 2 },
+        { "character": "boogar", "instrument": "tambourine", "genre": "forro", "compassos": 2 },
+        { "character": "ceval", "instrument": "bass", "genre": "funk", "compassos": 2 },
+        { "character": "dan", "instrument": "guitar", "genre": "pop", "compassos": 2 },
+        { "character": "dan", "instrument": "ukulele", "genre": "forro", "compassos": 4 },
+        { "character": "esper", "instrument": "piano", "genre": "pop", "compassos": 4 },
+        { "character": "esper", "instrument": "xylophone", "genre": "kids", "compassos": 2 },
+        { "character": "gobu", "instrument": "trumpet", "genre": "funk", "compassos": 2 },
+        { "character": "grompy", "instrument": "tuba", "genre": "forro", "compassos": 4 },
+        { "character": "ohle", "instrument": "vocals", "genre": "pop", "compassos": 4 },
+        { "character": "ohle", "instrument": "harmonica", "genre": "folk", "compassos": 4 },
+        { "character": "rafog", "instrument": "electric_guitar", "genre": "rock", "compassos": 2 },
+        { "character": "teewong", "instrument": "saxophone", "genre": "funk", "compassos": 2 },
+        { "character": "zoem", "instrument": "dj", "genre": "electronic", "compassos": 2 }
+      ]
+    },
+    {
+      "id": "sapo",
+      "aliases": [],
+      "title": "O Sapo Não Lava o Pé",
+      "bpm": 138,
+      "folder": "infanti_sapo",
+      "filePrefix": "sapo",
+      "theme": {
+        "sky": "#1f6b4a",
+        "horizon": "#3fa36a",
+        "floor": "#2f6b4a",
+        "floorAccent": "#5cbc6e",
+        "fog": "#143d2c",
+        "accent": "#b6ff6a"
+      },
+      "stems": [
+        { "character": "boogar", "instrument": "drums", "genre": "samba", "compassos": 2 },
+        { "character": "boogar", "instrument": "maracas", "genre": "salsa", "compassos": 2 },
+        { "character": "ceval", "instrument": "bass", "genre": "funk", "compassos": 2 },
+        { "character": "dan", "instrument": "guitar", "genre": "samba", "compassos": 4 },
+        { "character": "dan", "instrument": "ukulele", "genre": "reggae", "compassos": 4 },
+        { "character": "esper", "instrument": "piano", "genre": "jazz", "compassos": 4 },
+        { "character": "esper", "instrument": "synth", "genre": "electronic", "compassos": 2 },
+        { "character": "gobu", "instrument": "trumpet", "genre": "salsa", "compassos": 4 },
+        { "character": "grompy", "instrument": "tuba", "genre": "jazz", "compassos": 4 },
+        { "character": "ohle", "instrument": "flute", "genre": "samba", "compassos": 4 },
+        { "character": "ohle", "instrument": "vocals", "genre": "pop", "compassos": 4 },
+        { "character": "rafog", "instrument": "electric_guitar", "genre": "rock", "compassos": 2 },
+        { "character": "teewong", "instrument": "saxophone", "genre": "jazz", "compassos": 4 },
+        { "character": "zoem", "instrument": "dj", "genre": "electronic", "compassos": 2 }
+      ]
+    }
+  ]
+}

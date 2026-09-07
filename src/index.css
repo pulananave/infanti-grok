@@ -1,0 +1,362 @@
+:root {
+  color-scheme: dark;
+  font-family: 'Fredoka', 'Trebuchet MS', system-ui, sans-serif;
+  --ink: #2b1654;
+  --paper: #fff7e8;
+  --yellow: #ffe56a;
+  --pink: #ff8dc7;
+  --teal: #5ee0c4;
+  --shadow: 0 10px 24px rgba(20, 8, 40, 0.28);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #1a0f30;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button {
+  font-family: inherit;
+  border: none;
+  background: none;
+  color: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.song-menu {
+  min-height: 100%;
+  padding: 18px 18px 20px;
+  background:
+    radial-gradient(circle at 15% 20%, #ff8dc7 0%, transparent 32%),
+    radial-gradient(circle at 90% 10%, #5ee0c4 0%, transparent 28%),
+    linear-gradient(160deg, #2b1654 0%, #5b2d91 55%, #1d6b7a 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: clamp(28px, 6vw, 42px);
+  letter-spacing: 0.04em;
+  color: #fff7e8;
+  text-shadow: 0 4px 0 #241246;
+}
+
+.brand p {
+  margin: 0;
+  color: #ffe56a;
+  font-size: 15px;
+}
+
+.song-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+  flex: 1;
+  align-content: center;
+}
+
+.song-card {
+  border-radius: 22px;
+  min-height: 150px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: var(--shadow);
+  color: #fffdf6;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+.song-card strong {
+  font-size: clamp(14px, 2.4vw, 20px);
+  line-height: 1.15;
+}
+
+.song-card span {
+  opacity: 0.85;
+  font-size: 12px;
+}
+
+.song-card::after {
+  content: '';
+  position: absolute;
+  inset: auto -20% -30% 30%;
+  height: 90px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.stage-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #140c28;
+}
+
+.stage-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.hud-top {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.home-btn,
+.song-chip {
+  pointer-events: auto;
+  background: #fff7e8;
+  color: #2b1654;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+}
+
+.home-btn {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+}
+
+.song-chip {
+  padding: 8px 14px;
+  font-weight: 600;
+}
+
+.combo-panel {
+  position: absolute;
+  left: 10px;
+  top: 68px;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.combo-item {
+  width: 58px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.combo-item svg {
+  width: 54px;
+  height: 54px;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
+}
+
+.combo-item.complete svg {
+  filter: drop-shadow(0 0 10px #ffe56a);
+}
+
+.combo-check {
+  color: #ffe56a;
+  font-size: 14px;
+  line-height: 1;
+  text-shadow: 0 2px 0 #241246;
+}
+
+.tray {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+  background: linear-gradient(180deg, transparent, rgba(20, 8, 40, 0.55) 24%, rgba(20, 8, 40, 0.88));
+  touch-action: pan-x;
+}
+
+.tray-slot {
+  flex: 0 0 auto;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 3px solid #fff7e8;
+  background: #3b2170;
+  box-shadow: var(--shadow);
+  position: relative;
+  touch-action: none;
+}
+
+.tray-slot.open {
+  outline: 3px solid #ffe56a;
+}
+
+.balloon {
+  position: absolute;
+  z-index: 6;
+  width: min(280px, 72vw);
+  background: #ffe56a;
+  border-radius: 28px;
+  padding: 12px;
+  box-shadow: var(--shadow);
+  touch-action: none;
+}
+
+.balloon::after {
+  content: '';
+  position: absolute;
+  left: var(--tail-x, 50%);
+  bottom: -14px;
+  width: 22px;
+  height: 22px;
+  background: #ffe56a;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.balloon-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.instrument-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: #fff7e8;
+  display: grid;
+  place-items: center;
+  touch-action: none;
+  box-shadow: 0 4px 0 #e0c44a;
+}
+
+.instrument-btn svg {
+  width: 34px;
+  height: 34px;
+}
+
+.drag-ghost {
+  position: fixed;
+  z-index: 20;
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
+  pointer-events: none;
+  border-radius: 16px;
+  background: #fff7e8;
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow);
+}
+
+.prize {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  display: grid;
+  place-items: center;
+  background: rgba(20, 8, 40, 0.45);
+  pointer-events: auto;
+}
+
+.prize-card {
+  background: #fff7e8;
+  color: #2b1654;
+  border-radius: 28px;
+  padding: 22px 28px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  animation: pop 0.35s ease;
+  min-width: 220px;
+}
+
+.tray.drop-target {
+  background: linear-gradient(180deg, transparent, rgba(255, 229, 106, 0.28) 18%, rgba(255, 229, 106, 0.55));
+}
+
+.tray.drop-target .tray-slot {
+  transform: scale(1.06);
+}
+
+.prize-gift {
+  font-size: 52px;
+  line-height: 1;
+}
+
+.portrait-hint {
+  display: none;
+}
+
+@media (orientation: portrait) {
+  .song-grid {
+    grid-template-columns: 1fr;
+    overflow: auto;
+  }
+
+  .portrait-hint {
+    display: block;
+    text-align: center;
+    color: #ffe56a;
+    font-size: 13px;
+  }
+
+  .combo-panel {
+    flex-direction: row;
+    top: 62px;
+    left: 66px;
+  }
+}
+
+@media (min-width: 900px) {
+  .song-menu {
+    padding: 28px 40px;
+  }
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

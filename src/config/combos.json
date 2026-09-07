@@ -1,0 +1,27 @@
+{
+  "aranha": {
+    "circle": ["drums", "bass", "guitar", "piano"],
+    "square": ["flute", "cello", "xylophone", "vocals"],
+    "triangle": ["trumpet", "saxophone", "electric_guitar", "dj"]
+  },
+  "canoa": {
+    "circle": ["drums", "bass", "guitar", "vocals"],
+    "square": ["accordion", "flute", "ukulele", "shaker"],
+    "triangle": ["trumpet", "clarinet", "piano", "synth"]
+  },
+  "coelho": {
+    "circle": ["piano", "flute", "cello", "triangle"],
+    "square": ["drums", "bass", "guitar", "vocals"],
+    "triangle": ["xylophone", "ukulele", "clarinet", "accordion"]
+  },
+  "pintinho": {
+    "circle": ["drums", "bass", "electric_guitar", "saxophone"],
+    "square": ["vocals", "harmonica", "xylophone", "ukulele"],
+    "triangle": ["trumpet", "tuba", "piano", "dj"]
+  },
+  "sapo": {
+    "circle": ["drums", "bass", "guitar", "vocals"],
+    "square": ["flute", "piano", "saxophone", "maracas"],
+    "triangle": ["trumpet", "tuba", "electric_guitar", "dj"]
+  }
+}
