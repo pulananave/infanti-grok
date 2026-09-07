@@ -2,6 +2,8 @@
 
 Infanti é um jogo musical infantil no espírito **Groovy Gang**: um palco 3D onde a criança monta a banda, mistura estilos e escuta a música nascer em camadas.
 
+Código: [github.com/pulananave/infanti-grok](https://github.com/pulananave/infanti-grok).
+
 O recorte desta versão é **mobile em paisagem**. Retrato existe como breakpoint posterior (layout empilhado + aviso), sem ser o alvo principal.
 
 ## Telas
