@@ -91,3 +91,20 @@ export const STAGE_BOUNDS = {
   zBack: FLOOR_Z_BACK,
   zFront: FLOOR_Z_FRONT,
 }
+
+export function nearestInstanceId(
+  point: { x: number; z: number },
+  instances: { id: string; position: [number, number, number] }[],
+  maxDistance = 1.8,
+): string | null {
+  let bestId: string | null = null
+  let best = maxDistance
+  for (const instance of instances) {
+    const distance = Math.hypot(instance.position[0] - point.x, instance.position[2] - point.z)
+    if (distance < best) {
+      best = distance
+      bestId = instance.id
+    }
+  }
+  return bestId
+}

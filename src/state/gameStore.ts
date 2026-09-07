@@ -35,6 +35,11 @@ interface GameState {
   beginMoveDrag: (instanceId: string, instrument: string, x: number, y: number) => void
   updateDrag: (x: number, y: number) => void
   endDrag: (x: number, y: number) => Promise<void>
+  placeStem: (
+    characterId: CharacterId,
+    instrument: string,
+    position: [number, number, number],
+  ) => Promise<void>
   updateInstancePosition: (id: string, position: [number, number, number]) => void
   toggleMute: (id: string) => void
   removeInstance: (id: string) => void
@@ -174,29 +179,32 @@ export const useGame = create<GameState>((set, get) => ({
 
     const hit = projectToFloor(x, y)
     if (!hit || !isOnStageFloor(hit)) return
+    const placed = clampToFloor(hit)
+    await get().placeStem(drag.characterId, drag.instrument, [placed.x, 0, placed.z])
+  },
 
+  placeStem: async (characterId, instrument, position) => {
     const { songId, instances } = get()
     const song = getSong(songId)
     if (!song) return
 
     const alreadyUsed = instances.some(
-      (item) => item.characterId === drag.characterId && item.instrument === drag.instrument,
+      (item) => item.characterId === characterId && item.instrument === instrument,
     )
     if (alreadyUsed) return
 
-    const stem = findStem(song, drag.characterId, drag.instrument)
+    const stem = findStem(song, characterId, instrument)
     if (!stem) return
 
-    const placed = clampToFloor(hit)
     const id = newId()
     const instance: StageInstance = {
       id,
-      characterId: drag.characterId,
+      characterId,
       instrument: stem.instrument,
       genre: stem.genre,
       compassos: stem.compassos,
       audioPaths: stemAudioCandidates(song, stem),
-      position: [placed.x, 0, placed.z],
+      position,
       muted: false,
     }
 
@@ -216,7 +224,7 @@ export const useGame = create<GameState>((set, get) => ({
         instrument: instance.instrument,
         genre: instance.genre,
       },
-      volumeForPosition(placed),
+      volumeForPosition(position),
     )
   },
 

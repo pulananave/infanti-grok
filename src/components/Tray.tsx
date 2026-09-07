@@ -26,7 +26,7 @@ export function Tray() {
             onPointerUp={(event) => {
               event.stopPropagation()
               if (useGame.getState().drag) return
-              if (Date.now() - lastInteractAt < 400) return
+              if (Date.now() - lastInteractAt < 200) return
               toggleBalloon(id)
             }}
           >

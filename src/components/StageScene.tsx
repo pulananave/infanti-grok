@@ -43,6 +43,20 @@ function Lights({ sky }: { sky: string }) {
   )
 }
 
+function pickNearestCharacter(point: { x: number; z: number }) {
+  const instances = useGame.getState().instances
+  let nearest = null as (typeof instances)[number] | null
+  let best = 1.2
+  for (const instance of instances) {
+    const distance = Math.hypot(instance.position[0] - point.x, instance.position[2] - point.z)
+    if (distance < best) {
+      best = distance
+      nearest = instance
+    }
+  }
+  return nearest
+}
+
 function Floor({ color, accent }: { color: string; accent: string }) {
   return (
     <group>
@@ -78,8 +92,8 @@ function StageCharacter({
         beginMoveDrag(instance.id, instance.instrument, event.clientX, event.clientY)
       }}
     >
-      <mesh position={[0, 0.7, 0]} visible={false}>
-        <sphereGeometry args={[0.7, 12, 12]} />
+      <mesh position={[0, 0.55, 0]} visible={false}>
+        <sphereGeometry args={[0.95, 12, 12]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
       <Humanoid
@@ -90,6 +104,27 @@ function StageCharacter({
         bpm={bpm}
       />
     </group>
+  )
+}
+
+function GrabPlane() {
+  const beginMoveDrag = useGame((s) => s.beginMoveDrag)
+  return (
+    <mesh
+      rotation={[-Math.PI / 2, 0, 0]}
+      position={[0, 0.05, 0]}
+      onPointerDown={(event) => {
+        if (useGame.getState().drag) return
+        const nearest = pickNearestCharacter(event.point)
+        if (!nearest) return
+        event.stopPropagation()
+        event.nativeEvent.preventDefault()
+        beginMoveDrag(nearest.id, nearest.instrument, event.clientX, event.clientY)
+      }}
+    >
+      <planeGeometry args={[STAGE_BOUNDS.x * 2.1, STAGE_BOUNDS.zFront - STAGE_BOUNDS.zBack + 0.6]} />
+      <meshBasicMaterial transparent opacity={0} depthWrite={false} />
+    </mesh>
   )
 }
 
@@ -156,6 +191,7 @@ export function StageScene() {
       ))}
       <SpawnPreview bpm={song.bpm} />
       <ContactShadows position={[0, 0.01, 0]} opacity={0.35} scale={16} blur={2} far={4} />
+      <GrabPlane />
       <mesh position={LISTENER_POSITION.toArray()} visible={false}>
         <sphereGeometry args={[0.05]} />
         <meshBasicMaterial />
