@@ -13,7 +13,7 @@ export function PrizeOverlay() {
 
   useEffect(() => {
     if (!prize) return
-    const timer = window.setTimeout(dismissPrize, 2400)
+    const timer = window.setTimeout(dismissPrize, 4000)
     return () => window.clearTimeout(timer)
   }, [prize, dismissPrize])
 

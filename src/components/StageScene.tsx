@@ -6,7 +6,6 @@ import { getSong } from '../config/loadConfig'
 import { useGame } from '../state/gameStore'
 import {
   clampToFloor,
-  isOverTray,
   LISTENER_POSITION,
   projectToFloor,
   registerScene,
@@ -16,8 +15,6 @@ import {
 import { Humanoid } from './Humanoid'
 import { StageDecor } from './StageDecor'
 import type { SongId, StageInstance } from '../types'
-
-const DRAG_THRESHOLD = 8
 
 function SceneBridge() {
   const { camera, gl } = useThree()
@@ -69,13 +66,7 @@ function StageCharacter({
   bpm: number
 }) {
   const group = useRef<THREE.Group>(null)
-  const dragging = useRef(false)
-  const moved = useRef(false)
-  const start = useRef({ x: 0, y: 0 })
-  const { gl } = useThree()
-  const updateInstancePosition = useGame((s) => s.updateInstancePosition)
-  const toggleMute = useGame((s) => s.toggleMute)
-  const removeInstance = useGame((s) => s.removeInstance)
+  const beginMoveDrag = useGame((s) => s.beginMoveDrag)
 
   return (
     <group
@@ -84,37 +75,7 @@ function StageCharacter({
       onPointerDown={(event) => {
         event.stopPropagation()
         event.nativeEvent.preventDefault()
-        dragging.current = true
-        moved.current = false
-        start.current = { x: event.clientX, y: event.clientY }
-        gl.domElement.setPointerCapture(event.pointerId)
-      }}
-      onPointerMove={(event) => {
-        if (!dragging.current) return
-        const dx = event.clientX - start.current.x
-        const dy = event.clientY - start.current.y
-        if (!moved.current && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
-          moved.current = true
-        }
-        if (!moved.current) return
-        const hit = projectToFloor(event.clientX, event.clientY)
-        if (!hit) return
-        const next = clampToFloor(hit)
-        updateInstancePosition(instance.id, [next.x, 0, next.z])
-      }}
-      onPointerUp={(event) => {
-        if (!dragging.current) return
-        dragging.current = false
-        if (!moved.current) {
-          toggleMute(instance.id)
-          return
-        }
-        if (isOverTray(event.clientX, event.clientY)) {
-          removeInstance(instance.id)
-        }
-      }}
-      onPointerCancel={() => {
-        dragging.current = false
+        beginMoveDrag(instance.id, instance.instrument, event.clientX, event.clientY)
       }}
     >
       <mesh position={[0, 0.7, 0]} visible={false}>

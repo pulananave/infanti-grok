@@ -78,6 +78,14 @@ export function isOverTray(clientX: number, clientY: number): boolean {
   return Boolean(el?.closest('[data-tray]'))
 }
 
+export function isInRemoveZone(clientX: number, clientY: number): boolean {
+  if (isOverTray(clientX, clientY)) return true
+  const tray = document.querySelector<HTMLElement>('[data-tray]')
+  if (!tray) return clientY > window.innerHeight - 96
+  const rect = tray.getBoundingClientRect()
+  return clientY >= rect.top - 16 && clientX >= rect.left && clientX <= rect.right
+}
+
 export const STAGE_BOUNDS = {
   x: FLOOR_X,
   zBack: FLOOR_Z_BACK,

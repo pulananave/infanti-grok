@@ -101,6 +101,7 @@ export function ComboPanel() {
             {shape === 'circle' && <CircleMeter filled={filled} />}
             {shape === 'square' && <SquareMeter filled={filled} />}
             {shape === 'triangle' && <TriangleMeter filled={filled} />}
+            {complete && <span className="combo-check">★</span>}
           </div>
         )
       })}

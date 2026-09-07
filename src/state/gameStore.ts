@@ -10,6 +10,7 @@ import {
 import type { CharacterId, ComboShape, DragState, PrizeEvent, SongId, StageInstance } from '../types'
 import {
   clampToFloor,
+  isInRemoveZone,
   isOnStageFloor,
   isOverBlockingUi,
   isOverTray,
@@ -25,13 +26,15 @@ interface GameState {
   drag: DragState
   awarded: ComboShape[]
   prize: PrizeEvent | null
+  lastInteractAt: number
   selectSong: (id: SongId) => Promise<void>
   exitToMenu: () => void
   toggleBalloon: (characterId: CharacterId) => void
   closeBalloon: () => void
   beginSpawnDrag: (characterId: CharacterId, instrument: string, x: number, y: number) => void
+  beginMoveDrag: (instanceId: string, instrument: string, x: number, y: number) => void
   updateDrag: (x: number, y: number) => void
-  endSpawnDrag: (x: number, y: number) => Promise<void>
+  endDrag: (x: number, y: number) => Promise<void>
   updateInstancePosition: (id: string, position: [number, number, number]) => void
   toggleMute: (id: string) => void
   removeInstance: (id: string) => void
@@ -71,6 +74,7 @@ export const useGame = create<GameState>((set, get) => ({
   drag: null,
   awarded: [],
   prize: null,
+  lastInteractAt: 0,
 
   selectSong: async (id) => {
     const song = getSong(id)
@@ -86,6 +90,7 @@ export const useGame = create<GameState>((set, get) => ({
       drag: null,
       awarded: [],
       prize: null,
+      lastInteractAt: 0,
     })
   },
 
@@ -116,16 +121,55 @@ export const useGame = create<GameState>((set, get) => ({
     })
   },
 
+  beginMoveDrag: (instanceId, instrument, x, y) => {
+    set({
+      drag: {
+        type: 'move',
+        instanceId,
+        instrument,
+        clientX: x,
+        clientY: y,
+        startX: x,
+        startY: y,
+        moved: false,
+      },
+    })
+  },
+
   updateDrag: (x, y) => {
     const drag = get().drag
     if (!drag) return
+    if (drag.type === 'move') {
+      const moved = drag.moved || Math.hypot(x - drag.startX, y - drag.startY) > 8
+      if (moved && !isInRemoveZone(x, y)) {
+        const hit = projectToFloor(x, y)
+        if (hit) {
+          const next = clampToFloor(hit)
+          get().updateInstancePosition(drag.instanceId, [next.x, 0, next.z])
+        }
+      }
+      set({ drag: { ...drag, clientX: x, clientY: y, moved } })
+      return
+    }
     set({ drag: { ...drag, clientX: x, clientY: y } })
   },
 
-  endSpawnDrag: async (x, y) => {
+  endDrag: async (x, y) => {
     const drag = get().drag
-    set({ drag: null })
-    if (!drag || drag.type !== 'spawn') return
+    set({ drag: null, lastInteractAt: Date.now() })
+    if (!drag) return
+
+    if (drag.type === 'move') {
+      if (!drag.moved) {
+        get().toggleMute(drag.instanceId)
+        return
+      }
+      if (isInRemoveZone(x, y)) {
+        get().removeInstance(drag.instanceId)
+      }
+      return
+    }
+
     if (isOverBlockingUi(x, y) || isOverTray(x, y)) return
 
     const hit = projectToFloor(x, y)

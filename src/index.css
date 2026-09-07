@@ -189,6 +189,13 @@ button {
   filter: drop-shadow(0 0 10px #ffe56a);
 }
 
+.combo-check {
+  color: #ffe56a;
+  font-size: 14px;
+  line-height: 1;
+  text-shadow: 0 2px 0 #241246;
+}
+
 .tray {
   position: absolute;
   left: 0;
@@ -285,7 +292,8 @@ button {
   z-index: 12;
   display: grid;
   place-items: center;
-  background: rgba(20, 8, 40, 0.35);
+  background: rgba(20, 8, 40, 0.45);
+  pointer-events: auto;
 }
 
 .prize-card {
@@ -296,6 +304,15 @@ button {
   text-align: center;
   box-shadow: var(--shadow);
   animation: pop 0.35s ease;
+  min-width: 220px;
+}
+
+.tray.drop-target {
+  background: linear-gradient(180deg, transparent, rgba(255, 229, 106, 0.28) 18%, rgba(255, 229, 106, 0.55));
+}
+
+.tray.drop-target .tray-slot {
+  transform: scale(1.06);
 }
 
 .prize-gift {

@@ -88,6 +88,16 @@ export type DragState =
       clientX: number
       clientY: number
     }
+  | {
+      type: 'move'
+      instanceId: string
+      instrument: string
+      clientX: number
+      clientY: number
+      startX: number
+      startY: number
+      moved: boolean
+    }
 
 export interface PrizeEvent {
   shape: ComboShape
