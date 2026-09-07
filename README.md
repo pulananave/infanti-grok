@@ -2,6 +2,8 @@
 
 Jogo web de palco musical infantil — **Groovy Gang Infanti**. A criança escolhe uma canção, abre o balão do personagem, arrasta o instrumento para o chão 3D e monta a banda em camadas.
 
+Repositório: [github.com/pulananave/infanti-grok](https://github.com/pulananave/infanti-grok).
+
 Feito com Vite + React + TypeScript + React Three Fiber. Build estático para a Vercel (`npm run build` → `dist`).
 
 ## Como rodar
