@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { audioEngine } from '../audio/AudioEngine'
 import { useGame } from '../state/gameStore'
 import { isOverBlockingUi, isOverTray, nearestInstanceId, projectToFloor } from '../state/sceneBridge'
 import { InstrumentIcon } from './InstrumentIcon'
@@ -10,6 +11,7 @@ export function DragLayer() {
 
   useEffect(() => {
     const onDown = (event: PointerEvent) => {
+      audioEngine.unlock()
       const state = useGame.getState()
       if (state.drag || state.screen !== 'stage') return
       if (isOverBlockingUi(event.clientX, event.clientY) || isOverTray(event.clientX, event.clientY)) {
@@ -30,6 +32,7 @@ export function DragLayer() {
       updateDrag(event.clientX, event.clientY)
     }
     const onUp = (event: Event) => {
+      audioEngine.unlock()
       if (!useGame.getState().drag) return
       if (!('clientX' in event) || !('clientY' in event)) return
       const { clientX, clientY } = event as MouseEvent

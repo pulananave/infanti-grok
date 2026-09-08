@@ -84,6 +84,7 @@ export const useGame = create<GameState>((set, get) => ({
   selectSong: async (id) => {
     const song = getSong(id)
     if (!song) return
+    audioEngine.unlock()
     audioEngine.stopAndReset()
     audioEngine.setBpm(song.bpm)
     await audioEngine.ensureContext()
@@ -97,6 +98,16 @@ export const useGame = create<GameState>((set, get) => ({
       prize: null,
       lastInteractAt: 0,
     })
+    void audioEngine.preload(
+      song.stems.map((stem) => ({
+        paths: stemAudioCandidates(song, stem),
+        meta: {
+          compassos: stem.compassos,
+          instrument: stem.instrument,
+          genre: stem.genre,
+        },
+      })),
+    )
   },
 
   exitToMenu: () => {
@@ -121,12 +132,14 @@ export const useGame = create<GameState>((set, get) => ({
   closeBalloon: () => set({ balloonCharacterId: null }),
 
   beginSpawnDrag: (characterId, instrument, x, y) => {
+    audioEngine.unlock()
     set({
       drag: { type: 'spawn', characterId, instrument, clientX: x, clientY: y },
     })
   },
 
   beginMoveDrag: (instanceId, instrument, x, y) => {
+    audioEngine.unlock()
     set({
       drag: {
         type: 'move',
@@ -160,6 +173,7 @@ export const useGame = create<GameState>((set, get) => ({
   },
 
   endDrag: async (x, y) => {
+    audioEngine.unlock()
     const drag = get().drag
     set({ drag: null, lastInteractAt: Date.now() })
     if (!drag) return
@@ -216,6 +230,7 @@ export const useGame = create<GameState>((set, get) => ({
       prize: awards.prize ?? get().prize,
     })
 
+    audioEngine.unlock()
     await audioEngine.addStem(
       id,
       instance.audioPaths,

@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
+import { audioEngine } from '../audio/AudioEngine'
 import { CHARACTERS } from '../config/characters'
 import { getSong, stemsForCharacter } from '../config/loadConfig'
 import { availableInstruments, useGame } from '../state/gameStore'
@@ -73,6 +74,7 @@ export function Balloon() {
               onPointerDown={(event) => {
                 event.preventDefault()
                 event.stopPropagation()
+                audioEngine.unlock()
                 event.currentTarget.setPointerCapture(event.pointerId)
                 beginSpawnDrag(balloonCharacterId, instrument, event.clientX, event.clientY)
               }}
