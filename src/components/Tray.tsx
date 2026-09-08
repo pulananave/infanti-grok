@@ -14,26 +14,28 @@ export function Tray() {
 
   return (
     <div className={`tray ${dropTarget ? 'drop-target' : ''}`} data-tray>
-      {characters.map((id) => {
-        const look = CHARACTERS[id]
-        return (
-          <button
-            key={id}
-            type="button"
-            className={`tray-slot ${balloonCharacterId === id ? 'open' : ''}`}
-            data-tray-char={id}
-            aria-label={look.name}
-            onPointerUp={(event) => {
-              event.stopPropagation()
-              if (useGame.getState().drag) return
-              if (Date.now() - lastInteractAt < 200) return
-              toggleBalloon(id)
-            }}
-          >
-            <HumanoidFace characterId={id} />
-          </button>
-        )
-      })}
+      <div className="tray-row">
+        {characters.map((id) => {
+          const look = CHARACTERS[id]
+          return (
+            <button
+              key={id}
+              type="button"
+              className={`tray-slot ${balloonCharacterId === id ? 'open' : ''}`}
+              data-tray-char={id}
+              aria-label={look.name}
+              onPointerUp={(event) => {
+                event.stopPropagation()
+                if (useGame.getState().drag) return
+                if (Date.now() - lastInteractAt < 200) return
+                toggleBalloon(id)
+              }}
+            >
+              <HumanoidFace characterId={id} />
+            </button>
+          )
+        })}
+      </div>
     </div>
   )
 }
