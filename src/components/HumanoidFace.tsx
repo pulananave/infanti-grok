@@ -1,16 +1,35 @@
 import { CHARACTERS } from '../config/characters'
+import { monsterIconFor } from '../config/monsterIcons'
 import type { CharacterId } from '../types'
 
-export function HumanoidFace({ characterId }: { characterId: CharacterId }) {
+function PlaceholderChip({ characterId }: { characterId: CharacterId }) {
   const look = CHARACTERS[characterId]
   return (
-    <svg viewBox="0 0 64 64" width="54" height="54" aria-hidden>
-      <circle cx="32" cy="32" r="28" fill={look.bodyColor} />
-      <circle cx="32" cy="30" r="16" fill={look.skinColor} />
-      <circle cx="26" cy="28" r="3" fill="#2b1654" />
-      <circle cx="38" cy="28" r="3" fill="#2b1654" />
-      <rect x="26" y="36" width="12" height="3" rx="1.5" fill="#2b1654" opacity="0.35" />
-      <circle cx="48" cy="16" r="6" fill={look.accentColor} />
+    <svg className="tray-monster" viewBox="0 0 105 105" aria-hidden>
+      <rect x="5" y="5" width="100" height="100" rx="15" fill="#663156" opacity="0.2" />
+      <rect width="100" height="100" rx="15" fill={look.bodyColor} />
+      <circle cx="38" cy="44" r="5" fill="#3b0b32" />
+      <circle cx="62" cy="44" r="5" fill="#3b0b32" />
+      <path
+        d="M38 64c6 8 18 8 24 0"
+        fill="none"
+        stroke="#3b0b32"
+        strokeWidth="4"
+        strokeLinecap="round"
+      />
+      <circle cx="78" cy="22" r="7" fill={look.accentColor} />
     </svg>
   )
+}
+
+export function HumanoidFace({
+  characterId,
+  ativo = false,
+}: {
+  characterId: CharacterId
+  ativo?: boolean
+}) {
+  const src = monsterIconFor(characterId, ativo)
+  if (!src) return <PlaceholderChip characterId={characterId} />
+  return <img className="tray-monster" src={src} alt="" draggable={false} />
 }

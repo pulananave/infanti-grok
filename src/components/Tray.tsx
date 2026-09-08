@@ -16,7 +16,9 @@ export function Tray() {
   const drag = useGame((s) => s.drag)
   const lastInteractAt = useGame((s) => s.lastInteractAt)
   const songId = useGame((s) => s.songId)
+  const instances = useGame((s) => s.instances)
   const characters = trayCharacterIds()
+  const onStage = new Set(instances.map((item) => item.characterId))
   const dropTarget =
     drag?.type === 'move' && drag.moved && isInRemoveZone(drag.clientX, drag.clientY)
 
@@ -34,11 +36,12 @@ export function Tray() {
       <div className="tray-row">
         {characters.map((id) => {
           const look = CHARACTERS[id]
+          const ativo = balloonCharacterId === id || onStage.has(id)
           return (
             <button
               key={id}
               type="button"
-              className={`tray-slot ${balloonCharacterId === id ? 'open' : ''}`}
+              className={`tray-slot ${balloonCharacterId === id ? 'open' : ''} ${ativo ? 'ativo' : ''}`}
               data-tray-char={id}
               aria-label={look.name}
               onPointerUp={(event) => {
@@ -48,7 +51,8 @@ export function Tray() {
                 toggleBalloon(id)
               }}
             >
-              <HumanoidFace characterId={id} />
+              <span className="tray-lente" aria-hidden />
+              <HumanoidFace characterId={id} ativo={ativo} />
             </button>
           )
         })}

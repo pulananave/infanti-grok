@@ -10,12 +10,12 @@
       "folder": "infanti_dona_aranha",
       "filePrefix": "aranha",
       "theme": {
-        "sky": "#3d2a6b",
-        "horizon": "#7b4aa8",
-        "floor": "#4a7c4a",
-        "floorAccent": "#6aa35a",
-        "fog": "#2a1848",
-        "accent": "#c9f27a"
+        "sky": "#d4c6f0",
+        "horizon": "#e8b8d4",
+        "floor": "#b8e0c4",
+        "floorAccent": "#9ee0c8",
+        "fog": "#dcc8ec",
+        "accent": "#d4f08a"
       },
       "stems": [
         {
@@ -301,11 +301,11 @@
       "folder": "infanti_canoa_virou",
       "filePrefix": "canoa",
       "theme": {
-        "sky": "#1d5f8a",
-        "horizon": "#4db7d4",
-        "floor": "#2f8f9a",
-        "floorAccent": "#57c4b0",
-        "fog": "#12384f",
+        "sky": "#9fd4f0",
+        "horizon": "#7ec8e4",
+        "floor": "#8ed8d0",
+        "floorAccent": "#6ecfc4",
+        "fog": "#c4e4f4",
         "accent": "#ffe08a"
       },
       "stems": [
@@ -580,9 +580,9 @@
       "theme": {
         "sky": "#f3c6d8",
         "horizon": "#f7e3b0",
-        "floor": "#8bc48a",
+        "floor": "#b8e4b0",
         "floorAccent": "#d5f2a8",
-        "fog": "#e8b8c8",
+        "fog": "#f0d0dc",
         "accent": "#ff8dc7"
       },
       "stems": [
@@ -806,12 +806,12 @@
       "folder": "infanti_pintinho",
       "filePrefix": "pintinho",
       "theme": {
-        "sky": "#f7d35c",
-        "horizon": "#f6a53a",
-        "floor": "#c4a35a",
-        "floorAccent": "#e8d27a",
-        "fog": "#f0c14d",
-        "accent": "#ff6b35"
+        "sky": "#ffe8a0",
+        "horizon": "#ffc898",
+        "floor": "#e8d4a0",
+        "floorAccent": "#f0e0b0",
+        "fog": "#ffe8c4",
+        "accent": "#ff8a5c"
       },
       "stems": [
         {
@@ -1062,12 +1062,12 @@
       "folder": "infanti_sapo_nao_lava",
       "filePrefix": "sapo",
       "theme": {
-        "sky": "#1f6b4a",
-        "horizon": "#3fa36a",
-        "floor": "#2f6b4a",
-        "floorAccent": "#5cbc6e",
-        "fog": "#143d2c",
-        "accent": "#b6ff6a"
+        "sky": "#b8e8c8",
+        "horizon": "#8fd4a8",
+        "floor": "#8ec8a0",
+        "floorAccent": "#7ed89a",
+        "fog": "#c8ecd4",
+        "accent": "#c8f080"
       },
       "stems": [
         {
