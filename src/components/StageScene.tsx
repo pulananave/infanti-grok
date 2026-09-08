@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { ContactShadows } from '@react-three/drei'
+import { Bloom, DepthOfField, EffectComposer } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { getSong } from '../config/loadConfig'
 import { useGame } from '../state/gameStore'
@@ -14,7 +15,7 @@ import {
 } from '../state/sceneBridge'
 import { Humanoid } from './Humanoid'
 import { StageDecor } from './StageDecor'
-import type { SongId, StageInstance } from '../types'
+import type { SongId, SongTheme, StageInstance } from '../types'
 
 function SceneBridge() {
   const { camera, gl } = useThree()
@@ -25,20 +26,22 @@ function SceneBridge() {
   return null
 }
 
-function Lights({ sky }: { sky: string }) {
+function Lights({ theme }: { theme: SongTheme }) {
   return (
     <>
-      <color attach="background" args={[sky]} />
-      <fog attach="fog" args={[sky, 10, 22]} />
-      <ambientLight intensity={0.7} />
-      <hemisphereLight args={['#ffe8c8', '#4a7c4a', 0.45]} />
+      <color attach="background" args={[theme.sky]} />
+      <fog attach="fog" args={[theme.fog, 14, 28]} />
+      <ambientLight intensity={0.88} color="#fff4e8" />
+      <hemisphereLight args={[theme.horizon, '#b7e3c0', 0.58]} />
       <directionalLight
-        position={[5, 8, 4]}
-        intensity={1.15}
+        position={[4.5, 9, 5]}
+        intensity={0.48}
+        color="#fff1d6"
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
       />
+      <pointLight position={[0, 3.2, 1.2]} color={theme.accent} intensity={0.35} distance={10} decay={2} />
     </>
   )
 }
@@ -55,21 +58,6 @@ function pickNearestCharacter(point: { x: number; z: number }) {
     }
   }
   return nearest
-}
-
-function Floor({ color, accent }: { color: string; accent: string }) {
-  return (
-    <group>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[STAGE_BOUNDS.x * 2.1, STAGE_BOUNDS.zFront - STAGE_BOUNDS.zBack + 0.6]} />
-        <meshStandardMaterial color={color} />
-      </mesh>
-      <mesh position={[0, 0.01, 2.55]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[0.38, 24]} />
-        <meshStandardMaterial color={accent} transparent opacity={0.7} />
-      </mesh>
-    </group>
-  )
 }
 
 function StageCharacter({
@@ -166,6 +154,15 @@ function CameraRig() {
   return null
 }
 
+function StagePost() {
+  return (
+    <EffectComposer multisampling={0} enableNormalPass={false}>
+      <Bloom luminanceThreshold={0.78} luminanceSmoothing={0.28} intensity={0.72} mipmapBlur />
+      <DepthOfField focusDistance={0.014} focalLength={0.016} bokehScale={2.1} height={420} />
+    </EffectComposer>
+  )
+}
+
 export function StageScene() {
   const songId = useGame((s) => s.songId) as SongId | null
   const instances = useGame((s) => s.instances)
@@ -176,26 +173,27 @@ export function StageScene() {
     <Canvas
       className="stage-canvas"
       shadows
-      camera={{ position: [0, 5.4, 8.4], fov: 42, near: 0.1, far: 40 }}
+      dpr={[1, 1.5]}
+      camera={{ position: [0, 5.4, 8.4], fov: 42, near: 0.1, far: 48 }}
       onPointerMissed={() => undefined}
-      gl={{ antialias: true, alpha: false }}
+      gl={{ antialias: true, alpha: false, toneMapping: THREE.ACESFilmicToneMapping }}
       style={{ touchAction: 'none' }}
     >
       <SceneBridge />
       <CameraRig />
-      <Lights sky={song.theme.sky} />
-      <Floor color={song.theme.floor} accent={song.theme.accent} />
-      <StageDecor songId={songId} />
+      <Lights theme={song.theme} />
+      <StageDecor songId={songId} theme={song.theme} />
       {instances.map((instance) => (
         <StageCharacter key={instance.id} instance={instance} bpm={song.bpm} />
       ))}
       <SpawnPreview bpm={song.bpm} />
-      <ContactShadows position={[0, 0.01, 0]} opacity={0.35} scale={16} blur={2} far={4} />
+      <ContactShadows position={[0, 0.012, 0]} opacity={0.22} scale={16} blur={2.8} far={4} color="#6b4a78" />
       <GrabPlane />
       <mesh position={LISTENER_POSITION.toArray()} visible={false}>
         <sphereGeometry args={[0.05]} />
         <meshBasicMaterial />
       </mesh>
+      <StagePost />
     </Canvas>
   )
 }

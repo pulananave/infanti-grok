@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 105 105">
+  <rect x="5" y="5" width="100" height="100" rx="15" fill="#663156" opacity="0.2"/>
+  <rect width="100" height="100" rx="15" fill="#86a39b"/>
+  <g id="icone_monstro05" opacity="0.82">
+    <path d="M44 14c2 8 0 12-2 16" fill="none" stroke="#3b0b32" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M50 12c1 9 0 14 0 18" fill="none" stroke="#3b0b32" stroke-width="3.2" stroke-linecap="round"/>
+    <path d="M56 14c-2 8 0 12 2 16" fill="none" stroke="#3b0b32" stroke-width="3.2" stroke-linecap="round"/>
+    <circle cx="32" cy="38" r="3.3" fill="#3b0b32"/>
+    <circle cx="68" cy="38" r="3.3" fill="#3b0b32"/>
+    <rect x="43" y="36" width="14" height="22" rx="7" fill="#ff637a"/>
+    <path d="M22 62c4 18 52 18 56 0-6 14-50 14-56 0z" fill="#3b0b32"/>
+    <rect x="36" y="58" width="12" height="10" rx="3" fill="#e7e7e7"/>
+    <rect x="52" y="58" width="9" height="11" rx="3" transform="rotate(8 56 64)" fill="#e7e7e7"/>
+    <path d="M36 78a16 10 0 0 0 28 0" fill="#ff637a"/>
+  </g>
+</svg>
