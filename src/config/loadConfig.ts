@@ -37,6 +37,9 @@ export function findStem(
 }
 
 export function stemAudioCandidates(song: SongConfig, stem: StemConfig): string[] {
+  if (stem.file) {
+    return [`/audio/${song.folder}/${stem.file}`]
+  }
   const prefixes = [song.filePrefix, ...song.aliases]
   const folders = [song.folder, ...song.aliases.map((alias) => `infanti_${alias}`)]
   const paths: string[] = []

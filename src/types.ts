@@ -35,6 +35,8 @@ export interface StemConfig {
   instrument: string
   genre: string
   compassos: number
+  /** Exact filename under `public/audio/<folder>/`. Required for MEGA stems. */
+  file: string
 }
 
 export interface SongTheme {

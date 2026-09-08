@@ -2,10 +2,12 @@
   "songs": [
     {
       "id": "aranha",
-      "aliases": ["dona_aranha"],
+      "aliases": [
+        "dona_aranha"
+      ],
       "title": "Dona Aranha",
       "bpm": 114,
-      "folder": "infanti_aranha",
+      "folder": "infanti_dona_aranha",
       "filePrefix": "aranha",
       "theme": {
         "sky": "#3d2a6b",
@@ -16,21 +18,279 @@
         "accent": "#c9f27a"
       },
       "stems": [
-        { "character": "boogar", "instrument": "drums", "genre": "pop", "compassos": 2 },
-        { "character": "boogar", "instrument": "tambourine", "genre": "samba", "compassos": 2 },
-        { "character": "ceval", "instrument": "bass", "genre": "pop", "compassos": 2 },
-        { "character": "ceval", "instrument": "cello", "genre": "classical", "compassos": 4 },
-        { "character": "dan", "instrument": "guitar", "genre": "pop", "compassos": 4 },
-        { "character": "dan", "instrument": "ukulele", "genre": "bossa", "compassos": 4 },
-        { "character": "esper", "instrument": "piano", "genre": "pop", "compassos": 4 },
-        { "character": "esper", "instrument": "xylophone", "genre": "kids", "compassos": 2 },
-        { "character": "gobu", "instrument": "trumpet", "genre": "jazz", "compassos": 4 },
-        { "character": "grompy", "instrument": "tuba", "genre": "march", "compassos": 4 },
-        { "character": "ohle", "instrument": "flute", "genre": "classical", "compassos": 4 },
-        { "character": "ohle", "instrument": "vocals", "genre": "pop", "compassos": 4 },
-        { "character": "rafog", "instrument": "electric_guitar", "genre": "rock", "compassos": 2 },
-        { "character": "teewong", "instrument": "saxophone", "genre": "jazz", "compassos": 4 },
-        { "character": "zoem", "instrument": "dj", "genre": "electronic", "compassos": 2 }
+        {
+          "character": "boogar",
+          "instrument": "latin_agogo",
+          "genre": "latin",
+          "compassos": 2,
+          "file": "aranha_latin_agogo.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_bateria",
+          "genre": "latin",
+          "compassos": 4,
+          "file": "aranha_latin_bateria.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_conga",
+          "genre": "latin",
+          "compassos": 2,
+          "file": "aranha_latin_conga.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_perc_loop",
+          "genre": "latin",
+          "compassos": 4,
+          "file": "aranha_latin_perc_loop.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "pop_bateria",
+          "genre": "pop",
+          "compassos": 8,
+          "file": "aranha_pop_bateria.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "rock_bateria",
+          "genre": "rock",
+          "compassos": 16,
+          "file": "aranha_rock_bateria.ogg"
+        },
+        {
+          "character": "ceval",
+          "instrument": "latin_baixo",
+          "genre": "latin",
+          "compassos": 8,
+          "file": "aranha_latin_baixo.ogg"
+        },
+        {
+          "character": "ceval",
+          "instrument": "pop_baixo",
+          "genre": "pop",
+          "compassos": 8,
+          "file": "aranha_pop_baixo.ogg"
+        },
+        {
+          "character": "ceval",
+          "instrument": "rock_baixo",
+          "genre": "rock",
+          "compassos": 16,
+          "file": "aranha_rock_baixo.ogg"
+        },
+        {
+          "character": "dan",
+          "instrument": "latin_violao",
+          "genre": "latin",
+          "compassos": 8,
+          "file": "aranha_latin_violao.ogg"
+        },
+        {
+          "character": "dan",
+          "instrument": "pop_gtr_base",
+          "genre": "pop",
+          "compassos": 8,
+          "file": "aranha_pop_gtr_base.ogg"
+        },
+        {
+          "character": "dan",
+          "instrument": "pop_gtr_frase",
+          "genre": "pop",
+          "compassos": 8,
+          "file": "aranha_pop_gtr_frase.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "latin_marimba",
+          "genre": "latin",
+          "compassos": 8,
+          "file": "aranha_latin_marimba.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "melo_marimba",
+          "genre": "melo",
+          "compassos": 8,
+          "file": "aranha_melo_marimba.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "melo_sanfona",
+          "genre": "melo",
+          "compassos": 8,
+          "file": "aranha_melo_sanfona.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "pop_piano",
+          "genre": "pop",
+          "compassos": 8,
+          "file": "aranha_pop_piano.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "pop_rhodes",
+          "genre": "pop",
+          "compassos": 8,
+          "file": "aranha_pop_rhodes.ogg"
+        },
+        {
+          "character": "gobu",
+          "instrument": "marcial_trompete",
+          "genre": "marcial",
+          "compassos": 8,
+          "file": "aranha_marcial_trompete.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_bombo",
+          "genre": "marcial",
+          "compassos": 8,
+          "file": "aranha_marcial_bombo.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_caixa",
+          "genre": "marcial",
+          "compassos": 8,
+          "file": "aranha_marcial_caixa.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_pratos",
+          "genre": "marcial",
+          "compassos": 8,
+          "file": "aranha_marcial_pratos.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_tuba",
+          "genre": "marcial",
+          "compassos": 8,
+          "file": "aranha_marcial_tuba.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "marcial_picolo",
+          "genre": "marcial",
+          "compassos": 8,
+          "file": "aranha_marcial_picolo.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "melo_picolo",
+          "genre": "melo",
+          "compassos": 8,
+          "file": "aranha_melo_picolo.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_kaio",
+          "genre": "voz",
+          "compassos": 16,
+          "file": "aranha_voz_kaio.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_loli",
+          "genre": "voz",
+          "compassos": 16,
+          "file": "aranha_voz_loli.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_pedro",
+          "genre": "voz",
+          "compassos": 16,
+          "file": "aranha_voz_pedro.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_sarah",
+          "genre": "voz",
+          "compassos": 16,
+          "file": "aranha_voz_sarah.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_vitor",
+          "genre": "voz",
+          "compassos": 16,
+          "file": "aranha_voz_vitor.ogg"
+        },
+        {
+          "character": "rafog",
+          "instrument": "rock_gtr_base",
+          "genre": "rock",
+          "compassos": 8,
+          "file": "aranha_rock_gtr_base.ogg"
+        },
+        {
+          "character": "rafog",
+          "instrument": "rock_gtr_melodia",
+          "genre": "rock",
+          "compassos": 16,
+          "file": "aranha_rock_gtr_melodia.ogg"
+        },
+        {
+          "character": "teewong",
+          "instrument": "marcial_trombone",
+          "genre": "marcial",
+          "compassos": 8,
+          "file": "aranha_marcial_trombone.ogg"
+        },
+        {
+          "character": "teewong",
+          "instrument": "melo_violino",
+          "genre": "melo",
+          "compassos": 8,
+          "file": "aranha_melo_violino.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_baixo",
+          "genre": "edm",
+          "compassos": 8,
+          "file": "aranha_edm_baixo.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_dub_loop",
+          "genre": "edm",
+          "compassos": 2,
+          "file": "aranha_edm_dub_loop.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_electro_loop",
+          "genre": "edm",
+          "compassos": 1,
+          "file": "aranha_edm_electro_loop.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_house_loop",
+          "genre": "edm",
+          "compassos": 2,
+          "file": "aranha_edm_house_loop.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_trooper_loop",
+          "genre": "edm",
+          "compassos": 2,
+          "file": "aranha_edm_trooper_loop.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "melo_synth",
+          "genre": "melo",
+          "compassos": 8,
+          "file": "aranha_melo_synth.ogg"
+        }
       ]
     },
     {
@@ -38,7 +298,7 @@
       "aliases": [],
       "title": "A Canoa Virou",
       "bpm": 118,
-      "folder": "infanti_canoa",
+      "folder": "infanti_canoa_virou",
       "filePrefix": "canoa",
       "theme": {
         "sky": "#1d5f8a",
@@ -49,20 +309,265 @@
         "accent": "#ffe08a"
       },
       "stems": [
-        { "character": "boogar", "instrument": "drums", "genre": "samba", "compassos": 2 },
-        { "character": "boogar", "instrument": "shaker", "genre": "reggae", "compassos": 2 },
-        { "character": "ceval", "instrument": "bass", "genre": "reggae", "compassos": 2 },
-        { "character": "dan", "instrument": "guitar", "genre": "samba", "compassos": 4 },
-        { "character": "dan", "instrument": "ukulele", "genre": "pop", "compassos": 4 },
-        { "character": "esper", "instrument": "piano", "genre": "bossa", "compassos": 4 },
-        { "character": "esper", "instrument": "accordion", "genre": "forro", "compassos": 4 },
-        { "character": "gobu", "instrument": "trumpet", "genre": "salsa", "compassos": 4 },
-        { "character": "grompy", "instrument": "tuba", "genre": "samba", "compassos": 4 },
-        { "character": "ohle", "instrument": "flute", "genre": "bossa", "compassos": 4 },
-        { "character": "ohle", "instrument": "vocals", "genre": "samba", "compassos": 4 },
-        { "character": "rafog", "instrument": "electric_guitar", "genre": "reggae", "compassos": 4 },
-        { "character": "teewong", "instrument": "clarinet", "genre": "jazz", "compassos": 4 },
-        { "character": "zoem", "instrument": "synth", "genre": "electronic", "compassos": 2 }
+        {
+          "character": "boogar",
+          "instrument": "latin_agogo",
+          "genre": "latin",
+          "compassos": 20,
+          "file": "canoa_latin_agogo.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_clave",
+          "genre": "latin",
+          "compassos": 20,
+          "file": "canoa_latin_clave.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_pandeirola",
+          "genre": "latin",
+          "compassos": 2,
+          "file": "canoa_latin_pandeirola.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_perc_loop",
+          "genre": "latin",
+          "compassos": 4,
+          "file": "canoa_latin_perc_loop.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_shaker",
+          "genre": "latin",
+          "compassos": 4,
+          "file": "canoa_latin_shaker.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "marcial_clave",
+          "genre": "marcial",
+          "compassos": 20,
+          "file": "canoa_marcial_clave.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "pop_bateria",
+          "genre": "pop",
+          "compassos": 20,
+          "file": "canoa_pop_bateria.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "rock_bateria",
+          "genre": "rock",
+          "compassos": 20,
+          "file": "canoa_rock_bateria.ogg"
+        },
+        {
+          "character": "ceval",
+          "instrument": "pop_baixo",
+          "genre": "pop",
+          "compassos": 20,
+          "file": "canoa_pop_baixo.ogg"
+        },
+        {
+          "character": "ceval",
+          "instrument": "rock_baixo",
+          "genre": "rock",
+          "compassos": 20,
+          "file": "canoa_rock_baixo.ogg"
+        },
+        {
+          "character": "dan",
+          "instrument": "latin_violao",
+          "genre": "latin",
+          "compassos": 20,
+          "file": "canoa_latin_violao.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "melo_marimba",
+          "genre": "melo",
+          "compassos": 20,
+          "file": "canoa_melo_marimba.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "melo_sanfona",
+          "genre": "melo",
+          "compassos": 20,
+          "file": "canoa_melo_sanfona.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "pop_clavinote",
+          "genre": "pop",
+          "compassos": 20,
+          "file": "canoa_pop_clavinote.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "pop_orgao",
+          "genre": "pop",
+          "compassos": 20,
+          "file": "canoa_pop_orgao.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "pop_rhodes",
+          "genre": "pop",
+          "compassos": 20,
+          "file": "canoa_pop_rhodes.ogg"
+        },
+        {
+          "character": "gobu",
+          "instrument": "marcial_trompete",
+          "genre": "marcial",
+          "compassos": 20,
+          "file": "canoa_marcial_trompete.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_bombo",
+          "genre": "marcial",
+          "compassos": 20,
+          "file": "canoa_marcial_bombo.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_caixa",
+          "genre": "marcial",
+          "compassos": 20,
+          "file": "canoa_marcial_caixa.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_pratos",
+          "genre": "marcial",
+          "compassos": 20,
+          "file": "canoa_marcial_pratos.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_tuba",
+          "genre": "marcial",
+          "compassos": 20,
+          "file": "canoa_marcial_tuba.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "marcial_picolo",
+          "genre": "marcial",
+          "compassos": 20,
+          "file": "canoa_marcial_picolo.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "melo_picolo",
+          "genre": "melo",
+          "compassos": 20,
+          "file": "canoa_melo_picolo.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_kaio",
+          "genre": "voz",
+          "compassos": 20,
+          "file": "canoa_voz_kaio.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_loli",
+          "genre": "voz",
+          "compassos": 20,
+          "file": "canoa_voz_loli.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_pedro",
+          "genre": "voz",
+          "compassos": 20,
+          "file": "canoa_voz_pedro.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_sarah",
+          "genre": "voz",
+          "compassos": 20,
+          "file": "canoa_voz_sarah.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_vitor",
+          "genre": "voz",
+          "compassos": 20,
+          "file": "canoa_voz_vitor.ogg"
+        },
+        {
+          "character": "rafog",
+          "instrument": "rock_gtr_base",
+          "genre": "rock",
+          "compassos": 20,
+          "file": "canoa_rock_gtr_base.ogg"
+        },
+        {
+          "character": "rafog",
+          "instrument": "rock_gtr_melodia",
+          "genre": "rock",
+          "compassos": 20,
+          "file": "canoa_rock_gtr_melodia.ogg"
+        },
+        {
+          "character": "teewong",
+          "instrument": "marcial_trombone",
+          "genre": "marcial",
+          "compassos": 20,
+          "file": "canoa_marcial_trombone.ogg"
+        },
+        {
+          "character": "teewong",
+          "instrument": "melo_violino",
+          "genre": "melo",
+          "compassos": 20,
+          "file": "canoa_melo_violino.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_bass_synth",
+          "genre": "edm",
+          "compassos": 20,
+          "file": "canoa_edm_bass_synth.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_dub_loop",
+          "genre": "edm",
+          "compassos": 20,
+          "file": "canoa_edm_dub_loop.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_milkyman_clock",
+          "genre": "edm",
+          "compassos": 20,
+          "file": "canoa_edm_milkyman_clock.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_synth_arp",
+          "genre": "edm",
+          "compassos": 20,
+          "file": "canoa_edm_synth_arp.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "melo_synth",
+          "genre": "melo",
+          "compassos": 20,
+          "file": "canoa_melo_synth.ogg"
+        }
       ]
     },
     {
@@ -81,20 +586,216 @@
         "accent": "#ff8dc7"
       },
       "stems": [
-        { "character": "boogar", "instrument": "drums", "genre": "pop", "compassos": 2 },
-        { "character": "boogar", "instrument": "triangle", "genre": "classical", "compassos": 4 },
-        { "character": "ceval", "instrument": "bass", "genre": "pop", "compassos": 4 },
-        { "character": "ceval", "instrument": "cello", "genre": "waltz", "compassos": 4 },
-        { "character": "dan", "instrument": "guitar", "genre": "folk", "compassos": 4 },
-        { "character": "dan", "instrument": "ukulele", "genre": "kids", "compassos": 4 },
-        { "character": "esper", "instrument": "piano", "genre": "waltz", "compassos": 4 },
-        { "character": "esper", "instrument": "xylophone", "genre": "kids", "compassos": 2 },
-        { "character": "gobu", "instrument": "trumpet", "genre": "pop", "compassos": 4 },
-        { "character": "grompy", "instrument": "accordion", "genre": "folk", "compassos": 4 },
-        { "character": "ohle", "instrument": "flute", "genre": "classical", "compassos": 4 },
-        { "character": "ohle", "instrument": "vocals", "genre": "kids", "compassos": 4 },
-        { "character": "teewong", "instrument": "clarinet", "genre": "classical", "compassos": 4 },
-        { "character": "zoem", "instrument": "synth", "genre": "pop", "compassos": 4 }
+        {
+          "character": "boogar",
+          "instrument": "latin_conga",
+          "genre": "latin",
+          "compassos": 10,
+          "file": "coelho_latin_conga.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_recc_reco",
+          "genre": "latin",
+          "compassos": 2,
+          "file": "coelho_latin_recc_reco.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_shaker",
+          "genre": "latin",
+          "compassos": 2,
+          "file": "coelho_latin_shaker.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "pop_bateria",
+          "genre": "pop",
+          "compassos": 10,
+          "file": "coelho_pop_bateria.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "rock_bateria",
+          "genre": "rock",
+          "compassos": 20,
+          "file": "coelho_rock_bateria.ogg"
+        },
+        {
+          "character": "ceval",
+          "instrument": "latin_baixo",
+          "genre": "latin",
+          "compassos": 10,
+          "file": "coelho_latin_baixo.ogg"
+        },
+        {
+          "character": "ceval",
+          "instrument": "pop_baixo",
+          "genre": "pop",
+          "compassos": 10,
+          "file": "coelho_pop_baixo.ogg"
+        },
+        {
+          "character": "ceval",
+          "instrument": "rock_baixo",
+          "genre": "rock",
+          "compassos": 20,
+          "file": "coelho_rock_baixo.ogg"
+        },
+        {
+          "character": "dan",
+          "instrument": "latin_violao",
+          "genre": "latin",
+          "compassos": 10,
+          "file": "coelho_latin_violao.ogg"
+        },
+        {
+          "character": "dan",
+          "instrument": "pop_gtr_frase",
+          "genre": "pop",
+          "compassos": 20,
+          "file": "coelho_pop_gtr_frase.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "latin_marimba",
+          "genre": "latin",
+          "compassos": 10,
+          "file": "coelho_latin_marimba.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "melo_marimba",
+          "genre": "melo",
+          "compassos": 10,
+          "file": "coelho_melo_marimba.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "melo_sanfona",
+          "genre": "melo",
+          "compassos": 10,
+          "file": "coelho_melo_sanfona.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "pop_piano",
+          "genre": "pop",
+          "compassos": 10,
+          "file": "coelho_pop_piano.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "pop_rhodes",
+          "genre": "pop",
+          "compassos": 10,
+          "file": "coelho_pop_rhodes.ogg"
+        },
+        {
+          "character": "gobu",
+          "instrument": "marcial_trompete",
+          "genre": "marcial",
+          "compassos": 10,
+          "file": "coelho_marcial_trompete.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_bombo",
+          "genre": "marcial",
+          "compassos": 1,
+          "file": "coelho_marcial_bombo.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_caixa",
+          "genre": "marcial",
+          "compassos": 1,
+          "file": "coelho_marcial_caixa.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_tuba",
+          "genre": "marcial",
+          "compassos": 10,
+          "file": "coelho_marcial_tuba.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "marcial_picolo",
+          "genre": "marcial",
+          "compassos": 10,
+          "file": "coelho_marcial_picolo.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "melo_picolo",
+          "genre": "melo",
+          "compassos": 10,
+          "file": "coelho_melo_picolo.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_kaio",
+          "genre": "voz",
+          "compassos": 20,
+          "file": "coelho_voz_kaio.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_pedro",
+          "genre": "voz",
+          "compassos": 20,
+          "file": "coelho_voz_pedro.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_sarah",
+          "genre": "voz",
+          "compassos": 20,
+          "file": "coelho_voz_sarah.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_vitor",
+          "genre": "voz",
+          "compassos": 20,
+          "file": "coelho_voz_vitor.ogg"
+        },
+        {
+          "character": "rafog",
+          "instrument": "rock_gtr_base",
+          "genre": "rock",
+          "compassos": 10,
+          "file": "coelho_rock_gtr_base.ogg"
+        },
+        {
+          "character": "rafog",
+          "instrument": "rock_gtr_melodia",
+          "genre": "rock",
+          "compassos": 20,
+          "file": "coelho_rock_gtr_melodia.ogg"
+        },
+        {
+          "character": "teewong",
+          "instrument": "marcial_trombone",
+          "genre": "marcial",
+          "compassos": 10,
+          "file": "coelho_marcial_trombone.ogg"
+        },
+        {
+          "character": "teewong",
+          "instrument": "melo_violino",
+          "genre": "melo",
+          "compassos": 10,
+          "file": "coelho_melo_violino.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "melo_synth",
+          "genre": "melo",
+          "compassos": 10,
+          "file": "coelho_melo_synth.ogg"
+        }
       ]
     },
     {
@@ -113,20 +814,244 @@
         "accent": "#ff6b35"
       },
       "stems": [
-        { "character": "boogar", "instrument": "drums", "genre": "funk", "compassos": 2 },
-        { "character": "boogar", "instrument": "tambourine", "genre": "forro", "compassos": 2 },
-        { "character": "ceval", "instrument": "bass", "genre": "funk", "compassos": 2 },
-        { "character": "dan", "instrument": "guitar", "genre": "pop", "compassos": 2 },
-        { "character": "dan", "instrument": "ukulele", "genre": "forro", "compassos": 4 },
-        { "character": "esper", "instrument": "piano", "genre": "pop", "compassos": 4 },
-        { "character": "esper", "instrument": "xylophone", "genre": "kids", "compassos": 2 },
-        { "character": "gobu", "instrument": "trumpet", "genre": "funk", "compassos": 2 },
-        { "character": "grompy", "instrument": "tuba", "genre": "forro", "compassos": 4 },
-        { "character": "ohle", "instrument": "vocals", "genre": "pop", "compassos": 4 },
-        { "character": "ohle", "instrument": "harmonica", "genre": "folk", "compassos": 4 },
-        { "character": "rafog", "instrument": "electric_guitar", "genre": "rock", "compassos": 2 },
-        { "character": "teewong", "instrument": "saxophone", "genre": "funk", "compassos": 2 },
-        { "character": "zoem", "instrument": "dj", "genre": "electronic", "compassos": 2 }
+        {
+          "character": "boogar",
+          "instrument": "latin_bateria",
+          "genre": "latin",
+          "compassos": 4,
+          "file": "pintinho_latin_bateria.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_bongo",
+          "genre": "latin",
+          "compassos": 16,
+          "file": "pintinho_latin_bongo.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_conga",
+          "genre": "latin",
+          "compassos": 16,
+          "file": "pintinho_latin_conga.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_reco_reco",
+          "genre": "latin",
+          "compassos": 16,
+          "file": "pintinho_latin_reco_reco.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_shaker",
+          "genre": "latin",
+          "compassos": 4,
+          "file": "pintinho_latin_shaker.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "pop_bateria",
+          "genre": "pop",
+          "compassos": 4,
+          "file": "pintinho_pop_bateria.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "rock_bateria",
+          "genre": "rock",
+          "compassos": 16,
+          "file": "pintinho_rock_bateria.ogg"
+        },
+        {
+          "character": "ceval",
+          "instrument": "pop_baixo",
+          "genre": "pop",
+          "compassos": 16,
+          "file": "pintinho_pop_baixo.ogg"
+        },
+        {
+          "character": "ceval",
+          "instrument": "rock_baixo",
+          "genre": "rock",
+          "compassos": 16,
+          "file": "pintinho_rock_baixo.ogg"
+        },
+        {
+          "character": "dan",
+          "instrument": "latin_violao",
+          "genre": "latin",
+          "compassos": 16,
+          "file": "pintinho_latin_violao.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "melo_marimba",
+          "genre": "melo",
+          "compassos": 16,
+          "file": "pintinho_melo_marimba.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "melo_sanfona",
+          "genre": "melo",
+          "compassos": 16,
+          "file": "pintinho_melo_sanfona.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "pop_rhodes",
+          "genre": "pop",
+          "compassos": 16,
+          "file": "pintinho_pop_rhodes.ogg"
+        },
+        {
+          "character": "gobu",
+          "instrument": "melo_trumpete",
+          "genre": "melo",
+          "compassos": 16,
+          "file": "pintinho_melo_trumpete.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_tuba",
+          "genre": "marcial",
+          "compassos": 16,
+          "file": "pintinho_marcial_tuba.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "marcial_picolo",
+          "genre": "marcial",
+          "compassos": 16,
+          "file": "pintinho_marcial_picolo.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "melo_picolo",
+          "genre": "melo",
+          "compassos": 16,
+          "file": "pintinho_melo_picolo.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_kaio",
+          "genre": "voz",
+          "compassos": 16,
+          "file": "pintinho_voz_kaio.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_loli",
+          "genre": "voz",
+          "compassos": 16,
+          "file": "pintinho_voz_loli.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_pedro",
+          "genre": "voz",
+          "compassos": 16,
+          "file": "pintinho_voz_pedro.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_sarah",
+          "genre": "voz",
+          "compassos": 16,
+          "file": "pintinho_voz_sarah.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_vitor",
+          "genre": "voz",
+          "compassos": 16,
+          "file": "pintinho_voz_vitor.ogg"
+        },
+        {
+          "character": "rafog",
+          "instrument": "rock_gtr_melodia",
+          "genre": "rock",
+          "compassos": 16,
+          "file": "pintinho_rock_gtr_melodia.ogg"
+        },
+        {
+          "character": "rafog",
+          "instrument": "rock_guitarra_base",
+          "genre": "rock",
+          "compassos": 16,
+          "file": "pintinho_rock_guitarra_base.ogg"
+        },
+        {
+          "character": "teewong",
+          "instrument": "marcial_trombone",
+          "genre": "marcial",
+          "compassos": 16,
+          "file": "pintinho_marcial_trombone.ogg"
+        },
+        {
+          "character": "teewong",
+          "instrument": "melo_violino",
+          "genre": "melo",
+          "compassos": 16,
+          "file": "pintinho_melo_violino.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_acid_loop",
+          "genre": "edm",
+          "compassos": 16,
+          "file": "pintinho_edm_acid_loop.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_funky_break",
+          "genre": "edm",
+          "compassos": 8,
+          "file": "pintinho_edm_funky_break.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_house_loop",
+          "genre": "edm",
+          "compassos": 2,
+          "file": "pintinho_edm_house_loop.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_milkman",
+          "genre": "edm",
+          "compassos": 16,
+          "file": "pintinho_edm_milkman.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_synth_arp",
+          "genre": "edm",
+          "compassos": 16,
+          "file": "pintinho_edm_synth_arp.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_synth_bass",
+          "genre": "edm",
+          "compassos": 16,
+          "file": "pintinho_edm_synth_bass.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "edm_techno_loop",
+          "genre": "edm",
+          "compassos": 16,
+          "file": "pintinho_edm_techno_loop.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "melo_synth",
+          "genre": "melo",
+          "compassos": 16,
+          "file": "pintinho_melo_synth.ogg"
+        }
       ]
     },
     {
@@ -134,7 +1059,7 @@
       "aliases": [],
       "title": "O Sapo Não Lava o Pé",
       "bpm": 138,
-      "folder": "infanti_sapo",
+      "folder": "infanti_sapo_nao_lava",
       "filePrefix": "sapo",
       "theme": {
         "sky": "#1f6b4a",
@@ -145,20 +1070,202 @@
         "accent": "#b6ff6a"
       },
       "stems": [
-        { "character": "boogar", "instrument": "drums", "genre": "samba", "compassos": 2 },
-        { "character": "boogar", "instrument": "maracas", "genre": "salsa", "compassos": 2 },
-        { "character": "ceval", "instrument": "bass", "genre": "funk", "compassos": 2 },
-        { "character": "dan", "instrument": "guitar", "genre": "samba", "compassos": 4 },
-        { "character": "dan", "instrument": "ukulele", "genre": "reggae", "compassos": 4 },
-        { "character": "esper", "instrument": "piano", "genre": "jazz", "compassos": 4 },
-        { "character": "esper", "instrument": "synth", "genre": "electronic", "compassos": 2 },
-        { "character": "gobu", "instrument": "trumpet", "genre": "salsa", "compassos": 4 },
-        { "character": "grompy", "instrument": "tuba", "genre": "jazz", "compassos": 4 },
-        { "character": "ohle", "instrument": "flute", "genre": "samba", "compassos": 4 },
-        { "character": "ohle", "instrument": "vocals", "genre": "pop", "compassos": 4 },
-        { "character": "rafog", "instrument": "electric_guitar", "genre": "rock", "compassos": 2 },
-        { "character": "teewong", "instrument": "saxophone", "genre": "jazz", "compassos": 4 },
-        { "character": "zoem", "instrument": "dj", "genre": "electronic", "compassos": 2 }
+        {
+          "character": "boogar",
+          "instrument": "latin_bateria",
+          "genre": "latin",
+          "compassos": 18,
+          "file": "sapo_latin_bateria.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_pandeirola",
+          "genre": "latin",
+          "compassos": 9,
+          "file": "sapo_latin_pandeirola.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "latin_perc_loop",
+          "genre": "latin",
+          "compassos": 9,
+          "file": "sapo_latin_perc_loop.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "pop_bateria",
+          "genre": "pop",
+          "compassos": 9,
+          "file": "sapo_pop_bateria.ogg"
+        },
+        {
+          "character": "boogar",
+          "instrument": "rock_bateria",
+          "genre": "rock",
+          "compassos": 54,
+          "file": "sapo_rock_bateria.ogg"
+        },
+        {
+          "character": "ceval",
+          "instrument": "latin_baixo",
+          "genre": "latin",
+          "compassos": 54,
+          "file": "sapo_latin_baixo.ogg"
+        },
+        {
+          "character": "ceval",
+          "instrument": "pop_baixo",
+          "genre": "pop",
+          "compassos": 54,
+          "file": "sapo_pop_baixo.ogg"
+        },
+        {
+          "character": "ceval",
+          "instrument": "rock_baixo",
+          "genre": "rock",
+          "compassos": 54,
+          "file": "sapo_rock_baixo.ogg"
+        },
+        {
+          "character": "dan",
+          "instrument": "latin_violao",
+          "genre": "latin",
+          "compassos": 54,
+          "file": "sapo_latin_violao.ogg"
+        },
+        {
+          "character": "dan",
+          "instrument": "pop_gtr_base",
+          "genre": "pop",
+          "compassos": 54,
+          "file": "sapo_pop_gtr_base.ogg"
+        },
+        {
+          "character": "dan",
+          "instrument": "pop_gtr_frase",
+          "genre": "pop",
+          "compassos": 54,
+          "file": "sapo_pop_gtr_frase.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "melo_marimba",
+          "genre": "melo",
+          "compassos": 54,
+          "file": "sapo_melo_marimba.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "melo_sanfona",
+          "genre": "melo",
+          "compassos": 54,
+          "file": "sapo_melo_sanfona.ogg"
+        },
+        {
+          "character": "esper",
+          "instrument": "pop_rhodes",
+          "genre": "pop",
+          "compassos": 54,
+          "file": "sapo_pop_rhodes.ogg"
+        },
+        {
+          "character": "gobu",
+          "instrument": "marcial_trompete",
+          "genre": "marcial",
+          "compassos": 54,
+          "file": "sapo_marcial_trompete.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_bombo",
+          "genre": "marcial",
+          "compassos": 3,
+          "file": "sapo_marcial_bombo.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_caixa",
+          "genre": "marcial",
+          "compassos": 27,
+          "file": "sapo_marcial_caixa.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_pratos",
+          "genre": "marcial",
+          "compassos": 18,
+          "file": "sapo_marcial_pratos.ogg"
+        },
+        {
+          "character": "grompy",
+          "instrument": "marcial_tuba",
+          "genre": "marcial",
+          "compassos": 54,
+          "file": "sapo_marcial_tuba.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "mar_picolo",
+          "genre": "mar",
+          "compassos": 54,
+          "file": "sapo_mar_picolo.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "melo_piccolo",
+          "genre": "melo",
+          "compassos": 54,
+          "file": "sapo_melo_piccolo.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_loli",
+          "genre": "voz",
+          "compassos": 54,
+          "file": "sapo_voz_loli.ogg"
+        },
+        {
+          "character": "ohle",
+          "instrument": "voz_pedro",
+          "genre": "voz",
+          "compassos": 54,
+          "file": "sapo_voz_pedro.ogg"
+        },
+        {
+          "character": "rafog",
+          "instrument": "rock_gtr_base",
+          "genre": "rock",
+          "compassos": 54,
+          "file": "sapo_rock_gtr_base.ogg"
+        },
+        {
+          "character": "rafog",
+          "instrument": "rock_gtr_melodia",
+          "genre": "rock",
+          "compassos": 54,
+          "file": "sapo_rock_gtr_melodia.ogg"
+        },
+        {
+          "character": "teewong",
+          "instrument": "marcial_trombone",
+          "genre": "marcial",
+          "compassos": 54,
+          "file": "sapo_marcial_trombone.ogg"
+        },
+        {
+          "character": "teewong",
+          "instrument": "melo_violino",
+          "genre": "melo",
+          "compassos": 54,
+          "file": "sapo_melo_violino.ogg"
+        },
+        {
+          "character": "zoem",
+          "instrument": "melo_synth",
+          "genre": "melo",
+          "compassos": 54,
+          "file": "sapo_melo_synth.ogg"
+        }
       ]
     }
   ]

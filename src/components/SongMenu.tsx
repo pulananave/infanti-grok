@@ -1,3 +1,4 @@
+import { audioEngine } from '../audio/AudioEngine'
 import { SONGS } from '../config/loadConfig'
 import { useGame } from '../state/gameStore'
 import type { SongId } from '../types'
@@ -21,7 +22,11 @@ export function SongMenu() {
             style={{
               background: `linear-gradient(160deg, ${song.theme.horizon}, ${song.theme.sky})`,
             }}
+            onPointerDown={() => {
+              audioEngine.unlock()
+            }}
             onClick={() => {
+              audioEngine.unlock()
               void selectSong(song.id as SongId)
             }}
           >

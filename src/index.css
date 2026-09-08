@@ -230,7 +230,7 @@ button {
 .balloon {
   position: absolute;
   z-index: 6;
-  width: min(280px, 72vw);
+  width: min(360px, 80vw);
   background: #ffe56a;
   border-radius: 28px;
   padding: 12px;

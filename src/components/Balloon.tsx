@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from 'react'
+import { audioEngine } from '../audio/AudioEngine'
 import { CHARACTERS } from '../config/characters'
 import { getSong, stemsForCharacter } from '../config/loadConfig'
 import { availableInstruments, useGame } from '../state/gameStore'
@@ -19,7 +20,7 @@ export function Balloon() {
 
     const slotRect = slot.getBoundingClientRect()
     const trayRect = tray.getBoundingClientRect()
-    const width = Math.min(280, window.innerWidth * 0.72)
+    const width = Math.min(360, window.innerWidth * 0.8)
     const center = slotRect.left + slotRect.width / 2
     const left = Math.min(Math.max(8, center - width / 2), window.innerWidth - width - 8)
     const tail = ((center - left) / width) * 100
@@ -73,6 +74,7 @@ export function Balloon() {
               onPointerDown={(event) => {
                 event.preventDefault()
                 event.stopPropagation()
+                audioEngine.unlock()
                 event.currentTarget.setPointerCapture(event.pointerId)
                 beginSpawnDrag(balloonCharacterId, instrument, event.clientX, event.clientY)
               }}

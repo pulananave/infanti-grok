@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import type { Group } from 'three'
 import { CHARACTERS } from '../config/characters'
+import { instrumentKind } from '../config/instruments'
 import type { Accessory, CharacterId, HeadShape } from '../types'
 
 interface Props {
@@ -104,10 +105,11 @@ function Extra({ accessory, accent, skin }: { accessory: Accessory; accent: stri
 
 function HeldInstrument({ instrument }: { instrument?: string }) {
   if (!instrument) return null
-  if (instrument === 'drums' || instrument === 'dj') {
+  const kind = instrumentKind(instrument) ?? instrument
+  if (kind === 'drums' || kind === 'dj' || kind === 'bombo' || kind === 'caixa' || kind === 'conga' || kind === 'bongo') {
     return <mesh position={[0.28, 0.18, 0.16]}><cylinderGeometry args={[0.1, 0.1, 0.08, 12]} /><meshStandardMaterial color="#E74C3C" /></mesh>
   }
-  if (instrument === 'guitar' || instrument === 'ukulele' || instrument === 'electric_guitar') {
+  if (kind === 'guitar' || kind === 'ukulele' || kind === 'electric_guitar' || kind === 'violin') {
     return (
       <group position={[0.26, 0.16, 0.14]} rotation={[0.2, 0.4, 0.5]}>
         <mesh><boxGeometry args={[0.08, 0.14, 0.05]} /><meshStandardMaterial color="#CA6F1E" /></mesh>
@@ -115,10 +117,16 @@ function HeldInstrument({ instrument }: { instrument?: string }) {
       </group>
     )
   }
-  if (instrument === 'trumpet' || instrument === 'flute' || instrument === 'clarinet' || instrument === 'harmonica') {
+  if (
+    kind === 'trumpet' ||
+    kind === 'trombone' ||
+    kind === 'flute' ||
+    kind === 'clarinet' ||
+    kind === 'harmonica'
+  ) {
     return <mesh position={[0.28, 0.22, 0.16]} rotation={[0, 0, 0.4]}><cylinderGeometry args={[0.03, 0.03, 0.28, 8]} /><meshStandardMaterial color="#F4D03F" /></mesh>
   }
-  if (instrument === 'piano' || instrument === 'xylophone' || instrument === 'synth' || instrument === 'accordion') {
+  if (kind === 'piano' || kind === 'xylophone' || kind === 'synth' || kind === 'accordion' || kind === 'organ') {
     return <mesh position={[0.26, 0.16, 0.16]}><boxGeometry args={[0.18, 0.08, 0.1]} /><meshStandardMaterial color="#2b1654" /></mesh>
   }
   return <mesh position={[0.26, 0.18, 0.16]}><sphereGeometry args={[0.07, 10, 10]} /><meshStandardMaterial color="#5EE0C4" /></mesh>
