@@ -1,27 +1,27 @@
 {
   "aranha": {
-    "circle": ["drums", "bass", "guitar", "piano"],
-    "square": ["flute", "cello", "xylophone", "vocals"],
-    "triangle": ["trumpet", "saxophone", "electric_guitar", "dj"]
+    "circle": ["pop_bateria", "pop_baixo", "pop_gtr_base", "pop_piano"],
+    "square": ["latin_agogo", "latin_violao", "latin_conga", "latin_marimba"],
+    "triangle": ["marcial_trompete", "rock_gtr_melodia", "voz_kaio", "melo_synth"]
   },
   "canoa": {
-    "circle": ["drums", "bass", "guitar", "vocals"],
-    "square": ["accordion", "flute", "ukulele", "shaker"],
-    "triangle": ["trumpet", "clarinet", "piano", "synth"]
+    "circle": ["pop_bateria", "pop_baixo", "latin_violao", "voz_kaio"],
+    "square": ["latin_agogo", "latin_shaker", "melo_sanfona", "melo_picolo"],
+    "triangle": ["marcial_trompete", "marcial_trombone", "pop_rhodes", "melo_synth"]
   },
   "coelho": {
-    "circle": ["piano", "flute", "cello", "triangle"],
-    "square": ["drums", "bass", "guitar", "vocals"],
-    "triangle": ["xylophone", "ukulele", "clarinet", "accordion"]
+    "circle": ["pop_piano", "melo_picolo", "latin_marimba", "latin_shaker"],
+    "square": ["pop_bateria", "pop_baixo", "latin_violao", "voz_kaio"],
+    "triangle": ["melo_sanfona", "pop_gtr_frase", "marcial_trompete", "latin_conga"]
   },
   "pintinho": {
-    "circle": ["drums", "bass", "electric_guitar", "saxophone"],
-    "square": ["vocals", "harmonica", "xylophone", "ukulele"],
-    "triangle": ["trumpet", "tuba", "piano", "dj"]
+    "circle": ["pop_bateria", "pop_baixo", "rock_guitarra_base", "latin_violao"],
+    "square": ["voz_kaio", "latin_shaker", "melo_marimba", "latin_reco_reco"],
+    "triangle": ["melo_trumpete", "marcial_tuba", "pop_rhodes", "melo_synth"]
   },
   "sapo": {
-    "circle": ["drums", "bass", "guitar", "vocals"],
-    "square": ["flute", "piano", "saxophone", "maracas"],
-    "triangle": ["trumpet", "tuba", "electric_guitar", "dj"]
+    "circle": ["pop_bateria", "pop_baixo", "latin_violao", "voz_loli"],
+    "square": ["latin_pandeirola", "pop_rhodes", "marcial_trompete", "melo_marimba"],
+    "triangle": ["rock_gtr_melodia", "marcial_tuba", "voz_pedro", "melo_synth"]
   }
 }

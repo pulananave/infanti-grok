@@ -46,7 +46,7 @@ Cada um tem um humanóide placeholder distinto (cor, proporção, cabeça e aces
 - O ponto de volta é a grade musical: `bpm × compassos` em 4/4.
 - Os stems têm **cauda** (reverb / decay) depois do ponto de loop — por isso o agendamento recomeça na grade enquanto a cauda do take anterior ainda soa.
 - Cada stem é dirigido por config: personagem, instrumento, compassos, gênero e caminho do áudio.
-- Placeholders gerados ficam em `public/audio/infanti_<canção>/` com o nome `{canção}_{gênero}_{instrumento}.ogg` para o drop-in dos arquivos reais do MEGA.
+- Stems reais do MEGA ficam em `public/audio/infanti_<pasta original>/` com o nome `{canção}_{gênero}_{instrumento}.ogg`. Cada stem em `songs.json` aponta o `file` exato. Sem placeholders no runtime.
 
 ## Gamificação (v1)
 
@@ -63,4 +63,4 @@ Perspectiva ¾ (acima e à frente). Quem está mais longe no palco aparece menor
 
 - Retrato como layout principal
 - Gerarda nas 5 canções atuais
-- Modelos finais e stems MEGA (substituem os placeholders sem mudar código, se o nome bater)
+- Modelos finais 3D

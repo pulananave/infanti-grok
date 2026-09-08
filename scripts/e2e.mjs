@@ -129,10 +129,10 @@ if (restored < 2) throw new Error(`instrument did not return to balloon: ${resto
 const combo = await page.evaluate(async () => {
   const api = window.__infanti.getState()
   const pairs = [
-    ['boogar', 'drums'],
-    ['ceval', 'bass'],
-    ['dan', 'guitar'],
-    ['esper', 'piano'],
+    ['boogar', 'pop_bateria'],
+    ['ceval', 'pop_baixo'],
+    ['dan', 'pop_gtr_base'],
+    ['esper', 'pop_piano'],
   ]
   let x = -1.6
   for (const [characterId, instrument] of pairs) {

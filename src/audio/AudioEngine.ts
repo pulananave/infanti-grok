@@ -1,5 +1,3 @@
-import { makeStubBuffer } from './stubBuffer'
-
 const LOOKAHEAD = 0.15
 const SCHEDULE_AHEAD = 1.25
 
@@ -304,8 +302,9 @@ export class AudioEngine {
     let buffer: AudioBuffer
     try {
       buffer = await this.loadBuffer(paths, meta)
-    } catch {
-      buffer = makeStubBuffer(ctx, { ...meta, bpm: this.bpm })
+    } catch (error) {
+      console.warn('[infanti] stem failed to load', paths, error)
+      return
     }
 
     ctx = await this.ensureContext()
@@ -314,7 +313,8 @@ export class AudioEngine {
     }
     if (!this.master || this.voices.has(id)) return
     if (!(buffer.duration > 0)) {
-      buffer = makeStubBuffer(ctx, { ...meta, bpm: this.bpm })
+      console.warn('[infanti] empty stem buffer', paths)
+      return
     }
 
     if (this.transportStart === null) {
@@ -349,13 +349,11 @@ export class AudioEngine {
         this.buffers.set(cacheKey, decoded)
         return decoded
       } catch {
-        /* try next candidate or stub — Safari often rejects .ogg */
+        /* try next candidate — Safari may reject some .ogg encodings */
       }
     }
 
-    const stub = makeStubBuffer(ctx, { ...meta, bpm: this.bpm })
-    this.buffers.set(cacheKey, stub)
-    return stub
+    throw new Error(`stem not found: ${paths.join(' | ')}`)
   }
 }
 

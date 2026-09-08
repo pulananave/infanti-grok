@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { isInstrumentId, type InstrumentId } from '../config/instruments'
+import { instrumentKind, type InstrumentId } from '../config/instruments'
 
 interface Props {
   instrument: string
@@ -185,10 +185,86 @@ const ICONS: Record<InstrumentId, ReactNode> = {
       <circle cx="40" cy="32" r="3" fill="#2b1654" />
     </Svg>
   ),
+  agogo: (
+    <Svg>
+      <ellipse cx="22" cy="28" rx="8" ry="12" fill="#F4D03F" stroke="#2b1654" strokeWidth="3" />
+      <ellipse cx="40" cy="32" rx="10" ry="14" fill="#F5B041" stroke="#2b1654" strokeWidth="3" />
+      <path d="M22 40v10M40 46v8" stroke="#2b1654" strokeWidth="3" />
+    </Svg>
+  ),
+  conga: (
+    <Svg>
+      <ellipse cx="32" cy="18" rx="12" ry="6" fill="#CA6F1E" stroke="#2b1654" strokeWidth="3" />
+      <path d="M20 18v24c0 8 24 8 24 0V18" fill="#A04000" stroke="#2b1654" strokeWidth="3" />
+      <ellipse cx="32" cy="42" rx="12" ry="6" fill="#6E2C00" />
+    </Svg>
+  ),
+  bongo: (
+    <Svg>
+      <ellipse cx="22" cy="30" rx="10" ry="12" fill="#CA6F1E" stroke="#2b1654" strokeWidth="3" />
+      <ellipse cx="42" cy="32" rx="8" ry="10" fill="#A04000" stroke="#2b1654" strokeWidth="3" />
+    </Svg>
+  ),
+  clave: (
+    <Svg>
+      <rect x="10" y="18" width="8" height="32" rx="3" fill="#CA6F1E" stroke="#2b1654" strokeWidth="3" />
+      <rect x="44" y="14" width="8" height="32" rx="3" fill="#A04000" stroke="#2b1654" strokeWidth="3" />
+    </Svg>
+  ),
+  reco_reco: (
+    <Svg>
+      <rect x="8" y="24" width="48" height="14" rx="6" fill="#CA6F1E" stroke="#2b1654" strokeWidth="3" />
+      <path d="M16 26v10M22 26v10M28 26v10M34 26v10M40 26v10M46 26v10" stroke="#2b1654" strokeWidth="2" />
+    </Svg>
+  ),
+  bombo: (
+    <Svg>
+      <ellipse cx="32" cy="32" rx="18" ry="16" fill="#7B241C" stroke="#2b1654" strokeWidth="3" />
+      <ellipse cx="32" cy="32" rx="10" ry="9" fill="#F5CBA7" />
+    </Svg>
+  ),
+  caixa: (
+    <Svg>
+      <ellipse cx="32" cy="28" rx="18" ry="10" fill="#F4D03F" stroke="#2b1654" strokeWidth="3" />
+      <path d="M14 28v12c0 6 8 10 18 10s18-4 18-10V28" fill="#D4AC0D" stroke="#2b1654" strokeWidth="3" />
+    </Svg>
+  ),
+  cymbals: (
+    <Svg>
+      <ellipse cx="32" cy="30" rx="20" ry="8" fill="#F7DC6F" stroke="#2b1654" strokeWidth="3" />
+      <ellipse cx="32" cy="38" rx="16" ry="6" fill="#F4D03F" stroke="#2b1654" strokeWidth="3" />
+    </Svg>
+  ),
+  trombone: (
+    <Svg>
+      <path d="M8 36h36" stroke="#F4D03F" strokeWidth="6" strokeLinecap="round" />
+      <path d="M20 36c0-10 16-10 16 0" stroke="#F4D03F" strokeWidth="5" fill="none" />
+      <path d="M44 30h10l6 8-6 8H44z" fill="#F5B041" stroke="#2b1654" strokeWidth="2" />
+    </Svg>
+  ),
+  violin: (
+    <Svg>
+      <path d="M22 20c0-6 20-6 20 0v8c10 4 10 16 0 20v8H22v-8c-10-4-10-16 0-20v-8z" fill="#A04000" stroke="#2b1654" strokeWidth="3" />
+      <path d="M32 12v40" stroke="#2b1654" strokeWidth="3" />
+    </Svg>
+  ),
+  organ: (
+    <Svg>
+      <rect x="8" y="16" width="48" height="32" rx="4" fill="#5B2C6F" stroke="#2b1654" strokeWidth="3" />
+      <rect x="14" y="22" width="4" height="20" fill="#F4D03F" />
+      <rect x="22" y="22" width="4" height="20" fill="#F4D03F" />
+      <rect x="30" y="22" width="4" height="20" fill="#F4D03F" />
+      <rect x="38" y="22" width="4" height="20" fill="#F4D03F" />
+      <rect x="46" y="22" width="4" height="20" fill="#F4D03F" />
+    </Svg>
+  ),
 }
 
 export function InstrumentIcon({ instrument }: Props) {
-  const node = isInstrumentId(instrument) ? ICONS[instrument] : (
+  const kind = instrumentKind(instrument)
+  const node = kind ? (
+    ICONS[kind]
+  ) : (
     <Svg>
       <circle cx="32" cy="32" r="16" fill="#5EE0C4" stroke="#2b1654" strokeWidth="3" />
     </Svg>
