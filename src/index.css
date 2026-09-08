@@ -202,13 +202,19 @@ button {
   right: 0;
   bottom: 0;
   z-index: 5;
-  display: flex;
-  gap: 10px;
   overflow-x: auto;
   overflow-y: hidden;
   padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
   background: linear-gradient(180deg, transparent, rgba(20, 8, 40, 0.55) 24%, rgba(20, 8, 40, 0.88));
   touch-action: pan-x;
+}
+
+.tray-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: max-content;
+  min-width: 100%;
 }
 
 .tray-slot {
