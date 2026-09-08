@@ -54,12 +54,14 @@ export function clampToFloor(point: THREE.Vector3): THREE.Vector3 {
   )
 }
 
+export const NEAR_GAIN = 1
+export const FAR_GAIN = 0.2
+
+/** Linear map: 1.0 at the listener (stage front), 0.2 at the back of the usable floor. */
 export function volumeForPosition(position: THREE.Vector3 | [number, number, number]): number {
-  const x = Array.isArray(position) ? position[0] : position.x
-  const y = Array.isArray(position) ? position[1] : position.y
   const z = Array.isArray(position) ? position[2] : position.z
-  const distance = LISTENER_POSITION.distanceTo(new THREE.Vector3(x, y, z))
-  return THREE.MathUtils.clamp(1 / (1 + distance * 0.38), 0.08, 1)
+  const t = THREE.MathUtils.inverseLerp(LISTENER_POSITION.z, FLOOR_Z_BACK, z)
+  return THREE.MathUtils.lerp(NEAR_GAIN, FAR_GAIN, THREE.MathUtils.clamp(t, 0, 1))
 }
 
 export function isOverBlockingUi(clientX: number, clientY: number): boolean {
