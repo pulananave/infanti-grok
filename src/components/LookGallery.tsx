@@ -27,10 +27,10 @@ export function LookGallery() {
           powerPreference: 'high-performance',
         }}
       >
-        <StageLights theme={{ sky: '#cfe8f6', horizon: '#f3d4b8', fog: '#d8e8f0' }} />
+        <StageLights theme={{ sky: '#8fd6fa', horizon: '#fff8ee', fog: '#c8e8f8' }} />
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
           <planeGeometry args={[14, 8]} />
-          <meshPhysicalMaterial color="#c8ddc0" roughness={0.62} clearcoat={0.18} sheen={0.25} sheenColor="#c8ddc0" />
+          <meshPhysicalMaterial color="#7ee8c4" roughness={0.52} clearcoat={0.22} sheen={0.28} sheenColor="#7ee8c4" />
         </mesh>
         {top.map((id, index) => {
           const x = (index - 2.5) * 1.35
@@ -65,11 +65,17 @@ export function LookGallery() {
           blur={STAGE_LOOK.contactBlur}
           far={STAGE_LOOK.contactFar}
           resolution={STAGE_LOOK.contactResolution}
-          color="#3a2048"
+          color={STAGE_LOOK.contactColor}
         />
         <EffectComposer multisampling={0} enableNormalPass={false}>
           {STAGE_LOOK.ssao ? (
-            <N8AO aoRadius={STAGE_LOOK.ssaoRadius} intensity={STAGE_LOOK.ssaoIntensity} quality="medium" halfRes />
+            <N8AO
+              aoRadius={STAGE_LOOK.ssaoRadius}
+              intensity={STAGE_LOOK.ssaoIntensity}
+              quality="medium"
+              halfRes
+              color={STAGE_LOOK.aoColor}
+            />
           ) : (
             <></>
           )}

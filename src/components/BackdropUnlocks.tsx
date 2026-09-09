@@ -26,10 +26,10 @@ const noRaycast = () => null
 
 function sliceProps(color: string, on: boolean, complete: boolean) {
   return {
-    color: on ? color : mixHex(TOY.cream, TOY.ink, 0.14),
+    color: on ? color : mixHex(TOY.sky, TOY.lilac, 0.22),
     silicone: true,
     glow: on,
-    emissive: on ? color : TOY.ink,
+    emissive: on ? color : TOY.lilac,
     emissiveIntensity: complete ? (POLISH ? 0.46 : 0.34) : on ? (POLISH ? 0.26 : 0.2) : 0.012,
     roughness: on ? undefined : 0.74,
     clearcoat: complete && POLISH ? 0.82 : undefined,
@@ -105,7 +105,7 @@ function Plaque() {
       receiveShadow
       raycast={noRaycast}
     >
-      <ToyMaterial color={mixHex(TOY.lilac, TOY.wall, 0.4)} silicone roughness={0.64} />
+      <ToyMaterial color={mixHex(TOY.sky, TOY.cream, 0.28)} silicone roughness={0.58} />
     </RoundedBox>
   )
 }
@@ -114,7 +114,7 @@ function Peg() {
   return (
     <mesh position={[0, 0, -0.2]} rotation={[Math.PI / 2, 0, 0]} raycast={noRaycast}>
       <cylinderGeometry args={[0.09, 0.09, 0.26, 8]} />
-      <ToyMaterial color={TOY.lilac} silicone />
+      <ToyMaterial color={TOY.peach} silicone />
     </mesh>
   )
 }

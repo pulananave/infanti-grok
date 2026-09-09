@@ -57,7 +57,7 @@ function ToyHay() {
     <group>
       <mesh position={[3.75, 0.22, -3.45]}>
         <boxGeometry args={[1.15, 0.38, 0.68]} />
-        <ToyMaterial color="#f0d27a" silicone />
+        <ToyMaterial color={TOY.lemon} silicone />
       </mesh>
       <mesh position={[-4.05, 0.32, -3.55]}>
         <capsuleGeometry args={[0.08, 0.7, 4, 8]} />

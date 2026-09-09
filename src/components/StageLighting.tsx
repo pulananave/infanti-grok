@@ -1,12 +1,12 @@
 import { Environment, Lightformer, SoftShadows } from '@react-three/drei'
 import { BackSide } from 'three'
 import { STAGE_LOOK } from '../theme/stageLook'
+import { kawaiiTint, TOY } from '../theme/toy'
 import type { SongTheme } from '../types'
 
 /**
- * Dim studio IBL: a dark shell plus a few small lightformers.
- * Earlier bright env bakes flattened the key light — keep intensity low so
- * clearcoat/sheen pick up highlights without washing pastels.
+ * Cool high-key IBL: navy shell (not brown) plus sky / lemon / mint formers.
+ * Intensity stays low so clearcoat picks up highlights without washing pastels.
  */
 export function SoftToyIbl() {
   return (
@@ -18,36 +18,36 @@ export function SoftToyIbl() {
     >
       <mesh scale={18}>
         <sphereGeometry args={[1, 20, 14]} />
-        <meshBasicMaterial color="#1c1824" side={BackSide} />
+        <meshBasicMaterial color="#161c2c" side={BackSide} />
       </mesh>
       <Lightformer
         form="rect"
-        intensity={3.4}
-        color="#fff3dc"
+        intensity={3.2}
+        color="#fff6e0"
         scale={[3.6, 2.2, 1]}
         position={[6.4, 8.2, 4.6]}
         target={[0, 0.4, 0]}
       />
       <Lightformer
         form="rect"
-        intensity={0.75}
-        color="#c4dcff"
+        intensity={0.9}
+        color="#b8e4ff"
         scale={[2.8, 2, 1]}
         position={[-6.2, 3.4, 2.2]}
         target={[0, 0.3, 0]}
       />
       <Lightformer
         form="ring"
-        intensity={0.35}
-        color="#ffe0c0"
+        intensity={0.32}
+        color="#ffe8b0"
         scale={5}
         position={[-3.4, 2.8, -5.4]}
         target={[0, 0.6, 0]}
       />
       <Lightformer
         form="rect"
-        intensity={0.16}
-        color="#88b898"
+        intensity={0.18}
+        color="#9aecc8"
         scale={[10, 10, 1]}
         position={[0, -4.2, 0]}
         rotation={[Math.PI / 2, 0, 0]}
@@ -57,12 +57,15 @@ export function SoftToyIbl() {
 }
 
 export function StageLights({ theme }: { theme: Pick<SongTheme, 'sky' | 'horizon' | 'fog'> }) {
+  const sky = kawaiiTint(theme.sky, TOY.sky, 0.62)
+  const fog = kawaiiTint(theme.fog, TOY.sky, 0.55)
+  const horizon = kawaiiTint(theme.horizon, TOY.cream, 0.42)
   return (
     <>
-      <color attach="background" args={[theme.sky]} />
-      <fog attach="fog" args={[theme.fog, 20, 40]} />
+      <color attach="background" args={[sky]} />
+      <fog attach="fog" args={[fog, 22, 44]} />
       <ambientLight intensity={STAGE_LOOK.ambient} color={STAGE_LOOK.ambientColor} />
-      <hemisphereLight args={[theme.horizon, STAGE_LOOK.hemiGround, STAGE_LOOK.hemi]} />
+      <hemisphereLight args={[horizon, STAGE_LOOK.hemiGround, STAGE_LOOK.hemi]} />
       <directionalLight
         position={STAGE_LOOK.keyPosition}
         intensity={STAGE_LOOK.key}

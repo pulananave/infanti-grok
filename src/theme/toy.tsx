@@ -2,31 +2,43 @@ import type { MeshPhysicalMaterialProps } from '@react-three/fiber'
 import { STAGE_LOOK } from './stageLook'
 import { getToyNormalMap, normalScale } from './toyNormals'
 
+/**
+ * Kawaii toy-stage palette (official set reference).
+ * Sky blue walls/blocks, mint foliage, candy pink, lemon glow,
+ * peach accents, cream clouds. No brown wood, tan, or muddy grey.
+ */
 export const TOY = {
-  mint: '#8ee0c4',
-  sage: '#b7e3c0',
-  babyBlue: '#9fd6f2',
-  sky: '#c8e8f8',
-  peach: '#ffc9a8',
-  coral: '#ff8fa3',
-  pink: '#ffb3d1',
+  mint: '#7ee8c4',
+  sage: '#9ee8b0',
+  babyBlue: '#7ed4f8',
+  sky: '#8fd6fa',
+  peach: '#ffb892',
+  coral: '#ff7a96',
+  pink: '#ff8dc7',
   lemon: '#ffe56a',
-  cream: '#fff4d6',
-  lavender: '#d4b8f0',
-  lilac: '#c9b6ff',
-  trunk: '#c48a5a',
-  fruit: '#ff6b7a',
-  cloud: '#fff8f0',
-  spotlight: '#ffb070',
-  ink: '#4a3270',
-  wall: '#b7ddf4',
+  cream: '#fff8ee',
+  lavender: '#d2b4f8',
+  lilac: '#c4b0ff',
+  trunk: '#ffb07a',
+  fruit: '#ff7a6a',
+  cloud: '#fffcf6',
+  spotlight: '#ffc078',
+  ink: '#4a3a78',
+  wall: '#8fd4f6',
 } as const
 
-const TILE_CYCLE = [TOY.peach, TOY.mint, TOY.babyBlue, TOY.lavender, TOY.sage, TOY.cream, TOY.pink] as const
+const TILE_CYCLE = [TOY.babyBlue, TOY.mint, TOY.peach, TOY.pink, TOY.sky, TOY.sage, TOY.lavender] as const
+
+/** Bias a song-theme hex toward the kawaii set so earthy themes cannot muddy the stage. */
+export function kawaiiTint(hex: string, toward: string = TOY.sky, amount = 0.55): string {
+  return mixHex(hex, toward, amount)
+}
 
 export function tileColor(ix: number, iz: number, accent: string, floor: string): string {
-  if ((ix + iz) % 7 === 0) return mixHex(floor, accent, 0.28)
-  return TILE_CYCLE[(ix * 3 + iz * 5) % TILE_CYCLE.length]
+  const base = TILE_CYCLE[(ix * 3 + iz * 5) % TILE_CYCLE.length]
+  // Theme only tints — never replaces the pastel checkerboard.
+  if ((ix + iz) % 7 === 0) return mixHex(base, mixHex(kawaiiTint(floor, TOY.sky, 0.45), accent, 0.35), 0.2)
+  return mixHex(base, kawaiiTint(floor, TOY.sky, 0.65), 0.08)
 }
 
 /** Cheap deterministic roughness/clearcoat/tint so the grid is not one identical shader. */

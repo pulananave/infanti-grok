@@ -158,7 +158,7 @@ function StagePost() {
           distanceFalloff={1.15}
           quality="medium"
           halfRes
-          color="#3a2048"
+          color={STAGE_LOOK.aoColor}
         />
       ) : (
         <></>
@@ -218,7 +218,7 @@ export function StageScene() {
         blur={STAGE_LOOK.contactBlur}
         far={STAGE_LOOK.contactFar}
         resolution={STAGE_LOOK.contactResolution}
-        color="#3a2048"
+        color={STAGE_LOOK.contactColor}
       />
       <GrabPlane />
       <mesh position={LISTENER_POSITION.toArray()} visible={false}>
