@@ -1,7 +1,8 @@
 import { GradientTexture, RoundedBox, Sparkles } from '@react-three/drei'
 import { BackSide } from 'three'
 import { STAGE_BOUNDS } from '../state/sceneBridge'
-import { TOY, ToyMaterial, mixHex, tileColor } from '../theme/toy'
+import { STAGE_LOOK } from '../theme/stageLook'
+import { TOY, ToyMaterial, mixHex, tileColor, tileSurface } from '../theme/toy'
 import type { SongTheme } from '../types'
 
 const COLS = 11
@@ -24,10 +25,12 @@ function Block({
   position,
   rotation,
   color,
-  silicone = false,
+  silicone = true,
   glow = false,
   emissive,
   emissiveIntensity,
+  roughness,
+  clearcoat,
   castShadow = false,
   receiveShadow = true,
 }: {
@@ -40,6 +43,8 @@ function Block({
   glow?: boolean
   emissive?: string
   emissiveIntensity?: number
+  roughness?: number
+  clearcoat?: number
   castShadow?: boolean
   receiveShadow?: boolean
 }) {
@@ -60,6 +65,8 @@ function Block({
         glow={glow}
         emissive={emissive}
         emissiveIntensity={emissiveIntensity}
+        roughness={roughness}
+        clearcoat={clearcoat}
       />
     </RoundedBox>
   )
@@ -88,7 +95,7 @@ function StarIcon({ color, scale = 1 }: { color: string; scale?: number }) {
   return (
     <mesh scale={scale} rotation={[0, 0, Math.PI / 4]}>
       <octahedronGeometry args={[0.16, 0]} />
-      <ToyMaterial color={color} glow emissiveIntensity={1.1} />
+      <ToyMaterial color={color} glow emissiveIntensity={STAGE_LOOK.glowStar} />
     </mesh>
   )
 }
@@ -146,12 +153,12 @@ function Starburst() {
       {[0, 45, 90, 135].map((deg) => (
         <mesh key={deg} rotation={[-Math.PI / 2, 0, (deg * Math.PI) / 180]}>
           <boxGeometry args={[0.11, 0.7, 0.045]} />
-          <ToyMaterial color={TOY.lemon} glow emissiveIntensity={1.35} />
+          <ToyMaterial color={TOY.lemon} glow emissiveIntensity={STAGE_LOOK.glowIcon} />
         </mesh>
       ))}
       <mesh rotation={[-Math.PI / 2, 0, Math.PI / 4]}>
         <boxGeometry args={[0.4, 0.4, 0.06]} />
-        <ToyMaterial color="#fff3a8" glow emissiveIntensity={1.6} />
+        <ToyMaterial color="#fff3a8" glow emissiveIntensity={STAGE_LOOK.glowStar} />
       </mesh>
     </group>
   )
@@ -178,24 +185,30 @@ function FloorTiles({ theme }: { theme: SongTheme }) {
       const isListener = ix === midCol && iz === listenRow
       const pos = tilePos(ix, iz)
       const icon = !isCenter && !isListener ? iconFor(ix, iz) : null
-      const color = isCenter || isListener
-        ? mixHex(TOY.lemon, theme.accent, 0.22)
-        : tileColor(ix, iz, theme.accent, theme.floor)
+      const surface = tileSurface(ix, iz)
+      const color = mixHex(
+        isCenter || isListener
+          ? mixHex(TOY.lemon, theme.accent, 0.22)
+          : tileColor(ix, iz, theme.accent, theme.floor),
+        TOY.cream,
+        surface.tint,
+      )
       tiles.push(
         <group key={`${ix}-${iz}`} position={pos}>
           <Block
             args={[STEP_X * 0.9, TILE_Y, STEP_Z * 0.9]}
             radius={0.08}
             color={color}
-            glow={isCenter || isListener}
-            emissiveIntensity={isCenter ? 1.25 : isListener ? 0.7 : 0}
+            silicone
+            roughness={surface.roughness}
+            clearcoat={surface.clearcoat}
             receiveShadow
           />
           {isCenter && <Starburst />}
           {isListener && (
             <mesh position={[0, 0.12, 0]} rotation={[-Math.PI / 2, 0, Math.PI / 4]}>
               <circleGeometry args={[0.22, 20]} />
-              <ToyMaterial color={theme.accent} glow emissiveIntensity={0.85} />
+              <ToyMaterial color={theme.accent} glow emissiveIntensity={STAGE_LOOK.glowIcon} />
             </mesh>
           )}
           {icon === 'heart' && (
@@ -230,15 +243,9 @@ function FloorTiles({ theme }: { theme: SongTheme }) {
         radius={0.14}
         position={[0, -0.22, (STAGE_BOUNDS.zBack + STAGE_BOUNDS.zFront) / 2]}
         color={mixHex(TOY.peach, theme.floor, 0.35)}
+        silicone
       />
       {tiles}
-      <pointLight
-        position={[0, 0.55, tilePos(midCol, midRow)[2]]}
-        color="#ffe9a0"
-        intensity={1.35}
-        distance={7}
-        decay={2}
-      />
     </group>
   )
 }
@@ -453,7 +460,7 @@ function ToyFlower({
         position={[0, 0.94, 0]}
         color={TOY.lemon}
         glow
-        emissiveIntensity={0.45}
+        emissiveIntensity={STAGE_LOOK.glowFlower}
       />
     </group>
   )
@@ -494,13 +501,12 @@ function CornerLamp({ position }: { position: [number, number, number] }) {
       <Block args={[0.28, 0.16, 0.28]} radius={0.07} position={[0, 0.08, 0]} color={TOY.lilac} />
       <mesh position={[0, 0.2, 0]} rotation={[-0.9, 0, 0]}>
         <sphereGeometry args={[0.12, 16, 12, 0, Math.PI]} />
-        <ToyMaterial color={TOY.spotlight} glow emissiveIntensity={1.5} />
+        <ToyMaterial color={TOY.spotlight} glow emissiveIntensity={STAGE_LOOK.glowLamp} />
       </mesh>
       <mesh position={[0, 0.28, 0.02]}>
         <sphereGeometry args={[0.09, 14, 14]} />
-        <ToyMaterial color="#ffd8a8" glow emissiveIntensity={1.8} />
+        <ToyMaterial color="#ffd8a8" glow emissiveIntensity={STAGE_LOOK.glowLamp} />
       </mesh>
-      <pointLight color="#ffb070" intensity={1.05} distance={4.8} decay={2} position={[0, 0.45, 0.15]} />
     </group>
   )
 }
@@ -524,16 +530,8 @@ function FairyLights() {
       {path.map(([x, z], i) => (
         <mesh key={`${x}-${z}-${i}`} position={[x, 0.22, z]}>
           <sphereGeometry args={[0.055, 10, 10]} />
-          <ToyMaterial color="#ffe7a8" glow emissiveIntensity={1.7} />
+          <ToyMaterial color="#ffe7a8" glow emissiveIntensity={STAGE_LOOK.glowOrb} />
         </mesh>
-      ))}
-      {[
-        [0, 0.4, back],
-        [right, 0.4, 0],
-        [0, 0.4, front],
-        [left, 0.4, 0],
-      ].map(([x, y, z], i) => (
-        <pointLight key={i} position={[x, y, z]} color="#ffe2a0" intensity={0.45} distance={4} decay={2} />
       ))}
     </group>
   )
@@ -594,7 +592,7 @@ function SkyWash({ theme }: { theme: SongTheme }) {
       {orbs.map(([x, y, z, s, color], i) => (
         <mesh key={i} position={[x, y, z]} scale={s}>
           <sphereGeometry args={[1, 16, 16]} />
-          <ToyMaterial color={color} glow emissiveIntensity={0.55} />
+          <ToyMaterial color={color} silicone />
         </mesh>
       ))}
     </group>
@@ -616,11 +614,11 @@ export function StageEnvironment({ theme }: { theme: SongTheme }) {
       <CornerLamp position={[-STAGE_BOUNDS.x + 0.35, 0, STAGE_BOUNDS.zBack + 0.45]} />
       <CornerLamp position={[STAGE_BOUNDS.x - 0.35, 0, STAGE_BOUNDS.zBack + 0.45]} />
       <Sparkles
-        count={48}
+        count={28}
         scale={[12, 3.6, 9]}
-        size={3.2}
-        speed={0.22}
-        opacity={0.45}
+        size={2.4}
+        speed={0.18}
+        opacity={0.22}
         color="#fff3c4"
         position={[0, 1.6, -0.4]}
       />

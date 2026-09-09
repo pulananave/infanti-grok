@@ -33,6 +33,7 @@ function Mat({
       opacity={opacity}
       emissive={emissive}
       emissiveIntensity={emissiveIntensity}
+      silicone
     />
   )
 }
@@ -40,14 +41,14 @@ function Mat({
 function Head({ shape, color, opacity }: { shape: HeadShape; color: string; opacity: number }) {
   if (shape === 'box') {
     return (
-      <RoundedBox args={[0.42, 0.38, 0.38]} radius={0.1} smoothness={3} position={[0, 0.42, 0]} castShadow>
+      <RoundedBox args={[0.42, 0.38, 0.38]} radius={0.1} smoothness={3} position={[0, 0.42, 0]} castShadow receiveShadow>
         <Mat color={color} opacity={opacity} />
       </RoundedBox>
     )
   }
   if (shape === 'tall') {
     return (
-      <mesh position={[0, 0.5, 0]} castShadow>
+      <mesh position={[0, 0.5, 0]} castShadow receiveShadow>
         <capsuleGeometry args={[0.18, 0.28, 6, 12]} />
         <Mat color={color} opacity={opacity} />
       </mesh>
@@ -55,7 +56,7 @@ function Head({ shape, color, opacity }: { shape: HeadShape; color: string; opac
   }
   if (shape === 'wide') {
     return (
-      <mesh position={[0, 0.38, 0]} scale={[1.25, 0.85, 1]} castShadow>
+      <mesh position={[0, 0.38, 0]} scale={[1.25, 0.85, 1]} castShadow receiveShadow>
         <sphereGeometry args={[0.24, 16, 16]} />
         <Mat color={color} opacity={opacity} />
       </mesh>
@@ -63,7 +64,7 @@ function Head({ shape, color, opacity }: { shape: HeadShape; color: string; opac
   }
   if (shape === 'diamond') {
     return (
-      <mesh position={[0, 0.44, 0]} rotation={[0, 0, Math.PI / 4]} castShadow>
+      <mesh position={[0, 0.44, 0]} rotation={[0, 0, Math.PI / 4]} castShadow receiveShadow>
         <octahedronGeometry args={[0.26]} />
         <Mat color={color} opacity={opacity} />
       </mesh>
@@ -71,14 +72,14 @@ function Head({ shape, color, opacity }: { shape: HeadShape; color: string; opac
   }
   if (shape === 'oval') {
     return (
-      <mesh position={[0, 0.46, 0]} scale={[0.85, 1.15, 0.9]} castShadow>
+      <mesh position={[0, 0.46, 0]} scale={[0.85, 1.15, 0.9]} castShadow receiveShadow>
         <sphereGeometry args={[0.22, 16, 16]} />
         <Mat color={color} opacity={opacity} />
       </mesh>
     )
   }
   return (
-    <mesh position={[0, 0.4, 0]} castShadow>
+    <mesh position={[0, 0.4, 0]} castShadow receiveShadow>
       <sphereGeometry args={[0.24, 16, 16]} />
       <Mat color={color} opacity={opacity} />
     </mesh>
@@ -307,23 +308,23 @@ export function Humanoid({
 
   return (
     <group ref={group} scale={look.height}>
-      <mesh position={[-0.1, 0.08, 0]} castShadow>
+      <mesh position={[-0.1, 0.08, 0]} castShadow receiveShadow>
         <capsuleGeometry args={[0.07, 0.18, 4, 8]} />
         <Mat color={look.skinColor} opacity={opacity} />
       </mesh>
-      <mesh position={[0.1, 0.08, 0]} castShadow>
+      <mesh position={[0.1, 0.08, 0]} castShadow receiveShadow>
         <capsuleGeometry args={[0.07, 0.18, 4, 8]} />
         <Mat color={look.skinColor} opacity={opacity} />
       </mesh>
-      <mesh position={[0, 0.34, 0]} castShadow>
+      <mesh position={[0, 0.34, 0]} castShadow receiveShadow>
         <sphereGeometry args={[0.2 * look.belly, 16, 16]} />
         <Mat color={color} opacity={opacity} />
       </mesh>
-      <mesh position={[-0.22, 0.32, 0.04]} rotation={[0, 0, 0.5]} castShadow>
+      <mesh position={[-0.22, 0.32, 0.04]} rotation={[0, 0, 0.5]} castShadow receiveShadow>
         <capsuleGeometry args={[0.055, 0.18, 4, 8]} />
         <Mat color={look.skinColor} opacity={opacity} />
       </mesh>
-      <mesh position={[0.22, 0.32, 0.04]} rotation={[0, 0, -0.5]} castShadow>
+      <mesh position={[0.22, 0.32, 0.04]} rotation={[0, 0, -0.5]} castShadow receiveShadow>
         <capsuleGeometry args={[0.055, 0.18, 4, 8]} />
         <Mat color={look.skinColor} opacity={opacity} />
       </mesh>

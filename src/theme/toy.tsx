@@ -1,4 +1,5 @@
-import type { MeshPhysicalMaterialProps, MeshStandardMaterialProps } from '@react-three/fiber'
+import type { MeshPhysicalMaterialProps } from '@react-three/fiber'
+import { STAGE_LOOK } from './stageLook'
 
 export const TOY = {
   mint: '#8ee0c4',
@@ -27,6 +28,16 @@ export function tileColor(ix: number, iz: number, accent: string, floor: string)
   return TILE_CYCLE[(ix * 3 + iz * 5) % TILE_CYCLE.length]
 }
 
+/** Cheap deterministic roughness/clearcoat/tint so the grid is not one identical shader. */
+export function tileSurface(ix: number, iz: number): { roughness: number; clearcoat: number; tint: number } {
+  const n = (ix * 19 + iz * 37) % 16
+  return {
+    roughness: 0.64 + (n / 15) * 0.18,
+    clearcoat: 0.16 + ((n * 3) % 8) * 0.016,
+    tint: (n % 7) / 110,
+  }
+}
+
 function parseHex(hex: string): [number, number, number] {
   const raw = hex.replace('#', '')
   const full = raw.length === 3 ? raw.split('').map((c) => c + c).join('') : raw
@@ -50,6 +61,8 @@ type ToyMatProps = {
   emissiveIntensity?: number
   silicone?: boolean
   glow?: boolean
+  roughness?: number
+  clearcoat?: number
 }
 
 export function ToyMaterial({
@@ -57,36 +70,35 @@ export function ToyMaterial({
   opacity = 1,
   emissive = '#000000',
   emissiveIntensity = 0,
-  silicone = false,
+  silicone = true,
   glow = false,
+  roughness,
+  clearcoat,
 }: ToyMatProps) {
-  const shared = {
+  const rough = roughness ?? (glow ? STAGE_LOOK.roughnessGlow : STAGE_LOOK.roughness)
+  const coat = clearcoat ?? (glow ? STAGE_LOOK.clearcoatGlow : STAGE_LOOK.clearcoat)
+  const emitColor = glow && emissive === '#000000' ? color : emissive
+  const emit = glow ? (emissiveIntensity > 0 ? emissiveIntensity : STAGE_LOOK.glowDefault) : emissiveIntensity
+
+  const props = {
     color,
-    roughness: glow ? 0.42 : 0.98,
+    roughness: rough,
     metalness: 0,
+    clearcoat: coat,
+    clearcoatRoughness: 0.48,
+    sheen: silicone ? STAGE_LOOK.sheen : 0.06,
+    sheenRoughness: 0.8,
+    sheenColor: color,
+    ior: 1.4,
+    specularIntensity: 0.32,
+    envMapIntensity: glow ? 0.12 : STAGE_LOOK.envMapIntensity,
     transparent: opacity < 1,
     opacity,
-    emissive: glow ? (emissive === '#000000' ? color : emissive) : emissive,
-    emissiveIntensity: glow ? Math.max(emissiveIntensity, 0.9) : emissiveIntensity,
+    depthWrite: opacity >= 1,
+    emissive: emitColor,
+    emissiveIntensity: emit,
     toneMapped: !glow,
-    envMapIntensity: 0,
-  } satisfies MeshStandardMaterialProps
+  } satisfies MeshPhysicalMaterialProps
 
-  if (silicone) {
-    return (
-      <meshPhysicalMaterial
-        {...(shared as MeshPhysicalMaterialProps)}
-        sheen={0.42}
-        sheenRoughness={0.92}
-        sheenColor={color}
-        transmission={glow ? 0 : 0.045}
-        thickness={0.55}
-        attenuationColor={color}
-        attenuationDistance={1.35}
-        clearcoat={0}
-      />
-    )
-  }
-
-  return <meshStandardMaterial {...shared} />
+  return <meshPhysicalMaterial {...props} />
 }

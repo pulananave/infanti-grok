@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { ContactShadows } from '@react-three/drei'
+import { ContactShadows, Environment } from '@react-three/drei'
 import { Bloom, DepthOfField, EffectComposer } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { getSong } from '../config/loadConfig'
@@ -13,6 +13,7 @@ import {
   STAGE_BOUNDS,
   unregisterScene,
 } from '../state/sceneBridge'
+import { STAGE_LOOK } from '../theme/stageLook'
 import { Humanoid } from './Humanoid'
 import { StageDecor } from './StageDecor'
 import type { SongId, SongTheme, StageInstance } from '../types'
@@ -26,22 +27,62 @@ function SceneBridge() {
   return null
 }
 
+function SoftToyEnvironment() {
+  const { scene } = useThree()
+  useEffect(() => {
+    scene.environmentIntensity = STAGE_LOOK.envIntensity
+    return () => {
+      scene.environmentIntensity = 1
+    }
+  }, [scene])
+
+  return (
+    <Environment frames={1} resolution={STAGE_LOOK.envResolution} environmentIntensity={STAGE_LOOK.envIntensity}>
+      <mesh scale={12}>
+        <sphereGeometry args={[1, 12, 8]} />
+        <meshBasicMaterial color="#f3dcc8" side={THREE.BackSide} />
+      </mesh>
+      <mesh position={[5, 7, 4]}>
+        <sphereGeometry args={[2.2, 8, 8]} />
+        <meshBasicMaterial color="#fff6e4" />
+      </mesh>
+      <mesh position={[-6, 2.5, -3]}>
+        <sphereGeometry args={[2.8, 8, 8]} />
+        <meshBasicMaterial color="#c5def5" />
+      </mesh>
+      <mesh position={[0, -5, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[24, 24]} />
+        <meshBasicMaterial color="#a8d4b0" />
+      </mesh>
+    </Environment>
+  )
+}
+
 function Lights({ theme }: { theme: SongTheme }) {
   return (
     <>
       <color attach="background" args={[theme.sky]} />
-      <fog attach="fog" args={[theme.fog, 14, 28]} />
-      <ambientLight intensity={0.88} color="#fff4e8" />
-      <hemisphereLight args={[theme.horizon, '#b7e3c0', 0.58]} />
+      <fog attach="fog" args={[theme.fog, 18, 36]} />
+      <ambientLight intensity={STAGE_LOOK.ambient} color={STAGE_LOOK.ambientColor} />
+      <hemisphereLight args={[theme.horizon, STAGE_LOOK.hemiGround, STAGE_LOOK.hemi]} />
       <directionalLight
-        position={[4.5, 9, 5]}
-        intensity={0.48}
-        color="#fff1d6"
+        position={[5.2, 9.5, 4.2]}
+        intensity={STAGE_LOOK.key}
+        color={STAGE_LOOK.keyColor}
         castShadow
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
+        shadow-mapSize={[STAGE_LOOK.shadowMapSize, STAGE_LOOK.shadowMapSize]}
+        shadow-bias={-0.00035}
+        shadow-normalBias={0.04}
+        shadow-camera-near={1}
+        shadow-camera-far={26}
+        shadow-camera-left={-10}
+        shadow-camera-right={10}
+        shadow-camera-top={10}
+        shadow-camera-bottom={-10}
       />
-      <pointLight position={[0, 3.2, 1.2]} color={theme.accent} intensity={0.35} distance={10} decay={2} />
+      <directionalLight position={[-4.6, 3.2, 2.6]} intensity={STAGE_LOOK.fillCool} color={STAGE_LOOK.fillCoolColor} />
+      <directionalLight position={[1.4, 3.6, -5.4]} intensity={STAGE_LOOK.fillWarm} color={STAGE_LOOK.fillWarmColor} />
+      <SoftToyEnvironment />
     </>
   )
 }
@@ -157,8 +198,18 @@ function CameraRig() {
 function StagePost() {
   return (
     <EffectComposer multisampling={0} enableNormalPass={false}>
-      <Bloom luminanceThreshold={0.78} luminanceSmoothing={0.28} intensity={0.72} mipmapBlur />
-      <DepthOfField focusDistance={0.014} focalLength={0.016} bokehScale={2.1} height={420} />
+      <Bloom
+        luminanceThreshold={STAGE_LOOK.bloomThreshold}
+        luminanceSmoothing={STAGE_LOOK.bloomSmoothing}
+        intensity={STAGE_LOOK.bloomIntensity}
+        mipmapBlur
+      />
+      <DepthOfField
+        focusDistance={0.014}
+        focalLength={0.016}
+        bokehScale={STAGE_LOOK.dofBokeh}
+        height={STAGE_LOOK.dofHeight}
+      />
     </EffectComposer>
   )
 }
@@ -172,11 +223,17 @@ export function StageScene() {
   return (
     <Canvas
       className="stage-canvas"
-      shadows
+      shadows="soft"
       dpr={[1, 1.5]}
       camera={{ position: [0, 5.4, 8.4], fov: 42, near: 0.1, far: 48 }}
       onPointerMissed={() => undefined}
-      gl={{ antialias: true, alpha: false, toneMapping: THREE.ACESFilmicToneMapping }}
+      gl={{
+        antialias: true,
+        alpha: false,
+        toneMapping: THREE.ACESFilmicToneMapping,
+        toneMappingExposure: STAGE_LOOK.exposure,
+        powerPreference: 'high-performance',
+      }}
       style={{ touchAction: 'none' }}
     >
       <SceneBridge />
@@ -187,7 +244,14 @@ export function StageScene() {
         <StageCharacter key={instance.id} instance={instance} bpm={song.bpm} />
       ))}
       <SpawnPreview bpm={song.bpm} />
-      <ContactShadows position={[0, 0.012, 0]} opacity={0.22} scale={16} blur={2.8} far={4} color="#6b4a78" />
+      <ContactShadows
+        position={[0, 0.012, 0]}
+        opacity={STAGE_LOOK.contactOpacity}
+        scale={16}
+        blur={STAGE_LOOK.contactBlur}
+        far={4}
+        color="#6b4a78"
+      />
       <GrabPlane />
       <mesh position={LISTENER_POSITION.toArray()} visible={false}>
         <sphereGeometry args={[0.05]} />
