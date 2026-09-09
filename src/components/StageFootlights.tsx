@@ -1,7 +1,7 @@
 import { useLayoutEffect, useMemo, useRef } from 'react'
 import { Object3D, Quaternion, Vector3, type SpotLight } from 'three'
 import { STAGE_LOOK } from '../theme/stageLook'
-import { activeFootlightRigs, FOOTLIGHT_RIGS, type FootlightRig } from '../theme/footlights'
+import { activeFootlightRigs, type FootlightRig } from '../theme/footlights'
 import { TOY, ToyMaterial } from '../theme/toy'
 
 function aimQuat(position: [number, number, number], target: [number, number, number]) {
@@ -65,13 +65,13 @@ function AimedSpot({ rig }: { rig: FootlightRig }) {
   )
 }
 
-/** Toy cones on the floor plus non-shadow spots aimed at face height. */
+/** Two front toy cones plus non-shadow spots aimed at face height. */
 export function StageFootlights() {
   const lit = activeFootlightRigs()
 
   return (
     <group>
-      {FOOTLIGHT_RIGS.map((rig) => (
+      {lit.map((rig) => (
         <FootlightFixture key={`${rig.position[0]}-${rig.position[2]}`} rig={rig} />
       ))}
       {lit.map((rig) => (
