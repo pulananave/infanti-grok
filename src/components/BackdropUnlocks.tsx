@@ -13,20 +13,20 @@ import type { ComboShape } from '../types'
  * World Z of the props is about -4.59, on the inner anteparo panel.
  */
 export const UNLOCK_MOUNTS: Record<ComboShape, [number, number, number]> = {
-  circle: [-2.72, 2.02, 0.56],
-  square: [0, 2.02, 0.56],
-  triangle: [2.72, 2.02, 0.56],
+  circle: [-2.85, 1.72, 0.68],
+  square: [0, 1.72, 0.68],
+  triangle: [2.85, 1.72, 0.68],
 }
 
 const FATIA_COLORS = ['#FF8DC7', '#5EE0C4', '#FFE56A', '#7C4DFF'] as const
 const POLISH = STAGE_LOOK.quality === 'desktop'
-const SLICE_DEPTH = POLISH ? 0.38 : 0.32
+const SLICE_DEPTH = POLISH ? 0.52 : 0.4
 
 const noRaycast = () => null
 
 function sliceProps(color: string, on: boolean, complete: boolean) {
   return {
-    color: on ? color : mixHex(TOY.cream, TOY.ink, 0.06),
+    color: on ? color : mixHex(TOY.cream, TOY.ink, 0.14),
     silicone: true,
     glow: on,
     emissive: on ? color : TOY.ink,
@@ -50,7 +50,7 @@ function extrudeSettings(depth = SLICE_DEPTH): THREE.ExtrudeGeometryOptions {
 function pieGeometry(index: number) {
   const start = (index * Math.PI) / 2 - Math.PI / 2
   const end = start + Math.PI / 2
-  const radius = 0.88
+  const radius = 0.98
   const shape = new THREE.Shape()
   shape.moveTo(0, 0)
   const steps = POLISH ? 10 : 6
@@ -65,16 +65,16 @@ function pieGeometry(index: number) {
 }
 
 function triangleBandGeometry(index: number) {
-  const height = 1.66
-  const width = 1.84
-  const topY = 0.86
-  const bandH = height / 4
-  const gap = 0.028
-  const yTop = topY - index * bandH - (index === 0 ? 0 : gap * 0.45)
-  const yBot = topY - (index + 1) * bandH + gap * 0.45
+  const height = 1.92
+  const width = 2.05
+  const topY = 0.98
+  const splits = [0, 0.3, 0.52, 0.75, 1]
+  const gap = 0.04
+  const yTop = topY - splits[index] * height - (index === 0 ? 0 : gap * 0.45)
+  const yBot = topY - splits[index + 1] * height + gap * 0.45
   const widthAt = (y: number) => {
-    const t = THREE.MathUtils.clamp((topY - y) / height, 0, 1)
-    return Math.max(0.12, width * t)
+    const t = THREE.MathUtils.clamp((topY - y) / height, 0.08, 1)
+    return Math.max(0.28, width * t)
   }
   const wTop = widthAt(yTop)
   const wBot = widthAt(yBot)
@@ -98,10 +98,10 @@ function triangleBandGeometry(index: number) {
 function Plaque() {
   return (
     <RoundedBox
-      args={[2.12, 2.12, 0.16]}
-      radius={0.16}
+      args={[2.35, 2.35, 0.22]}
+      radius={0.18}
       smoothness={STAGE_LOOK.boxSmoothness}
-      position={[0, 0, -0.08]}
+      position={[0, 0, -0.12]}
       receiveShadow
       raycast={noRaycast}
     >
@@ -137,7 +137,7 @@ function CircleSymbol({ filled, complete }: { filled: boolean[]; complete: boole
       <Plaque />
       <Peg />
       <mesh raycast={noRaycast}>
-        <torusGeometry args={[0.9, 0.09, POLISH ? 10 : 6, POLISH ? 28 : 16]} />
+        <torusGeometry args={[1.0, 0.14, POLISH ? 12 : 6, POLISH ? 32 : 16]} />
         <ToyMaterial
           color={complete ? mixHex(TOY.pink, TOY.lemon, 0.25) : mixHex(TOY.lilac, TOY.cream, 0.45)}
           silicone
@@ -167,10 +167,10 @@ function CircleSymbol({ filled, complete }: { filled: boolean[]; complete: boole
 
 function SquareSymbol({ filled, complete }: { filled: boolean[]; complete: boolean }) {
   const cells: Array<[number, number]> = [
-    [-0.4, 0.4],
-    [0.4, 0.4],
-    [-0.4, -0.4],
-    [0.4, -0.4],
+    [-0.46, 0.46],
+    [0.46, 0.46],
+    [-0.46, -0.46],
+    [0.46, -0.46],
   ]
 
   return (
@@ -180,10 +180,10 @@ function SquareSymbol({ filled, complete }: { filled: boolean[]; complete: boole
       {cells.map(([x, y], index) => (
         <RoundedBox
           key={index}
-          args={[0.74, 0.74, 0.4]}
-          radius={0.16}
+          args={[0.82, 0.82, 0.55]}
+          radius={0.18}
           smoothness={STAGE_LOOK.boxSmoothness}
-          position={[x, y, 0.18]}
+          position={[x, y, 0.22]}
           castShadow
           receiveShadow
           raycast={noRaycast}
@@ -230,11 +230,12 @@ function UnlockSymbol({
 
   useFrame(({ clock }) => {
     if (!group.current) return
-    group.current.scale.setScalar(lit ? 1 + Math.sin(clock.elapsedTime * 3.2) * 0.028 : 1)
+    const pulse = lit ? 1.16 + Math.sin(clock.elapsedTime * 3.2) * 0.03 : 1.16
+    group.current.scale.setScalar(pulse)
   })
 
   return (
-    <group ref={group} position={position} rotation={[-0.1, 0, 0]}>
+    <group ref={group} position={position} rotation={[-0.14, 0, 0]}>
       {shape === 'circle' ? <CircleSymbol filled={filled} complete={lit} /> : null}
       {shape === 'square' ? <SquareSymbol filled={filled} complete={lit} /> : null}
       {shape === 'triangle' ? <TriangleSymbol filled={filled} complete={lit} /> : null}
