@@ -40,7 +40,7 @@ export function isInstrumentId(value: string): value is InstrumentId {
   return (INSTRUMENT_IDS as readonly string[]).includes(value)
 }
 
-/** Godot `type` strings → existing balloon / held-instrument icons. */
+/** Godot `type` strings → 3D held-instrument clay props (balloon uses official SVGs). */
 const TYPE_ICONS: Record<string, InstrumentId> = {
   pratos: 'cymbals',
   trombone: 'trombone',

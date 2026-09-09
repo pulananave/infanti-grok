@@ -79,7 +79,11 @@ export function Balloon() {
                 beginSpawnDrag(balloonCharacterId, stem.instrument, event.clientX, event.clientY)
               }}
             >
-              <InstrumentIcon instrument={stem.type} />
+              <InstrumentIcon
+                type={stem.type}
+                instrument={stem.instrument}
+                characterId={balloonCharacterId}
+              />
             </button>
           ))}
         </div>
