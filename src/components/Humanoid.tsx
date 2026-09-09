@@ -134,7 +134,7 @@ function Limb({
   const color = look.limbColor
   const style = look.limbStyle
   const thick =
-    style === 'thick' ? 0.085 : style === 'longThin' || style === 'spindly' || style === 'wavy' ? 0.028 : 0.055
+    style === 'thick' ? 0.11 : style === 'longThin' || style === 'spindly' || style === 'wavy' ? 0.032 : 0.058
   const len = kind === 'arm' ? (look.armLength ?? 0.2) : (look.legLength ?? 0.16)
 
   if (kind === 'leg') {
@@ -267,7 +267,7 @@ function Eyes({ look, opacity }: { look: CharacterLook; opacity: number }) {
   }
 
   if (look.eyeStyle === 'stalk') {
-    const stalkH = 0.2
+    const stalkH = 0.28
     return (
       <group>
         {([-1, 1] as const).map((side) => (
@@ -348,7 +348,7 @@ function Brows({ look, opacity }: { look: CharacterLook; opacity: number }) {
   const color = look.accentColor
   if (look.browStyle === 'unibrow') {
     return (
-      <RoundedBox args={[0.2, 0.035, 0.04]} radius={0.012} smoothness={2} position={[0, y, z]}>
+      <RoundedBox args={[0.26, 0.045, 0.05]} radius={0.014} smoothness={2} position={[0, y, z]}>
         <Mat color={color} opacity={opacity} />
       </RoundedBox>
     )
@@ -370,8 +370,8 @@ function Brows({ look, opacity }: { look: CharacterLook; opacity: number }) {
       {([-1, 1] as const).map((side) => (
         <RoundedBox
           key={side}
-          args={[0.08, 0.04, 0.045]}
-          radius={0.01}
+          args={[0.1, 0.05, 0.05]}
+          radius={0.012}
           smoothness={2}
           position={[look.eyeSpacing * side, y, z]}
         >
@@ -391,8 +391,8 @@ function Mouth({ look, opacity }: { look: CharacterLook; opacity: number }) {
   if (look.mouthStyle === 'bigLips') {
     return (
       <group position={[0, y - 0.02, z]}>
-        <mesh scale={[1.35, 0.55, 0.7]} castShadow>
-          <torusGeometry args={[0.08, 0.035, 10, 18]} />
+        <mesh scale={[1.55, 0.72, 0.85]} castShadow>
+          <torusGeometry args={[0.1, 0.045, 10, 18]} />
           <Mat color={lip} opacity={opacity} roughness={0.45} />
         </mesh>
       </group>
@@ -457,11 +457,11 @@ function Features({ look, opacity }: { look: CharacterLook; opacity: number }) {
         ([-1, 1] as const).map((side) => (
           <group key={side} position={[r * 0.7 * side, y + r * 0.78, 0]}>
             <mesh castShadow>
-              <sphereGeometry args={[0.07, 12, 12]} />
+              <sphereGeometry args={[0.095, 12, 12]} />
               <Mat color={look.bodyColor} opacity={opacity} />
             </mesh>
-            <mesh position={[0, 0, 0.03]} scale={[0.7, 0.7, 0.35]}>
-              <sphereGeometry args={[0.055, 10, 10]} />
+            <mesh position={[0, 0, 0.035]} scale={[0.7, 0.7, 0.35]}>
+              <sphereGeometry args={[0.07, 10, 10]} />
               <Mat color={feature} opacity={opacity} />
             </mesh>
           </group>
@@ -469,13 +469,13 @@ function Features({ look, opacity }: { look: CharacterLook; opacity: number }) {
 
       {hasFeature(look, 'bunnyEars') &&
         ([-1, 1] as const).map((side) => (
-          <group key={side} position={[0.08 * side, y + r * 0.95, -0.02]} rotation={[0.15, 0, side * 0.18]}>
+          <group key={side} position={[0.09 * side, y + r * 1.05, -0.02]} rotation={[0.08, 0, side * 0.12]}>
             <mesh castShadow>
-              <capsuleGeometry args={[0.045, 0.28, 6, 10]} />
+              <capsuleGeometry args={[0.052, 0.46, 6, 10]} />
               <Mat color={feature} opacity={opacity} />
             </mesh>
-            <mesh position={[0, 0.02, 0.02]} scale={[0.65, 0.85, 0.35]}>
-              <capsuleGeometry args={[0.04, 0.22, 5, 8]} />
+            <mesh position={[0, 0.04, 0.025]} scale={[0.62, 0.88, 0.32]}>
+              <capsuleGeometry args={[0.045, 0.36, 5, 8]} />
               <Mat color={look.bodyColor} opacity={opacity} />
             </mesh>
           </group>
@@ -491,17 +491,17 @@ function Features({ look, opacity }: { look: CharacterLook; opacity: number }) {
 
       {hasFeature(look, 'bullHorns') &&
         ([-1, 1] as const).map((side) => (
-          <group key={side} position={[0.12 * side, y + r * 0.85, -0.02]}>
-            <mesh rotation={[0.15, 0, side * -0.55]} position={[side * 0.02, 0.08, 0]} castShadow>
-              <capsuleGeometry args={[0.035, 0.12, 5, 8]} />
+          <group key={side} position={[0.13 * side, y + r * 0.88, -0.02]}>
+            <mesh rotation={[0.12, 0, side * -0.5]} position={[side * 0.03, 0.1, 0]} castShadow>
+              <capsuleGeometry args={[0.048, 0.16, 5, 8]} />
               <Mat color="#FFD54F" opacity={opacity} />
             </mesh>
-            <mesh rotation={[0.05, 0, side * -0.15]} position={[side * 0.01, 0.18, 0]} castShadow>
-              <capsuleGeometry args={[0.028, 0.08, 5, 8]} />
+            <mesh rotation={[0.02, 0, side * -0.12]} position={[side * 0.02, 0.22, 0]} castShadow>
+              <capsuleGeometry args={[0.038, 0.1, 5, 8]} />
               <Mat color="#FFB34A" opacity={opacity} />
             </mesh>
-            <mesh position={[0, 0.24, 0]} castShadow>
-              <sphereGeometry args={[0.03, 10, 10]} />
+            <mesh position={[0.01 * side, 0.3, 0]} castShadow>
+              <sphereGeometry args={[0.04, 10, 10]} />
               <Mat color="#FF6B6B" opacity={opacity} />
             </mesh>
           </group>
@@ -517,7 +517,7 @@ function Features({ look, opacity }: { look: CharacterLook; opacity: number }) {
             [0.03, 0.045, -0.05, 0.2],
           ].map(([x, hy, z, rot], i) => (
             <mesh key={i} position={[x, hy, z]} rotation={[0.2, 0, rot]} castShadow>
-              <coneGeometry args={[0.035, 0.14, 7]} />
+              <coneGeometry args={[0.042, 0.18, 7]} />
               <Mat color={i % 2 ? '#67C25A' : feature} opacity={opacity} />
             </mesh>
           ))}
@@ -540,8 +540,8 @@ function Features({ look, opacity }: { look: CharacterLook; opacity: number }) {
       {hasFeature(look, 'hairTuft') && (
         <group position={[0, y + r * 0.95, 0]}>
           {[0, -0.03, 0.03].map((x, i) => (
-            <mesh key={i} position={[x, 0.05, -0.01]} rotation={[0.2, 0, x * 8]} castShadow>
-              <coneGeometry args={[0.018, 0.08, 6]} />
+            <mesh key={i} position={[x, 0.07, -0.01]} rotation={[0.2, 0, x * 8]} castShadow>
+              <coneGeometry args={[0.024, 0.11, 6]} />
               <Mat color={feature} opacity={opacity} />
             </mesh>
           ))}
@@ -551,8 +551,8 @@ function Features({ look, opacity }: { look: CharacterLook; opacity: number }) {
       {hasFeature(look, 'flameCrest') && (
         <group position={[0, y + r * 0.85, 0]}>
           {[-0.07, -0.035, 0, 0.035, 0.07].map((x, i) => (
-            <mesh key={i} position={[x, 0.08 + (i === 2 ? 0.04 : 0.01), 0]} rotation={[0.1, 0, x * 1.4]} castShadow>
-              <coneGeometry args={[0.03, 0.14 + (i === 2 ? 0.06 : 0), 6]} />
+            <mesh key={i} position={[x, 0.1 + (i === 2 ? 0.05 : 0.02), 0]} rotation={[0.1, 0, x * 1.4]} castShadow>
+              <coneGeometry args={[0.036, 0.18 + (i === 2 ? 0.08 : 0), 6]} />
               <Mat color={feature} opacity={opacity} />
             </mesh>
           ))}
@@ -561,13 +561,13 @@ function Features({ look, opacity }: { look: CharacterLook; opacity: number }) {
 
       {hasFeature(look, 'spiralAntenna') &&
         ([-1, 1] as const).map((side) => (
-          <group key={side} position={[0.07 * side, y + r * 0.92, 0]}>
-            <mesh position={[0, 0.08, 0]} castShadow>
-              <cylinderGeometry args={[0.01, 0.012, 0.16, 6]} />
+          <group key={side} position={[0.08 * side, y + r * 0.95, 0]}>
+            <mesh position={[0, 0.11, 0]} castShadow>
+              <cylinderGeometry args={[0.012, 0.016, 0.22, 6]} />
               <Mat color={accent} opacity={opacity} />
             </mesh>
-            <mesh position={[0.03 * side, 0.16, 0]} rotation={[Math.PI / 2, 0, 0]}>
-              <torusGeometry args={[0.03, 0.01, 6, 12]} />
+            <mesh position={[0.04 * side, 0.22, 0]} rotation={[Math.PI / 2, 0, 0]}>
+              <torusGeometry args={[0.04, 0.013, 6, 12]} />
               <Mat color={accent} opacity={opacity} />
             </mesh>
           </group>
@@ -581,19 +581,19 @@ function Features({ look, opacity }: { look: CharacterLook; opacity: number }) {
             rotation={[0.9 + i * 0.12, 0, 0]}
             castShadow
           >
-            <coneGeometry args={[0.045 - i * 0.004, 0.12 - i * 0.008, 7]} />
+            <coneGeometry args={[0.055 - i * 0.004, 0.16 - i * 0.01, 7]} />
             <Mat color={accent} opacity={opacity} />
           </mesh>
         ))}
 
       {hasFeature(look, 'trunk') && (
         <group position={[0, y + 0.02, faceZ(look) * 0.55]}>
-          <mesh rotation={[1.05, 0, 0]} position={[0, -0.04, 0.08]} castShadow>
-            <capsuleGeometry args={[0.055, 0.16, 6, 10]} />
+          <mesh rotation={[1.15, 0, 0]} position={[0, -0.06, 0.1]} castShadow>
+            <capsuleGeometry args={[0.07, 0.22, 6, 10]} />
             <Mat color={look.bodyColor} opacity={opacity} />
           </mesh>
-          <mesh position={[0, -0.12, 0.16]} castShadow>
-            <sphereGeometry args={[0.05, 10, 10]} />
+          <mesh position={[0, -0.16, 0.22]} castShadow>
+            <sphereGeometry args={[0.065, 10, 10]} />
             <Mat color={look.bodyColor} opacity={opacity} />
           </mesh>
           {([-1, 1] as const).map((side) => (

@@ -90,7 +90,7 @@ export const CHARACTERS: Record<CharacterId, CharacterLook> = {
     bodyColor: '#FF7A32',
     accentColor: '#3A1460',
     skinColor: '#FF7A32',
-    limbColor: '#3A1460',
+    limbColor: '#5C2A86',
     eyeColor: '#140818',
     mouthColor: '#FF6B8A',
     clawColor: '#3A1460',
