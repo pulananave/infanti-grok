@@ -35,7 +35,7 @@ const DESKTOP = {
   footlightCount: 7,
   footlightIntensity: 2.85,
   footlightColor: '#ffc498',
-  footlightAngle: 0.84,
+  footlightAngle: 0.96,
   footlightPenumbra: 0.8,
   footlightDistance: 6.6,
   apronIntensity: 0.62,

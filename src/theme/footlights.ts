@@ -1,8 +1,8 @@
 import { STAGE_BOUNDS } from '../state/sceneBridge'
 import { STAGE_LOOK } from './stageLook'
 
-/** Face-height aim for toy humanoids (about 0.6–1.1 after character scale). */
-export const FOOTLIGHT_FACE_Y = 0.88
+/** Aim just above typical jelly-character faces so the beam reads as uplight. */
+export const FOOTLIGHT_FACE_Y = 1.18
 
 export type FootlightRig = {
   position: [number, number, number]
@@ -10,37 +10,37 @@ export type FootlightRig = {
 }
 
 /**
- * Perimeter footlights covering the playable floor.
- * Front three run on every preset; extra side/back rigs are desktop-only.
+ * Perimeter footlights. Each target stays close to its fixture so the cone
+ * tilts up into nearby faces instead of raking the whole floor.
  */
 export const FOOTLIGHT_RIGS: FootlightRig[] = [
   {
     position: [-3.35, 0.07, STAGE_BOUNDS.zFront - 0.28],
-    target: [-1.45, FOOTLIGHT_FACE_Y, 0.35],
+    target: [-2.15, FOOTLIGHT_FACE_Y, STAGE_BOUNDS.zFront - 1.55],
   },
   {
     position: [0, 0.07, STAGE_BOUNDS.zFront - 0.18],
-    target: [0, FOOTLIGHT_FACE_Y + 0.06, 0.15],
+    target: [0, FOOTLIGHT_FACE_Y + 0.08, STAGE_BOUNDS.zFront - 1.45],
   },
   {
     position: [3.35, 0.07, STAGE_BOUNDS.zFront - 0.28],
-    target: [1.45, FOOTLIGHT_FACE_Y, 0.35],
+    target: [2.15, FOOTLIGHT_FACE_Y, STAGE_BOUNDS.zFront - 1.55],
   },
   {
     position: [-STAGE_BOUNDS.x + 0.38, 0.07, 0.55],
-    target: [-2.05, FOOTLIGHT_FACE_Y, 0.15],
+    target: [-STAGE_BOUNDS.x + 2.15, FOOTLIGHT_FACE_Y, 0.4],
   },
   {
     position: [STAGE_BOUNDS.x - 0.38, 0.07, 0.55],
-    target: [2.05, FOOTLIGHT_FACE_Y, 0.15],
+    target: [STAGE_BOUNDS.x - 2.15, FOOTLIGHT_FACE_Y, 0.4],
   },
   {
     position: [-STAGE_BOUNDS.x + 0.42, 0.07, -2.15],
-    target: [-2.1, FOOTLIGHT_FACE_Y, -1.45],
+    target: [-STAGE_BOUNDS.x + 2.2, FOOTLIGHT_FACE_Y, -2.0],
   },
   {
     position: [STAGE_BOUNDS.x - 0.42, 0.07, -2.15],
-    target: [2.1, FOOTLIGHT_FACE_Y, -1.45],
+    target: [STAGE_BOUNDS.x - 2.2, FOOTLIGHT_FACE_Y, -2.0],
   },
 ]
 

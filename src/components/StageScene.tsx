@@ -75,16 +75,6 @@ function StageCharacter({
         <sphereGeometry args={[1.15, 12, 12]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
-      {STAGE_LOOK.quality === 'desktop' ? (
-        <pointLight
-          position={[0, 0.1, 0.32]}
-          intensity={0.78}
-          color={STAGE_LOOK.footlightColor}
-          distance={2.55}
-          decay={2}
-          castShadow={false}
-        />
-      ) : null}
       <Humanoid
         characterId={instance.characterId}
         instrument={instance.type}
