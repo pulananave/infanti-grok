@@ -34,8 +34,9 @@ const STEP_X = SIZE_X / COLS
 const STEP_Z = SIZE_Z / ROWS
 const TILE_Y = 0.2
 const TILE_COUNT = COLS * ROWS
-const BEAT_EMIT = 0.24
-const BEAT_TINT = 0.16
+const BEAT_EMIT = 0.4
+const BEAT_TINT = 0.26
+const BEAT_TRAIL = 0.32
 const BEAT_HIGHLIGHT = new Color('#fff6d8')
 const BEAT_EMISSIVE = new Color('#fff3c4')
 
@@ -213,11 +214,14 @@ function FloorTiles({ theme }: { theme: SongTheme }) {
 
   useFrame((_, dt) => {
     const playing = audioEngine.isAudible()
-    const { ix: beatX, iz: beatZ } = beatToTile(playing ? audioEngine.getBeatIndex() : 0)
-    const active = playing ? tileIndex(beatX, beatZ) : -1
+    const beat = playing ? audioEngine.getBeatIndex() : 0
+    const current = beatToTile(beat)
+    const previous = beatToTile(beat - 1)
+    const active = playing ? tileIndex(current.ix, current.iz) : -1
+    const trail = playing ? tileIndex(previous.ix, previous.iz) : -1
     const ease = 1 - Math.exp(-dt * 9)
     for (let i = 0; i < TILE_COUNT; i += 1) {
-      const target = i === active ? 1 : 0
+      const target = i === active ? 1 : i === trail ? BEAT_TRAIL : 0
       const next = glow.current[i] + (target - glow.current[i]) * ease
       glow.current[i] = next
       const mat = mats.current[i]
