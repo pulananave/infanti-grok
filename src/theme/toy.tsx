@@ -19,7 +19,7 @@ export const TOY = {
   cream: '#fff8ee',
   lavender: '#d2b4f8',
   lilac: '#c4b0ff',
-  trunk: '#ffb07a',
+  trunk: '#ffc08a',
   fruit: '#ff7a6a',
   cloud: '#fffcf6',
   spotlight: '#ffc078',

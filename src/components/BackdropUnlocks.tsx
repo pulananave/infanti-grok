@@ -26,7 +26,7 @@ const noRaycast = () => null
 
 function sliceProps(color: string, on: boolean, complete: boolean) {
   return {
-    color: on ? color : mixHex(TOY.sky, TOY.lilac, 0.22),
+    color: on ? color : mixHex(TOY.lilac, TOY.cream, 0.22),
     silicone: true,
     glow: on,
     emissive: on ? color : TOY.lilac,

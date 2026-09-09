@@ -459,7 +459,7 @@ function ToyFlower({
     <group position={position} scale={scale}>
       <mesh position={[0, 0.42, 0]} castShadow>
         <capsuleGeometry args={[0.07, 0.72, 4, 10]} />
-        <ToyMaterial color={TOY.sage} silicone />
+        <ToyMaterial color={TOY.mint} silicone />
       </mesh>
       {[0, 1, 2, 3, 4].map((i) => {
         const a = (i / 5) * Math.PI * 2
