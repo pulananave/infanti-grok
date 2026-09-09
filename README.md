@@ -79,8 +79,8 @@ Os prêmios v1 leem `src/config/combos.json`. Cada canção tem três formas (`c
 Regras:
 
 - Use ids de instrumento que existam na canção em `songs.json` (`latin_agogo`, não `drums`).
-- A fatia pinta quando aquele instrumento está no palco.
-- 4/4 abre o prêmio visual.
+- A fatia do símbolo 3D no anteparo acende quando aquele instrumento está no palco.
+- 4/4 acende o objeto inteiro e abre o prêmio visual. O brilho some se a combinação sair do palco.
 
 Depois de editar, rode `npm run dev` ou `npm run build`.
 

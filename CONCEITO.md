@@ -50,9 +50,10 @@ Cada um tem um humanóide placeholder distinto (cor, proporção, cabeça e aces
 
 ## Gamificação (v1)
 
-- À esquerda: círculo, quadrado e triângulo, cada um com 4 fatias.
+- No anteparo do fundo: círculo, quadrado e triângulo 3D, cada um com 4 fatias.
 - Cada canção tem 3 combos de 4 instrumentos em `src/config/combos.json` (editável).
-- Fatias enchem quando os instrumentos do combo estão no palco.
+- Fatias acendem quando os instrumentos do combo estão no palco e apagam quando saem.
+- O símbolo inteiro acende com o combo completo e some o brilho se a combinação deixar o palco.
 - 4/4 dispara um **prêmio placeholder** (presente visual). Sem economia persistente nesta versão.
 
 ## Câmera
