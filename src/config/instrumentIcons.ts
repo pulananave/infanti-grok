@@ -36,11 +36,11 @@ const TYPE_FILES: Record<string, string> = {
   violao: 'VIOLAO.svg',
   violino: 'VIOLINO.svg',
   voz: 'MICROFONE.svg',
-  // Exact rock kit. Official SVG pack omitted this file; public copy wraps the 2D PNG.
-  bateriarock: 'BATERIA_ROCK.svg',
-  // Prefer ELETRONICA; ELETRONICA2 / _3 are used when a song has several e-drums.
+  // Official pack has no BATERIA_ROCK.svg — use the acoustic kit until one is supplied.
+  bateriarock: 'BATERIA.svg',
+  // Prefer ELETRONICA when present; otherwise ELETRONICA_3.
   bateriaeletronica: 'BATERIA_ELETRONICA.svg',
-  /** Milkman / clock loops — official Relógio (clock) icon. */
+  /** Milkman / clock loops — Relógio icon (edm milkman stems for Rafog). */
   milkman: 'RELOGIO.svg',
 }
 
@@ -56,7 +56,12 @@ function isEdrumType(type: string): boolean {
 }
 
 export function preferredInstrumentIconFile(type: string): string {
-  return TYPE_FILES[normalizeTypeKey(type)] ?? 'BATERIA.svg'
+  const key = normalizeTypeKey(type)
+  if (key === 'bateriaeletronica') {
+    // Mapped file is committed; keep the _3 name as the documented fallback.
+    return TYPE_FILES.bateriaeletronica ?? 'BATERIA_ELETRONICA_3.svg'
+  }
+  return TYPE_FILES[key] ?? 'BATERIA.svg'
 }
 
 export function stemIconKey(characterId: string, instrument: string): string {
