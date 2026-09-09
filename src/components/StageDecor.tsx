@@ -4,7 +4,7 @@ import type { SongId, SongTheme } from '../types'
 
 function ToyWeb() {
   return (
-    <group position={[0, 2.55, -4.15]}>
+    <group position={[0, 3.32, -4.55]}>
       {[-2, -1, 0, 1, 2].map((x) => (
         <mesh key={x} position={[x * 0.55, 0, 0]} rotation={[0, 0, x * 0.18]}>
           <capsuleGeometry args={[0.035, 2.2, 4, 8]} />

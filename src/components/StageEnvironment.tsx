@@ -5,6 +5,7 @@ import { STAGE_BOUNDS } from '../state/sceneBridge'
 import { STAGE_LOOK } from '../theme/stageLook'
 import { TOY, ToyMaterial, mixHex, tileColor, tileSurface } from '../theme/toy'
 import type { SongTheme } from '../types'
+import { BackdropUnlocks } from './BackdropUnlocks'
 
 /** Background-only meshes (sky dome, sparkles) stay off the shadow cameras. */
 function RenderLayer({ layer, children }: { layer: number; children: React.ReactNode }) {
@@ -355,6 +356,7 @@ function Backdrop({ accent }: { accent: string }) {
       </group>
       <SmilingCloud position={[-3.4, 3.15, 0.45]} scale={0.72} />
       <SmilingCloud position={[3.6, 3.35, 0.4]} scale={0.58} />
+      <BackdropUnlocks />
     </group>
   )
 }

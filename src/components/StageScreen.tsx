@@ -1,7 +1,6 @@
 import { getSong } from '../config/loadConfig'
 import { useGame } from '../state/gameStore'
 import { Balloon } from './Balloon'
-import { ComboPanel } from './ComboPanel'
 import { DragLayer } from './DragLayer'
 import { HomeButton } from './HomeButton'
 import { PrizeOverlay } from './PrizeOverlay'
@@ -19,7 +18,6 @@ export function StageScreen() {
         <HomeButton />
         <div className="song-chip">{song?.title ?? 'Infanti'}</div>
       </div>
-      <ComboPanel />
       <Balloon />
       <Tray />
       <DragLayer />

@@ -161,41 +161,6 @@ button {
   font-weight: 600;
 }
 
-.combo-panel {
-  position: absolute;
-  left: 10px;
-  top: 68px;
-  z-index: 4;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.combo-item {
-  width: 58px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.combo-item svg {
-  width: 54px;
-  height: 54px;
-  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25));
-}
-
-.combo-item.complete svg {
-  filter: drop-shadow(0 0 10px #ffe56a);
-}
-
-.combo-check {
-  color: #ffe56a;
-  font-size: 14px;
-  line-height: 1;
-  text-shadow: 0 2px 0 #241246;
-}
-
 .tray {
   position: absolute;
   left: 0;
@@ -360,12 +325,6 @@ button {
     text-align: center;
     color: #ffe56a;
     font-size: 13px;
-  }
-
-  .combo-panel {
-    flex-direction: row;
-    top: 62px;
-    left: 66px;
   }
 }
 
