@@ -3,29 +3,35 @@ import { STAGE_LOOK } from './stageLook'
 import { getToyNormalMap, normalScale } from './toyNormals'
 
 export const TOY = {
-  mint: '#8ee0c4',
-  sage: '#b7e3c0',
-  babyBlue: '#9fd6f2',
-  sky: '#c8e8f8',
-  peach: '#ffc9a8',
-  coral: '#ff8fa3',
-  pink: '#ffb3d1',
-  lemon: '#ffe56a',
-  cream: '#fff4d6',
-  lavender: '#d4b8f0',
-  lilac: '#c9b6ff',
-  trunk: '#c48a5a',
-  fruit: '#ff6b7a',
-  cloud: '#fff8f0',
-  spotlight: '#ffb070',
+  mint: '#6eecc4',
+  sage: '#9aecc0',
+  babyBlue: '#7ad4f8',
+  sky: '#b4e8ff',
+  peach: '#ffb890',
+  coral: '#ff7a96',
+  pink: '#ff96cc',
+  lemon: '#ffe44a',
+  cream: '#fff8ec',
+  lavender: '#c9a8f8',
+  lilac: '#c4b0ff',
+  /** Peach terracotta — never muddy wood brown. */
+  trunk: '#f2a070',
+  fruit: '#ff6b88',
+  cloud: '#fffaf4',
+  spotlight: '#ff9a58',
   ink: '#4a3270',
-  wall: '#b7ddf4',
+  wall: '#9ed8f8',
 } as const
 
-const TILE_CYCLE = [TOY.peach, TOY.mint, TOY.babyBlue, TOY.lavender, TOY.sage, TOY.cream, TOY.pink] as const
+const TILE_CYCLE = [TOY.peach, TOY.mint, TOY.babyBlue, TOY.pink, TOY.lemon, TOY.lavender, TOY.coral] as const
+
+/** Pull a song-theme hex toward a vivid pastel so floors/fog cannot go muddy. */
+export function liftPastel(hex: string, toward: string = TOY.sky, amount = 0.38): string {
+  return mixHex(hex, toward, amount)
+}
 
 export function tileColor(ix: number, iz: number, accent: string, floor: string): string {
-  if ((ix + iz) % 7 === 0) return mixHex(floor, accent, 0.28)
+  if ((ix + iz) % 7 === 0) return mixHex(liftPastel(floor, TOY.mint, 0.45), accent, 0.2)
   return TILE_CYCLE[(ix * 3 + iz * 5) % TILE_CYCLE.length]
 }
 

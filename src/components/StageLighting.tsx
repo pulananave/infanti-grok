@@ -1,12 +1,12 @@
 import { Environment, Lightformer, SoftShadows } from '@react-three/drei'
 import { BackSide } from 'three'
 import { STAGE_LOOK } from '../theme/stageLook'
+import { liftPastel, mixHex, TOY } from '../theme/toy'
 import type { SongTheme } from '../types'
 
 /**
- * Dim studio IBL: a dark shell plus a few small lightformers.
- * Earlier bright env bakes flattened the key light — keep intensity low so
- * clearcoat/sheen pick up highlights without washing pastels.
+ * High-key pastel IBL. A bright sky shell plus small lemon/cyan/pink formers
+ * so clearcoat picks up candy highlights instead of a warm brown studio bake.
  */
 export function SoftToyIbl() {
   return (
@@ -18,36 +18,36 @@ export function SoftToyIbl() {
     >
       <mesh scale={18}>
         <sphereGeometry args={[1, 20, 14]} />
-        <meshBasicMaterial color="#1c1824" side={BackSide} />
+        <meshBasicMaterial color="#d4eefc" side={BackSide} />
       </mesh>
       <Lightformer
         form="rect"
-        intensity={3.4}
-        color="#fff3dc"
+        intensity={2.6}
+        color="#fff8e8"
         scale={[3.6, 2.2, 1]}
         position={[6.4, 8.2, 4.6]}
         target={[0, 0.4, 0]}
       />
       <Lightformer
         form="rect"
-        intensity={0.75}
-        color="#c4dcff"
+        intensity={1.05}
+        color="#c4e8ff"
         scale={[2.8, 2, 1]}
         position={[-6.2, 3.4, 2.2]}
         target={[0, 0.3, 0]}
       />
       <Lightformer
         form="ring"
-        intensity={0.35}
-        color="#ffe0c0"
+        intensity={0.55}
+        color="#ffd4e8"
         scale={5}
         position={[-3.4, 2.8, -5.4]}
         target={[0, 0.6, 0]}
       />
       <Lightformer
         form="rect"
-        intensity={0.16}
-        color="#88b898"
+        intensity={0.34}
+        color="#c8f4e0"
         scale={[10, 10, 1]}
         position={[0, -4.2, 0]}
         rotation={[Math.PI / 2, 0, 0]}
@@ -57,12 +57,16 @@ export function SoftToyIbl() {
 }
 
 export function StageLights({ theme }: { theme: Pick<SongTheme, 'sky' | 'horizon' | 'fog'> }) {
+  const sky = liftPastel(theme.sky, TOY.sky, 0.34)
+  const fog = mixHex(liftPastel(theme.fog, TOY.cream, 0.42), TOY.lavender, 0.12)
+  const hemiSky = mixHex(theme.horizon, STAGE_LOOK.hemiSky, 0.45)
+
   return (
     <>
-      <color attach="background" args={[theme.sky]} />
-      <fog attach="fog" args={[theme.fog, 20, 40]} />
+      <color attach="background" args={[sky]} />
+      <fog attach="fog" args={[fog, 24, 46]} />
       <ambientLight intensity={STAGE_LOOK.ambient} color={STAGE_LOOK.ambientColor} />
-      <hemisphereLight args={[theme.horizon, STAGE_LOOK.hemiGround, STAGE_LOOK.hemi]} />
+      <hemisphereLight args={[hemiSky, STAGE_LOOK.hemiGround, STAGE_LOOK.hemi]} />
       <directionalLight
         position={STAGE_LOOK.keyPosition}
         intensity={STAGE_LOOK.key}

@@ -105,7 +105,7 @@ function Plaque() {
       receiveShadow
       raycast={noRaycast}
     >
-      <ToyMaterial color={mixHex(TOY.lilac, TOY.wall, 0.4)} silicone roughness={0.64} />
+      <ToyMaterial color={mixHex(TOY.sky, TOY.lilac, 0.32)} silicone roughness={0.58} />
     </RoundedBox>
   )
 }

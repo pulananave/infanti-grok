@@ -65,11 +65,17 @@ export function LookGallery() {
           blur={STAGE_LOOK.contactBlur}
           far={STAGE_LOOK.contactFar}
           resolution={STAGE_LOOK.contactResolution}
-          color="#3a2048"
+          color={STAGE_LOOK.contactColor}
         />
         <EffectComposer multisampling={0} enableNormalPass={false}>
           {STAGE_LOOK.ssao ? (
-            <N8AO aoRadius={STAGE_LOOK.ssaoRadius} intensity={STAGE_LOOK.ssaoIntensity} quality="medium" halfRes />
+            <N8AO
+              aoRadius={STAGE_LOOK.ssaoRadius}
+              intensity={STAGE_LOOK.ssaoIntensity}
+              quality="medium"
+              halfRes
+              color={STAGE_LOOK.ssaoColor}
+            />
           ) : (
             <></>
           )}

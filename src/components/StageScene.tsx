@@ -75,6 +75,16 @@ function StageCharacter({
         <sphereGeometry args={[1.15, 12, 12]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
+      {STAGE_LOOK.quality === 'desktop' ? (
+        <pointLight
+          position={[0, 0.14, 0.2]}
+          intensity={0.42}
+          color={STAGE_LOOK.footlightColor}
+          distance={2.35}
+          decay={2}
+          castShadow={false}
+        />
+      ) : null}
       <Humanoid
         characterId={instance.characterId}
         instrument={instance.type}
@@ -158,7 +168,7 @@ function StagePost() {
           distanceFalloff={1.15}
           quality="medium"
           halfRes
-          color="#3a2048"
+          color={STAGE_LOOK.ssaoColor}
         />
       ) : (
         <></>
@@ -218,7 +228,7 @@ export function StageScene() {
         blur={STAGE_LOOK.contactBlur}
         far={STAGE_LOOK.contactFar}
         resolution={STAGE_LOOK.contactResolution}
-        color="#3a2048"
+        color={STAGE_LOOK.contactColor}
       />
       <GrabPlane />
       <mesh position={LISTENER_POSITION.toArray()} visible={false}>
