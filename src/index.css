@@ -120,18 +120,7 @@ button {
   position: relative;
   width: 100%;
   height: 100%;
-  background: #9ad4e8;
-}
-
-.stage-backdrop {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 58%;
-  pointer-events: none;
-  user-select: none;
+  background: #c9dff0;
 }
 
 .stage-canvas {
@@ -238,7 +227,6 @@ button {
   box-shadow: none;
   position: relative;
   touch-action: none;
-  overflow: hidden;
 }
 
 .tray-lente {
@@ -261,18 +249,29 @@ button {
 
 .tray-slot.open .tray-lente,
 .tray-slot.ativo .tray-lente {
-  box-shadow: 0 0 0 3px #ede371, var(--shadow);
+  box-shadow: 0 0 0 3px #ffe56a, var(--shadow);
 }
 
 .balloon {
   position: absolute;
   z-index: 6;
   width: min(360px, 80vw);
-  background: url('/runtime-2d/balloon/BALAO_CENTRO.svg') center / 100% 100% no-repeat;
-  border-radius: 0;
-  padding: 22px 28px 58px;
-  box-shadow: none;
+  background: #ffe56a;
+  border-radius: 28px;
+  padding: 12px;
+  box-shadow: var(--shadow);
   touch-action: none;
+}
+
+.balloon::after {
+  content: '';
+  position: absolute;
+  left: var(--tail-x, 50%);
+  bottom: -14px;
+  width: 22px;
+  height: 22px;
+  background: #ffe56a;
+  transform: translateX(-50%) rotate(45deg);
 }
 
 .balloon-grid {
@@ -283,34 +282,33 @@ button {
 }
 
 .instrument-btn {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  background: transparent;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: #fff7e8;
   display: grid;
   place-items: center;
   touch-action: none;
+  box-shadow: 0 4px 0 #e0c44a;
 }
 
-.instrument-btn svg,
-.instrument-sticker {
-  width: 50px;
-  height: 50px;
-  object-fit: contain;
-  pointer-events: none;
+.instrument-btn svg {
+  width: 34px;
+  height: 34px;
 }
 
 .drag-ghost {
   position: fixed;
   z-index: 20;
-  width: 64px;
-  height: 64px;
-  margin: -32px 0 0 -32px;
+  width: 56px;
+  height: 56px;
+  margin: -28px 0 0 -28px;
   pointer-events: none;
   border-radius: 16px;
-  background: transparent;
+  background: #fff7e8;
   display: grid;
   place-items: center;
+  box-shadow: var(--shadow);
 }
 
 .prize {
