@@ -574,14 +574,21 @@ function Features({ look, opacity }: { look: CharacterLook; opacity: number }) {
         ))}
 
       {hasFeature(look, 'dorsalSpikes') &&
-        [0.85, 0.55, 0.25, -0.05, -0.32, -0.55].map((t, i) => (
+        [
+          [0.98, 0.12],
+          [0.82, 0.02],
+          [0.62, -0.08],
+          [0.38, -0.16],
+          [0.12, -0.22],
+          [-0.1, -0.26],
+        ].map(([t, z], i) => (
           <mesh
             key={i}
-            position={[0, y + r * t, -r * (0.15 + i * 0.06)]}
-            rotation={[0.9 + i * 0.12, 0, 0]}
+            position={[0, y + r * t, r * z]}
+            rotation={[0.35 + i * 0.18, 0, 0]}
             castShadow
           >
-            <coneGeometry args={[0.055 - i * 0.004, 0.16 - i * 0.01, 7]} />
+            <coneGeometry args={[0.058 - i * 0.004, 0.18 - i * 0.012, 7]} />
             <Mat color={accent} opacity={opacity} />
           </mesh>
         ))}
