@@ -133,8 +133,17 @@ export const useGame = create<GameState>((set, get) => ({
 
   beginSpawnDrag: (characterId, instrument, x, y) => {
     audioEngine.unlock()
+    const song = getSong(get().songId)
+    const stem = song ? findStem(song, characterId, instrument) : undefined
     set({
-      drag: { type: 'spawn', characterId, instrument, clientX: x, clientY: y },
+      drag: {
+        type: 'spawn',
+        characterId,
+        instrument,
+        genre: stem?.genre,
+        clientX: x,
+        clientY: y,
+      },
     })
   },
 

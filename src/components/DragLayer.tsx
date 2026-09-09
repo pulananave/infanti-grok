@@ -57,7 +57,11 @@ export function DragLayer() {
 
   return (
     <div className="drag-ghost" style={{ left: drag.clientX, top: drag.clientY }}>
-      <InstrumentIcon instrument={drag.instrument} />
+      <InstrumentIcon
+        instrument={drag.instrument}
+        genre={drag.genre}
+        characterId={drag.characterId}
+      />
     </div>
   )
 }

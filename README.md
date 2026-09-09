@@ -1,10 +1,10 @@
 # Infanti
 
-Jogo web de palco musical infantil — **Groovy Gang Infanti**. A criança escolhe uma canção, abre o balão do personagem, arrasta o instrumento para o chão 3D e monta a banda em camadas.
+Jogo web de palco musical infantil — **Groovy Gang Infanti**. A criança escolhe uma canção, abre o balão do personagem, arrasta o instrumento para o chão 2.5D e monta a banda em camadas.
 
 Repositório: [github.com/pulananave/infanti-grok](https://github.com/pulananave/infanti-grok).
 
-Feito com Vite + React + TypeScript + React Three Fiber. Build estático para a Vercel (`npm run build` → `dist`).
+Feito com Vite + React + TypeScript + React Three Fiber. O palco visível é uma imagem estática; os personagens são planes billboard com spritesheets TexturePacker. A câmera ¾ e o chão invisível continuam a cuidar de profundidade, escala e volume. Build estático para a Vercel (`npm run build` → `dist`).
 
 ## Como rodar
 
@@ -107,7 +107,28 @@ Depois de editar, rode `npm run dev` ou `npm run build`.
 
 O caminho do áudio é `/audio/<folder>/<file>`.
 
-Personagens e aparência: `src/config/characters.ts`.
+Personagens da bandeja: `src/config/characters.ts`.
+
+## Spritesheets 2.5D
+
+Os atlas oficiais ficam em `public/runtime-2d/spritesheets/`. O mapa editável é `src/config/spriteMap.json`.
+
+### FPS
+
+```text
+fps = 20 * (songBpm / 120)
+```
+
+20 frames = 1 segundo no BPM de referência (120). A animação usa cada região única do `.tpsheet` em ordem cronológica do índice no filename (aliases do TexturePacker que apontam para a mesma região não se repetem).
+
+### Como adicionar um spritesheet
+
+1. Coloque `nome.tpsheet` e o atlas (`nome-0.png`, e `nome-1.png` se houver segunda página, ou o `image` exato do tpsheet) em `public/runtime-2d/spritesheets/` (subpasta do personagem vale).
+2. Adicione o caminho relativo em `sheetFiles`, com um id curto.
+3. Aponte `characters.<id>.tokens.<sufixo>` (ex. `agogo` para `latin_agogo`) ou `instruments.<id>.sheet` para esse id.
+4. Opcional: `icon` no binding, `genreSheets.<instrumento-ou-token>.<gênero>` para variar a pose; stickers em `public/runtime-2d/instruments/` (`icons` / `iconTokens` / `kindIcons`).
+
+O balão usa `public/runtime-2d/balloon/BALAO_CENTRO.svg` e os stickers do pacote. A bandeja mantém os ícones de rosto do elenco.
 
 ## Controles no palco
 

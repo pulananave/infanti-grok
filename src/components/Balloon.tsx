@@ -65,23 +65,32 @@ export function Balloon() {
         </div>
       ) : (
         <div className="balloon-grid">
-          {remaining.map((instrument) => (
-            <button
-              key={instrument}
-              type="button"
-              className="instrument-btn"
-              aria-label={instrument}
-              onPointerDown={(event) => {
-                event.preventDefault()
-                event.stopPropagation()
-                audioEngine.unlock()
-                event.currentTarget.setPointerCapture(event.pointerId)
-                beginSpawnDrag(balloonCharacterId, instrument, event.clientX, event.clientY)
-              }}
-            >
-              <InstrumentIcon instrument={instrument} />
-            </button>
-          ))}
+          {remaining.map((instrument) => {
+            const stem = stemsForCharacter(song, balloonCharacterId).find(
+              (item) => item.instrument === instrument,
+            )
+            return (
+              <button
+                key={instrument}
+                type="button"
+                className="instrument-btn"
+                aria-label={instrument}
+                onPointerDown={(event) => {
+                  event.preventDefault()
+                  event.stopPropagation()
+                  audioEngine.unlock()
+                  event.currentTarget.setPointerCapture(event.pointerId)
+                  beginSpawnDrag(balloonCharacterId, instrument, event.clientX, event.clientY)
+                }}
+              >
+                <InstrumentIcon
+                  instrument={instrument}
+                  genre={stem?.genre}
+                  characterId={balloonCharacterId}
+                />
+              </button>
+            )
+          })}
         </div>
       )}
     </div>
