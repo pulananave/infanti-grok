@@ -1,90 +1,51 @@
-import { execFileSync } from 'node:child_process'
 import { readdir, readFile, writeFile } from 'node:fs/promises'
-import { join } from 'node:path'
+import { basename, join } from 'node:path'
 
 const root = join(import.meta.dirname, '..')
 const songsPath = join(root, 'src/config/songs.json')
+const configsDir = join(root, 'src/config/audio-configs')
+const audioRoot = join(root, 'public/audio')
 
-const SONGS = [
+const CONFIG_SONGS = [
   {
+    cfg: 'dona-aranha.cfg',
     id: 'aranha',
     aliases: ['dona_aranha'],
     title: 'Dona Aranha',
-    bpm: 114,
     folder: 'infanti_dona_aranha',
     filePrefix: 'aranha',
-    theme: {
-      sky: '#3d2a6b',
-      horizon: '#7b4aa8',
-      floor: '#4a7c4a',
-      floorAccent: '#6aa35a',
-      fog: '#2a1848',
-      accent: '#c9f27a',
-    },
   },
   {
+    cfg: 'a-canoa-virou.cfg',
     id: 'canoa',
     aliases: [],
     title: 'A Canoa Virou',
-    bpm: 118,
     folder: 'infanti_canoa_virou',
     filePrefix: 'canoa',
-    theme: {
-      sky: '#1d5f8a',
-      horizon: '#4db7d4',
-      floor: '#2f8f9a',
-      floorAccent: '#57c4b0',
-      fog: '#12384f',
-      accent: '#ffe08a',
-    },
   },
   {
+    cfg: 'coelho-da-pascoa.cfg',
     id: 'coelho',
     aliases: [],
     title: 'Coelhinho da Páscoa',
-    bpm: 96,
     folder: 'infanti_coelho',
     filePrefix: 'coelho',
-    theme: {
-      sky: '#f3c6d8',
-      horizon: '#f7e3b0',
-      floor: '#8bc48a',
-      floorAccent: '#d5f2a8',
-      fog: '#e8b8c8',
-      accent: '#ff8dc7',
-    },
   },
   {
+    cfg: 'pintinho-amarelinho.cfg',
     id: 'pintinho',
     aliases: [],
     title: 'Pintinho Amarelinho',
-    bpm: 148,
     folder: 'infanti_pintinho',
     filePrefix: 'pintinho',
-    theme: {
-      sky: '#f7d35c',
-      horizon: '#f6a53a',
-      floor: '#c4a35a',
-      floorAccent: '#e8d27a',
-      fog: '#f0c14d',
-      accent: '#ff6b35',
-    },
   },
   {
+    cfg: 'o-sapo.cfg',
     id: 'sapo',
     aliases: [],
     title: 'O Sapo Não Lava o Pé',
-    bpm: 138,
     folder: 'infanti_sapo_nao_lava',
     filePrefix: 'sapo',
-    theme: {
-      sky: '#1f6b4a',
-      horizon: '#3fa36a',
-      floor: '#2f6b4a',
-      floorAccent: '#5cbc6e',
-      fog: '#143d2c',
-      accent: '#b6ff6a',
-    },
   },
 ]
 
@@ -99,117 +60,224 @@ const CHARACTER_ORDER = [
   'rafog',
   'teewong',
   'zoem',
+  'gerarda',
 ]
 
-const PERC = new Set([
-  'bateria',
-  'agogo',
-  'conga',
-  'shaker',
-  'pandeirola',
-  'clave',
-  'bongo',
-  'reco_reco',
-  'recc_reco',
-  'perc_loop',
-])
-
-function characterFor(genre, inst) {
-  const g = genre === 'mar' ? 'marcial' : genre
-  if (g === 'voz') return 'ohle'
-  if (g === 'edm') return 'zoem'
-  if (PERC.has(inst)) return 'boogar'
-  if (inst === 'baixo') return 'ceval'
-  if (inst === 'violao' || inst === 'gtr_frase' || (inst === 'gtr_base' && g === 'pop')) return 'dan'
-  if (g === 'rock' && (inst === 'gtr_base' || inst === 'gtr_melodia' || inst === 'guitarra_base')) {
-    return 'rafog'
-  }
-  if (['piano', 'rhodes', 'marimba', 'sanfona', 'clavinote', 'orgao'].includes(inst)) return 'esper'
-  if (inst === 'trompete' || inst === 'trumpete') return 'gobu'
-  if (['tuba', 'bombo', 'caixa', 'pratos'].includes(inst)) return 'grompy'
-  if (inst === 'picolo' || inst === 'piccolo') return 'ohle'
-  if (inst === 'trombone' || inst === 'violino') return 'teewong'
-  if (inst === 'synth') return 'zoem'
-  throw new Error(`no character mapping for ${genre}_${inst}`)
+const TOKEN_ALIASES = {
+  trompete: ['trumpete'],
+  trumpete: ['trompete'],
+  picolo: ['piccolo'],
+  piccolo: ['picolo'],
+  marcial: ['mar'],
+  mar: ['marcial'],
 }
 
-function parseStemName(prefix, filename) {
-  if (!filename.endsWith('.ogg')) {
-    throw new Error(`not an ogg: ${filename}`)
+function tokens(name) {
+  return name
+    .replace(/\.ogg$/i, '')
+    .toLowerCase()
+    .split(/[\s_\-]+/)
+    .filter(Boolean)
+}
+
+function tokenEq(a, b) {
+  if (a === b) return true
+  return TOKEN_ALIASES[a]?.includes(b) || TOKEN_ALIASES[b]?.includes(a) || false
+}
+
+function filenameVariants(audio) {
+  const base = audio.trim()
+  return new Set([
+    base,
+    base.replace(/\s+/g, '_'),
+    base.replace(/\s+/g, '-'),
+    base.replace(/-/g, '_'),
+    base.replace(/_/g, '-'),
+    base.replace(/[\s-]+/g, '_'),
+    base.replace(/[\s_]+/g, '-'),
+  ])
+}
+
+function fuzzyScore(want, have) {
+  if (want.length === 0 || have.length === 0) return -1
+  if (want[0] !== have[0]) return -1
+  if (!tokenEq(want[want.length - 1], have[have.length - 1])) return -1
+  let score = 4
+  if (want[want.length - 1] === have[have.length - 1]) score += 2
+  const wantMid = want.slice(1, -1)
+  const haveMid = have.slice(1, -1)
+  for (const token of wantMid) {
+    if (haveMid.some((item) => tokenEq(token, item))) score += 3
+    else score -= 1
   }
-  const stem = filename.slice(0, -4)
-  const expected = `${prefix}_`
+  score -= Math.abs(want.length - have.length)
+  return score
+}
+
+function resolveAudioFile(audio, files) {
+  const fileSet = new Set(files)
+  for (const variant of filenameVariants(audio)) {
+    if (fileSet.has(variant)) return variant
+  }
+  const want = tokens(audio)
+  let best = null
+  let bestScore = 0
+  let ties = []
+  for (const file of files) {
+    const score = fuzzyScore(want, tokens(file))
+    if (score > bestScore) {
+      best = file
+      bestScore = score
+      ties = [file]
+    } else if (score === bestScore && score > 0) {
+      ties.push(file)
+    }
+  }
+  if (!best || bestScore < 4) {
+    throw new Error(`no public stem for "${audio}"`)
+  }
+  if (ties.length > 1) {
+    throw new Error(`ambiguous public stem for "${audio}": ${ties.join(', ')}`)
+  }
+  return best
+}
+
+function extractBalanced(text, openIndex) {
+  let depth = 0
+  for (let i = openIndex; i < text.length; i += 1) {
+    const ch = text[i]
+    if (ch === '{') depth += 1
+    else if (ch === '}') {
+      depth -= 1
+      if (depth === 0) return text.slice(openIndex, i + 1)
+    }
+  }
+  throw new Error('unbalanced { } in config')
+}
+
+function parseGodotJson(objectText) {
+  let json = objectText
+  let prev
+  do {
+    prev = json
+    json = json.replace(/,(\s*[}\]])/g, '$1')
+  } while (json !== prev)
+  return JSON.parse(json)
+}
+
+function parseCfg(text) {
+  const bars = Number(text.match(/bars\s*=\s*(\d+)/i)?.[1])
+  const bpm = Number(text.match(/music_bpm\s*=\s*(\d+)/i)?.[1])
+  if (!Number.isFinite(bars) || !Number.isFinite(bpm)) {
+    throw new Error('missing bars or music_bpm')
+  }
+  const marker = text.search(/characters\s*=\s*\{/i)
+  if (marker < 0) throw new Error('missing characters block')
+  const open = text.indexOf('{', marker)
+  const characters = parseGodotJson(extractBalanced(text, open))
+  return { bars, bpm, characters }
+}
+
+function correctType(audio, type) {
+  const haystack = audio.toLowerCase()
+  if (/\bvoz\b/.test(haystack.replace(/[^a-z0-9]+/g, ' ')) && type === 'Shaker') {
+    return 'Voz'
+  }
+  return type
+}
+
+function instrumentIdFromFile(filePrefix, file) {
+  const stem = file.replace(/\.ogg$/i, '')
+  const expected = `${filePrefix}_`
   if (!stem.startsWith(expected)) {
-    throw new Error(`expected prefix ${prefix}_ in ${filename}`)
+    throw new Error(`resolved file ${file} does not start with ${expected}`)
   }
-  const rest = stem.slice(expected.length)
-  const cut = rest.indexOf('_')
-  if (cut < 0) throw new Error(`no genre in ${filename}`)
-  const genre = rest.slice(0, cut)
-  const inst = rest.slice(cut + 1)
-  if (!genre || !inst) throw new Error(`bad name ${filename}`)
-  return { genre, inst, instrument: rest }
+  return stem.slice(expected.length)
 }
 
-function probeDuration(path) {
-  const out = execFileSync(
-    'ffprobe',
-    ['-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path],
-    { encoding: 'utf8' },
-  ).trim()
-  const duration = Number(out)
-  if (!Number.isFinite(duration) || duration <= 0) {
-    throw new Error(`bad duration for ${path}: ${out}`)
+function characterIdFromName(name) {
+  const id = name.trim().toLowerCase()
+  if (!CHARACTER_ORDER.includes(id)) {
+    throw new Error(`unknown character "${name}"`)
   }
-  return duration
+  return id
 }
 
-function compassosFor(duration, bpm, file) {
-  const bar = (60 / bpm) * 4
-  const bars = duration / bar
-  const compassos = Math.round(bars)
-  if (compassos < 1) throw new Error(`${file} shorter than one bar`)
-  if (Math.abs(bars - compassos) > 0.08) {
-    throw new Error(`${file} duration ${duration.toFixed(3)}s is ${bars.toFixed(3)} bars at ${bpm} bpm`)
-  }
-  return compassos
-}
+const existing = JSON.parse(await readFile(songsPath, 'utf8'))
+const themeById = Object.fromEntries(existing.songs.map((song) => [song.id, song.theme]))
 
 const songs = []
-for (const song of SONGS) {
-  const dir = join(root, 'public/audio', song.folder)
-  const names = (await readdir(dir)).filter((name) => name.endsWith('.ogg')).sort()
-  if (names.length === 0) throw new Error(`no oggs in ${dir}`)
-  const stems = names.map((file) => {
-    const parsed = parseStemName(song.filePrefix, file)
-    const duration = probeDuration(join(dir, file))
-    return {
-      character: characterFor(parsed.genre, parsed.inst),
-      instrument: parsed.instrument,
-      genre: parsed.genre,
-      compassos: compassosFor(duration, song.bpm, file),
-      file,
+for (const meta of CONFIG_SONGS) {
+  const cfgText = await readFile(join(configsDir, meta.cfg), 'utf8')
+  const parsed = parseCfg(cfgText)
+  const audioDir = join(audioRoot, meta.folder)
+  const files = (await readdir(audioDir)).filter((name) => name.endsWith('.ogg'))
+  const stems = []
+  const instrumentUseLimit = {}
+
+  for (const [characterName, body] of Object.entries(parsed.characters)) {
+    const character = characterIdFromName(characterName)
+    if (body.instrument_use_limit != null) {
+      instrumentUseLimit[character] = Number(body.instrument_use_limit)
     }
-  })
+    const instruments = body.instruments ?? []
+    for (const item of instruments) {
+      const file = resolveAudioFile(item.audio, files)
+      const type = correctType(item.audio, item.type)
+      const stem = {
+        character,
+        instrument: instrumentIdFromFile(meta.filePrefix, file),
+        type,
+        genre: instrumentIdFromFile(meta.filePrefix, file).split('_')[0],
+        compassos: Number(item.bars),
+        file,
+      }
+      if (item.min_volume_db != null) stem.minVolumeDb = Number(item.min_volume_db)
+      if (item.max_volume_db != null) stem.maxVolumeDb = Number(item.max_volume_db)
+      if (!Number.isFinite(stem.compassos) || stem.compassos < 1) {
+        throw new Error(`bad bars for ${meta.id}/${item.audio}`)
+      }
+      stems.push(stem)
+    }
+  }
+
   stems.sort((a, b) => {
     const ca = CHARACTER_ORDER.indexOf(a.character)
     const cb = CHARACTER_ORDER.indexOf(b.character)
     if (ca !== cb) return ca - cb
     return a.instrument.localeCompare(b.instrument)
   })
-  songs.push({ ...song, stems })
+
+  const song = {
+    id: meta.id,
+    aliases: meta.aliases,
+    title: meta.title,
+    bpm: parsed.bpm,
+    bars: parsed.bars,
+    folder: meta.folder,
+    filePrefix: meta.filePrefix,
+    theme: themeById[meta.id],
+    stems,
+  }
+  if (Object.keys(instrumentUseLimit).length > 0) {
+    song.instrumentUseLimit = instrumentUseLimit
+  }
+  songs.push(song)
 }
 
-const existing = JSON.parse(await readFile(songsPath, 'utf8'))
-const next = { songs }
-await writeFile(songsPath, `${JSON.stringify(next, null, 2)}\n`)
-const total = songs.reduce((sum, song) => sum + song.stems.length, 0)
-console.log(`wrote ${songsPath} (${total} stems, was ${existing.songs.reduce((s, song) => s + song.stems.length, 0)})`)
+await writeFile(songsPath, `${JSON.stringify({ songs }, null, 2)}\n`)
+
 for (const song of songs) {
   const counts = Object.fromEntries(
     CHARACTER_ORDER.map((id) => [id, song.stems.filter((stem) => stem.character === id).length]).filter(
       ([, n]) => n > 0,
     ),
   )
-  console.log(`${song.id}: ${song.stems.length} stems`, counts)
+  const limits = song.instrumentUseLimit
+    ? ` limits=${JSON.stringify(song.instrumentUseLimit)}`
+    : ''
+  console.log(`${song.id}: ${song.stems.length} stems @ ${song.bpm} bpm / ${song.bars} bars`, counts, limits)
 }
+console.log(
+  `wrote ${songsPath} (${songs.reduce((sum, song) => sum + song.stems.length, 0)} stems from ${CONFIG_SONGS.map((item) => basename(item.cfg)).join(', ')})`,
+)

@@ -57,11 +57,36 @@ export function clampToFloor(point: THREE.Vector3): THREE.Vector3 {
 export const NEAR_GAIN = 1
 export const FAR_GAIN = 0.2
 
-/** Linear map: 1.0 at the listener (stage front), 0.2 at the back of the usable floor. */
-export function volumeForPosition(position: THREE.Vector3 | [number, number, number]): number {
+function dbToGain(db: number): number {
+  return 10 ** (db / 20)
+}
+
+export interface StemVolumeRange {
+  minVolumeDb?: number
+  maxVolumeDb?: number
+}
+
+/**
+ * Distance gain along the stage depth.
+ * Default: 1.0 at the listener (front), 0.2 at the back.
+ * When a stem has Godot min/max dB, those become the back/front gains.
+ */
+export function volumeForPosition(
+  position: THREE.Vector3 | [number, number, number],
+  range?: StemVolumeRange,
+): number {
   const z = Array.isArray(position) ? position[2] : position.z
-  const t = THREE.MathUtils.inverseLerp(LISTENER_POSITION.z, FLOOR_Z_BACK, z)
-  return THREE.MathUtils.lerp(NEAR_GAIN, FAR_GAIN, THREE.MathUtils.clamp(t, 0, 1))
+  const t = THREE.MathUtils.clamp(
+    THREE.MathUtils.inverseLerp(LISTENER_POSITION.z, FLOOR_Z_BACK, z),
+    0,
+    1,
+  )
+  if (range?.minVolumeDb != null || range?.maxVolumeDb != null) {
+    const maxDb = range.maxVolumeDb ?? 0
+    const minDb = range.minVolumeDb ?? maxDb - 14
+    return dbToGain(THREE.MathUtils.lerp(maxDb, minDb, t))
+  }
+  return THREE.MathUtils.lerp(NEAR_GAIN, FAR_GAIN, t)
 }
 
 export function isOverBlockingUi(clientX: number, clientY: number): boolean {

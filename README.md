@@ -32,7 +32,7 @@ O alvo visual é **paisagem no celular**. Em retrato o jogo ainda abre, com um a
 | Pintinho Amarelinho | 148 | `infanti_pintinho` / `pintinho` |
 | O Sapo Não Lava o Pé | 138 | `infanti_sapo_nao_lava` / `sapo` |
 
-Elenco: Boogar, Ceval, Dan, Esper, Gobu, Grompy, Ohle, Rafog, Teewong, Zoem e Gerarda. Gerarda **não** entra nestas 5 músicas.
+Elenco: Boogar, Ceval, Dan, Esper, Gobu, Grompy, Ohle, Rafog, Teewong, Zoem e Gerarda. Nestas 5 canções a bandeja só mostra quem aparece no `.cfg` Godot (Boogar–Teewong). **Zoem e Gerarda** ficam de fora.
 
 A bandeja cria **um círculo por personagem da canção** e **não tem limite de 20**. Pode passar de 20 vagas sem mudar o código.
 
@@ -48,26 +48,19 @@ public/audio/infanti_canoa_virou/canoa_marcial_trompete.ogg
 public/audio/infanti_coelho/coelho_voz_kaio.ogg
 ```
 
-Cada entrada em `src/config/songs.json` tem `file` com o nome **exato** do `.ogg` no disco. O id do instrumento no balão é `{gênero}_{resto}` (`latin_agogo`, `voz_kaio`, `marcial_trompete`).
+A fonte da verdade de quem toca o quê é `src/config/audio-configs/*.cfg` (Godot). `npm run sync-audio` lê esses arquivos, resolve o `.ogg` MEGA (espaços ↔ `_`/`-`, `marcial`/`mar`, `trompete`/`trumpete`) e reescreve `songs.json`. **Não inventar stems** que não estejam no `.cfg`.
 
-Personagens por família (elenco destas 5 canções):
+Cada stem tem:
 
-| Personagem | Stems |
-| --- | --- |
-| Boogar | bateria e percussão (`agogo`, `conga`, `shaker`, `pandeirola`, …) |
-| Ceval | `baixo` |
-| Dan | `violao`, `gtr_base` pop, `gtr_frase` |
-| Esper | piano, rhodes, marimba, sanfona, órgão |
-| Gobu | trompete (`trompete` / `trumpete`) |
-| Grompy | tuba e perc. marcial (`bombo`, `caixa`, `pratos`) |
-| Ohle | pícolo + vozes (`voz_kaio`, `voz_loli`, …) |
-| Rafog | guitarra rock (`gtr_base`, `gtr_melodia`, `guitarra_base`) |
-| Teewong | trombone e violino (não há sax/clarinete nestes stems) |
-| Zoem | EDM / loops / synth |
+- `file` — nome exato do `.ogg` no disco
+- `instrument` — id estável `{gênero}_{resto}` (`latin_agogo`, `voz_kaio`)
+- `type` — identidade Godot para o balão (`Pratos`, `Voz`, `BateriaPop`, `SynthBass`, …)
+- `compassos` — `bars` do instrumento (loop na grade `bpm × compassos`, 4/4)
+- `minVolumeDb` / `maxVolumeDb` — quando o `.cfg` traz, o ganho no palco interpola desses dB (frente = max, fundo = min). Sem esses campos, continua 1.0 → 0.2.
 
-`compassos` vem da duração do arquivo ÷ duração do compasso (`bpm`, 4/4). Stems longos (ex. Sapo ~54 compassos) loopam no fim do arquivo.
+`instrumentUseLimit` por personagem (ex. Gobu = 1 em Aranha/Canoa/Pintinho, Dan = 1 no Coelho) impede colocar mais instrumentos do que o limite.
 
-**Não use loop nativo no arquivo.** O jogo agenda o recomeço na grade. `npm run audio` só confere que todo `file` existe. `npm run sync-audio` regenera `songs.json` a partir dos `.ogg` no disco.
+**Não use loop nativo no arquivo.** O jogo agenda o recomeço na grade. `npm run audio` confere que todo `file` do `.cfg` existe. Arquivos MEGA que não entram no `.cfg` ficam no disco mas não são oferecidos.
 
 ## Editar os combos
 
@@ -98,16 +91,17 @@ Depois de editar, rode `npm run dev` ou `npm run build`.
 ```json
 {
   "character": "boogar",
-  "instrument": "latin_agogo",
-  "genre": "latin",
-  "compassos": 2,
-  "file": "aranha_latin_agogo.ogg"
+  "instrument": "marcial_pratos",
+  "type": "Pratos",
+  "genre": "marcial",
+  "compassos": 8,
+  "file": "aranha_marcial_pratos.ogg"
 }
 ```
 
-O caminho do áudio é `/audio/<folder>/<file>`.
+O caminho do áudio é `/audio/<folder>/<file>`. Ícones da bandeja: pack original em `assets/tray-icons/` → `public/icons/monsters/` (`node scripts/write-monster-icons.mjs`). Zoem/Gerarda continuam com placeholder.
 
-Personagens e aparência: `src/config/characters.ts`.
+Personagens e aparência 3D: `src/config/characters.ts`.
 
 ## Controles no palco
 

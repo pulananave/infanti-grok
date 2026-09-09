@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useState } from 'react'
 import { audioEngine } from '../audio/AudioEngine'
 import { CHARACTERS } from '../config/characters'
 import { getSong, stemsForCharacter } from '../config/loadConfig'
-import { availableInstruments, useGame } from '../state/gameStore'
+import { availableStems, useGame } from '../state/gameStore'
 import { InstrumentIcon } from './InstrumentIcon'
 
 export function Balloon() {
@@ -45,7 +45,7 @@ export function Balloon() {
   const song = getSong(songId)
   if (!song) return null
 
-  const remaining = availableInstruments(balloonCharacterId)
+  const remaining = availableStems(balloonCharacterId)
   const look = CHARACTERS[balloonCharacterId]
   const total = stemsForCharacter(song, balloonCharacterId).length
 
@@ -65,21 +65,21 @@ export function Balloon() {
         </div>
       ) : (
         <div className="balloon-grid">
-          {remaining.map((instrument) => (
+          {remaining.map((stem) => (
             <button
-              key={instrument}
+              key={stem.instrument}
               type="button"
               className="instrument-btn"
-              aria-label={instrument}
+              aria-label={stem.type}
               onPointerDown={(event) => {
                 event.preventDefault()
                 event.stopPropagation()
                 audioEngine.unlock()
                 event.currentTarget.setPointerCapture(event.pointerId)
-                beginSpawnDrag(balloonCharacterId, instrument, event.clientX, event.clientY)
+                beginSpawnDrag(balloonCharacterId, stem.instrument, event.clientX, event.clientY)
               }}
             >
-              <InstrumentIcon instrument={instrument} />
+              <InstrumentIcon instrument={stem.type} />
             </button>
           ))}
         </div>

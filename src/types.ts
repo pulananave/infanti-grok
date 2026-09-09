@@ -32,11 +32,16 @@ export type Accessory =
 
 export interface StemConfig {
   character: CharacterId
+  /** Unique stem id from the MEGA filename (`{genre}_{rest}`). */
   instrument: string
+  /** Godot `type` — balloon / held-instrument identity. */
+  type: string
   genre: string
   compassos: number
   /** Exact filename under `public/audio/<folder>/`. Required for MEGA stems. */
   file: string
+  minVolumeDb?: number
+  maxVolumeDb?: number
 }
 
 export interface SongTheme {
@@ -53,10 +58,13 @@ export interface SongConfig {
   aliases: string[]
   title: string
   bpm: number
+  /** Song loop length in bars (4/4). Per-stem `compassos` still drives the scheduler. */
+  bars: number
   folder: string
   filePrefix: string
   theme: SongTheme
   stems: StemConfig[]
+  instrumentUseLimit?: Partial<Record<CharacterId, number>>
 }
 
 export interface CharacterLook {
@@ -74,9 +82,12 @@ export interface StageInstance {
   id: string
   characterId: CharacterId
   instrument: string
+  type: string
   genre: string
   compassos: number
   audioPaths: string[]
+  minVolumeDb?: number
+  maxVolumeDb?: number
   position: [number, number, number]
   muted: boolean
 }
@@ -87,6 +98,7 @@ export type DragState =
       type: 'spawn'
       characterId: CharacterId
       instrument: string
+      iconType: string
       clientX: number
       clientY: number
     }
@@ -94,6 +106,7 @@ export type DragState =
       type: 'move'
       instanceId: string
       instrument: string
+      iconType: string
       clientX: number
       clientY: number
       startX: number

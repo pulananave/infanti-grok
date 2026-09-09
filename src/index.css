@@ -233,7 +233,7 @@ button {
   position: absolute;
   inset: 0;
   border-radius: 18px;
-  background: rgba(59, 11, 50, 0.75);
+  background: url('/icons/monsters/LENTE.svg') center / cover no-repeat;
   box-shadow: var(--shadow);
 }
 

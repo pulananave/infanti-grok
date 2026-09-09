@@ -28,7 +28,7 @@ Boogar, Ceval, Dan, Esper, Gobu, Grompy, Ohle, Rafog, Teewong, Zoem e **Gerarda*
 
 Cada um tem um humanóide placeholder distinto (cor, proporção, cabeça e acessório).
 
-**Gerarda não entra nestas 5 canções.** Ela já existe no elenco para capítulos futuros.
+**Zoem e Gerarda não entram nestas 5 canções** (não listados nos `.cfg` Godot). Continuam no elenco para capítulos futuros.
 
 ## Bandeja, balão e palco
 

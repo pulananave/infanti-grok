@@ -40,6 +40,45 @@ export function isInstrumentId(value: string): value is InstrumentId {
   return (INSTRUMENT_IDS as readonly string[]).includes(value)
 }
 
+/** Godot `type` strings → existing balloon / held-instrument icons. */
+const TYPE_ICONS: Record<string, InstrumentId> = {
+  pratos: 'cymbals',
+  trombone: 'trombone',
+  voz: 'vocals',
+  sanfona: 'accordion',
+  synthbass: 'bass',
+  marimba: 'xylophone',
+  bateriapop: 'drums',
+  bateriarock: 'drums',
+  bateriaeletronica: 'dj',
+  bateriaeletronica2: 'dj',
+  bateria: 'drums',
+  baterialatin: 'drums',
+  violao: 'guitar',
+  caixa: 'caixa',
+  baixoeletrico: 'bass',
+  agogo: 'agogo',
+  trompete: 'trumpet',
+  tuba: 'tuba',
+  synth: 'synth',
+  baixorock: 'bass',
+  guitarrabase: 'guitar',
+  guitarrafrase: 'electric_guitar',
+  guitararock: 'electric_guitar',
+  picolo: 'flute',
+  picolo2: 'flute',
+  baixoacustico: 'bass',
+  conga: 'conga',
+  bombo: 'bombo',
+  violino: 'violin',
+  milkman: 'dj',
+  orgao: 'organ',
+  rhodes: 'piano',
+  shaker: 'shaker',
+  recoreco: 'reco_reco',
+  pandeirola: 'tambourine',
+}
+
 const KIND_RULES: [RegExp, InstrumentId][] = [
   [/^voz_/, 'vocals'],
   [/bateria$/, 'drums'],
@@ -70,8 +109,14 @@ const KIND_RULES: [RegExp, InstrumentId][] = [
   [/loop$|milkman|milkyman|funky_break|techno|acid/, 'dj'],
 ]
 
-/** Map a stem instrument id (usually `{genre}_{mega-token}`) to a tray/stage icon. */
+function normalizeTypeKey(value: string): string {
+  return value.replace(/[^a-z0-9]+/gi, '').toLowerCase()
+}
+
+/** Map a Godot type or stem id to a tray/stage icon. */
 export function instrumentKind(instrument: string): InstrumentId | null {
+  const fromType = TYPE_ICONS[normalizeTypeKey(instrument)]
+  if (fromType) return fromType
   if (isInstrumentId(instrument)) return instrument
   for (const [pattern, kind] of KIND_RULES) {
     if (pattern.test(instrument)) return kind

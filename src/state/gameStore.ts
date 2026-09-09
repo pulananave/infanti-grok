@@ -32,7 +32,7 @@ interface GameState {
   toggleBalloon: (characterId: CharacterId) => void
   closeBalloon: () => void
   beginSpawnDrag: (characterId: CharacterId, instrument: string, x: number, y: number) => void
-  beginMoveDrag: (instanceId: string, instrument: string, x: number, y: number) => void
+  beginMoveDrag: (instanceId: string, instrument: string, iconType: string, x: number, y: number) => void
   updateDrag: (x: number, y: number) => void
   endDrag: (x: number, y: number) => Promise<void>
   placeStem: (
@@ -133,18 +133,28 @@ export const useGame = create<GameState>((set, get) => ({
 
   beginSpawnDrag: (characterId, instrument, x, y) => {
     audioEngine.unlock()
+    const song = getSong(get().songId)
+    const stem = song ? findStem(song, characterId, instrument) : undefined
     set({
-      drag: { type: 'spawn', characterId, instrument, clientX: x, clientY: y },
+      drag: {
+        type: 'spawn',
+        characterId,
+        instrument,
+        iconType: stem?.type ?? instrument,
+        clientX: x,
+        clientY: y,
+      },
     })
   },
 
-  beginMoveDrag: (instanceId, instrument, x, y) => {
+  beginMoveDrag: (instanceId, instrument, iconType, x, y) => {
     audioEngine.unlock()
     set({
       drag: {
         type: 'move',
         instanceId,
         instrument,
+        iconType,
         clientX: x,
         clientY: y,
         startX: x,
@@ -207,6 +217,10 @@ export const useGame = create<GameState>((set, get) => ({
     )
     if (alreadyUsed) return
 
+    const placedForCharacter = instances.filter((item) => item.characterId === characterId).length
+    const limit = song.instrumentUseLimit?.[characterId]
+    if (limit != null && placedForCharacter >= limit) return
+
     const stem = findStem(song, characterId, instrument)
     if (!stem) return
 
@@ -215,9 +229,12 @@ export const useGame = create<GameState>((set, get) => ({
       id,
       characterId,
       instrument: stem.instrument,
+      type: stem.type,
       genre: stem.genre,
       compassos: stem.compassos,
       audioPaths: stemAudioCandidates(song, stem),
+      minVolumeDb: stem.minVolumeDb,
+      maxVolumeDb: stem.maxVolumeDb,
       position,
       muted: false,
     }
@@ -239,7 +256,7 @@ export const useGame = create<GameState>((set, get) => ({
         instrument: instance.instrument,
         genre: instance.genre,
       },
-      volumeForPosition(position),
+      volumeForPosition(position, instance),
     )
   },
 
@@ -250,7 +267,7 @@ export const useGame = create<GameState>((set, get) => ({
     set({ instances })
     const current = instances.find((item) => item.id === id)
     if (!current) return
-    audioEngine.setGain(id, current.muted ? 0 : volumeForPosition(position))
+    audioEngine.setGain(id, current.muted ? 0 : volumeForPosition(position, current))
   },
 
   toggleMute: (id) => {
@@ -260,7 +277,7 @@ export const useGame = create<GameState>((set, get) => ({
     set({ instances })
     const current = instances.find((item) => item.id === id)
     if (!current) return
-    audioEngine.setGain(id, current.muted ? 0 : volumeForPosition(current.position))
+    audioEngine.setGain(id, current.muted ? 0 : volumeForPosition(current.position, current))
   },
 
   removeInstance: (id) => {
@@ -277,16 +294,19 @@ export const useGame = create<GameState>((set, get) => ({
       .map((item) => item.instrument),
 }))
 
-export function availableInstruments(characterId: CharacterId) {
+export function availableStems(characterId: CharacterId) {
   const { songId, instances } = useGame.getState()
   const song = getSong(songId)
   if (!song) return []
-  const used = new Set(
-    instances.filter((item) => item.characterId === characterId).map((item) => item.instrument),
-  )
-  return song.stems
-    .filter((stem) => stem.character === characterId && !used.has(stem.instrument))
-    .map((stem) => stem.instrument)
+  const mine = instances.filter((item) => item.characterId === characterId)
+  const limit = song.instrumentUseLimit?.[characterId]
+  if (limit != null && mine.length >= limit) return []
+  const used = new Set(mine.map((item) => item.instrument))
+  return song.stems.filter((stem) => stem.character === characterId && !used.has(stem.instrument))
+}
+
+export function availableInstruments(characterId: CharacterId) {
+  return availableStems(characterId).map((stem) => stem.instrument)
 }
 
 export function trayCharacterIds(): CharacterId[] {

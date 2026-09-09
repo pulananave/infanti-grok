@@ -7,9 +7,10 @@ export interface MonsterIconSet {
 }
 
 /**
- * Tray chip mapping.
+ * Tray chip mapping from the original ICONE_* pack.
  * Named pack icons keep their official names.
- * Numbered leftovers fill the remaining cast; zoem and gerarda stay on a soft placeholder.
+ * Numbered leftovers fill gobu / dan / esper (MONSTRO04/05/07).
+ * Zoem and Gerarda have no pack art — HumanoidFace falls back to a soft placeholder.
  */
 export const MONSTER_ICON_MAP: Record<CharacterId, MonsterIconSet | null> = {
   boogar: {
