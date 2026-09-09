@@ -15,20 +15,41 @@ export type CharacterId =
 
 export type ComboShape = 'circle' | 'square' | 'triangle'
 
-export type HeadShape = 'round' | 'tall' | 'wide' | 'box' | 'diamond' | 'oval'
+export type BodyForm = 'egg' | 'pear' | 'sphere' | 'onion' | 'bean' | 'scurve' | 'wide'
 
-export type Accessory =
-  | 'antenna'
-  | 'sprout'
-  | 'cap'
-  | 'star'
-  | 'horns'
-  | 'unibrow'
-  | 'bow'
-  | 'mohawk'
-  | 'glasses'
-  | 'headphones'
-  | 'bun'
+export type LimbStyle = 'stubby' | 'thick' | 'spindly' | 'wavy' | 'longThin'
+
+export type EyeStyle = 'dot' | 'largeWhite' | 'cyclops' | 'stalk' | 'yellow'
+
+export type MouthStyle = 'line' | 'smile' | 'twoTeeth' | 'threeTeeth' | 'fourTeeth' | 'buckTeeth' | 'bigLips' | 'oneTooth'
+
+export type BrowStyle = 'none' | 'unibrow' | 'blocks' | 'thin'
+
+export type TailStyle = 'none' | 'spiral' | 'ball' | 'scurve'
+
+export type LookFeature =
+  | 'bearEars'
+  | 'bunnyEars'
+  | 'nubEars'
+  | 'bullHorns'
+  | 'onionSprout'
+  | 'leafSprout'
+  | 'hairTuft'
+  | 'flameCrest'
+  | 'spiralAntenna'
+  | 'dorsalSpikes'
+  | 'trunk'
+  | 'cheekDashes'
+  | 'bodySpikes'
+  | 'onionRidges'
+  | 'goldSpots'
+  | 'bellySeam'
+  | 'redNose'
+  | 'redTips'
+  | 'claws3'
+  | 'claws4'
+  | 'pawPads'
+  | 'backBumps'
 
 export interface StemConfig {
   character: CharacterId
@@ -72,10 +93,31 @@ export interface CharacterLook {
   bodyColor: string
   accentColor: string
   skinColor: string
+  limbColor: string
+  eyeColor: string
+  scleraColor?: string
+  irisColor?: string
+  mouthColor?: string
+  toothColor?: string
+  clawColor?: string
+  featureColor?: string
   height: number
   belly: number
-  headShape: HeadShape
-  accessory: Accessory
+  bodyForm: BodyForm
+  limbStyle: LimbStyle
+  armCount: 2 | 4
+  eyeCount: 1 | 2
+  eyeStyle: EyeStyle
+  eyeSpacing: number
+  eyeSize: number
+  eyeY: number
+  mouthStyle: MouthStyle
+  browStyle: BrowStyle
+  features: LookFeature[]
+  tail: TailStyle
+  monobody: boolean
+  legLength?: number
+  armLength?: number
 }
 
 export interface StageInstance {

@@ -94,8 +94,8 @@ function StageCharacter({
         beginMoveDrag(instance.id, instance.instrument, instance.type, event.clientX, event.clientY)
       }}
     >
-      <mesh position={[0, 0.55, 0]} visible={false}>
-        <sphereGeometry args={[0.95, 12, 12]} />
+      <mesh position={[0, 0.7, 0]} visible={false}>
+        <sphereGeometry args={[1.15, 12, 12]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
       <Humanoid
