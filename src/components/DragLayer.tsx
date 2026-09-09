@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { audioEngine } from '../audio/AudioEngine'
 import { useGame } from '../state/gameStore'
-import { isOverBlockingUi, isOverTray, nearestInstanceId, projectToFloor } from '../state/sceneBridge'
+import { isOverBlockingUi, isOverTray, pickInstanceAt } from '../state/sceneBridge'
 import { InstrumentIcon } from './InstrumentIcon'
 
 export function DragLayer() {
@@ -17,9 +17,7 @@ export function DragLayer() {
       if (isOverBlockingUi(event.clientX, event.clientY) || isOverTray(event.clientX, event.clientY)) {
         return
       }
-      const hit = projectToFloor(event.clientX, event.clientY)
-      if (!hit) return
-      const id = nearestInstanceId(hit, state.instances)
+      const id = pickInstanceAt(event.clientX, event.clientY)
       if (!id) return
       const instance = state.instances.find((item) => item.id === id)
       if (!instance) return
@@ -57,7 +55,11 @@ export function DragLayer() {
 
   return (
     <div className="drag-ghost" style={{ left: drag.clientX, top: drag.clientY }}>
-      <InstrumentIcon instrument={drag.iconType} />
+      <InstrumentIcon
+        type={drag.iconType}
+        instrument={drag.instrument}
+        characterId={drag.characterId}
+      />
     </div>
   )
 }

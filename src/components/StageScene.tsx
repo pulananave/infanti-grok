@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { ContactShadows } from '@react-three/drei'
 import { Bloom, EffectComposer, N8AO, SMAA } from '@react-three/postprocessing'
@@ -9,8 +9,9 @@ import {
   clampToFloor,
   LISTENER_POSITION,
   projectToFloor,
+  registerPickable,
   registerScene,
-  STAGE_BOUNDS,
+  unregisterPickable,
   unregisterScene,
 } from '../state/sceneBridge'
 import { STAGE_LOOK } from '../theme/stageLook'
@@ -37,20 +38,6 @@ function Lights({ theme }: { theme: SongTheme }) {
   return <StageLights theme={theme} />
 }
 
-function pickNearestCharacter(point: { x: number; z: number }) {
-  const instances = useGame.getState().instances
-  let nearest = null as (typeof instances)[number] | null
-  let best = 1.2
-  for (const instance of instances) {
-    const distance = Math.hypot(instance.position[0] - point.x, instance.position[2] - point.z)
-    if (distance < best) {
-      best = distance
-      nearest = instance
-    }
-  }
-  return nearest
-}
-
 function StageCharacter({
   instance,
   bpm,
@@ -61,20 +48,25 @@ function StageCharacter({
   const group = useRef<THREE.Group>(null)
   const beginMoveDrag = useGame((s) => s.beginMoveDrag)
 
+  useLayoutEffect(() => {
+    const object = group.current
+    if (!object) return
+    object.userData.instanceId = instance.id
+    registerPickable(instance.id, object)
+    return () => unregisterPickable(instance.id)
+  }, [instance.id])
+
   return (
     <group
       ref={group}
       position={instance.position}
+      userData={{ instanceId: instance.id }}
       onPointerDown={(event) => {
         event.stopPropagation()
         event.nativeEvent.preventDefault()
         beginMoveDrag(instance.id, instance.instrument, instance.type, event.clientX, event.clientY)
       }}
     >
-      <mesh position={[0, 0.7, 0]} visible={false}>
-        <sphereGeometry args={[1.15, 12, 12]} />
-        <meshBasicMaterial transparent opacity={0} />
-      </mesh>
       <Humanoid
         characterId={instance.characterId}
         instrument={instance.type}
@@ -83,28 +75,6 @@ function StageCharacter({
         bpm={bpm}
       />
     </group>
-  )
-}
-
-function GrabPlane() {
-  const beginMoveDrag = useGame((s) => s.beginMoveDrag)
-  return (
-    <mesh
-      rotation={[-Math.PI / 2, 0, 0]}
-      position={[0, 0.05, 0]}
-      onUpdate={(mesh) => mesh.layers.set(1)}
-      onPointerDown={(event) => {
-        if (useGame.getState().drag) return
-        const nearest = pickNearestCharacter(event.point)
-        if (!nearest) return
-        event.stopPropagation()
-        event.nativeEvent.preventDefault()
-        beginMoveDrag(nearest.id, nearest.instrument, nearest.type, event.clientX, event.clientY)
-      }}
-    >
-      <planeGeometry args={[STAGE_BOUNDS.x * 2.1, STAGE_BOUNDS.zFront - STAGE_BOUNDS.zBack + 0.6]} />
-      <meshBasicMaterial transparent opacity={0} depthWrite={false} />
-    </mesh>
   )
 }
 
@@ -158,7 +128,7 @@ function StagePost() {
           distanceFalloff={1.15}
           quality="medium"
           halfRes
-          color="#3a2048"
+          color={STAGE_LOOK.ssaoColor}
         />
       ) : (
         <></>
@@ -218,9 +188,8 @@ export function StageScene() {
         blur={STAGE_LOOK.contactBlur}
         far={STAGE_LOOK.contactFar}
         resolution={STAGE_LOOK.contactResolution}
-        color="#3a2048"
+        color={STAGE_LOOK.contactColor}
       />
-      <GrabPlane />
       <mesh position={LISTENER_POSITION.toArray()} visible={false}>
         <sphereGeometry args={[0.05]} />
         <meshBasicMaterial />

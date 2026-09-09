@@ -257,9 +257,16 @@ button {
   box-shadow: 0 4px 0 #e0c44a;
 }
 
-.instrument-btn svg {
+.instrument-btn svg,
+.instrument-icon svg,
+.instrument-btn img,
+.instrument-icon img,
+.drag-ghost img {
   width: 34px;
   height: 34px;
+  object-fit: contain;
+  pointer-events: none;
+  display: block;
 }
 
 .drag-ghost {

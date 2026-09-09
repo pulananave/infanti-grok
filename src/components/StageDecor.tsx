@@ -24,7 +24,7 @@ function ToyCanoe() {
     <group position={[-3.7, 0.18, -3.35]} rotation={[0, 0.55, 0]}>
       <mesh>
         <capsuleGeometry args={[0.32, 1.55, 6, 14]} />
-        <ToyMaterial color={TOY.trunk} silicone />
+        <ToyMaterial color={TOY.peach} silicone />
       </mesh>
       <mesh position={[0, 0.22, 0]}>
         <capsuleGeometry args={[0.05, 0.42, 4, 8]} />
@@ -57,11 +57,11 @@ function ToyHay() {
     <group>
       <mesh position={[3.75, 0.22, -3.45]}>
         <boxGeometry args={[1.15, 0.38, 0.68]} />
-        <ToyMaterial color="#f0d27a" silicone />
+        <ToyMaterial color={TOY.lemon} silicone />
       </mesh>
       <mesh position={[-4.05, 0.32, -3.55]}>
         <capsuleGeometry args={[0.08, 0.7, 4, 8]} />
-        <ToyMaterial color={TOY.trunk} />
+        <ToyMaterial color={TOY.peach} />
       </mesh>
     </group>
   )

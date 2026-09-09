@@ -3,7 +3,8 @@ import { GradientTexture, RoundedBox, Sparkles } from '@react-three/drei'
 import { BackSide, Group } from 'three'
 import { STAGE_BOUNDS } from '../state/sceneBridge'
 import { STAGE_LOOK } from '../theme/stageLook'
-import { TOY, ToyMaterial, mixHex, tileColor, tileSurface } from '../theme/toy'
+import { StageFootlights } from './StageFootlights'
+import { TOY, ToyMaterial, liftPastel, mixHex, tileColor, tileSurface } from '../theme/toy'
 import type { SongTheme } from '../types'
 import { BackdropUnlocks } from './BackdropUnlocks'
 
@@ -206,10 +207,10 @@ function FloorTiles({ theme }: { theme: SongTheme }) {
       const surface = tileSurface(ix, iz)
       const color = mixHex(
         isCenter || isListener
-          ? mixHex(TOY.lemon, theme.accent, 0.22)
+          ? mixHex(TOY.lemon, theme.accent, 0.14)
           : tileColor(ix, iz, theme.accent, theme.floor),
         TOY.cream,
-        surface.tint,
+        surface.tint * 0.45,
       )
       tiles.push(
         <group key={`${ix}-${iz}`} position={pos}>
@@ -222,7 +223,15 @@ function FloorTiles({ theme }: { theme: SongTheme }) {
             clearcoat={surface.clearcoat}
             receiveShadow
           />
-          {isCenter && <Starburst />}
+          {isCenter && (
+            <>
+              <mesh position={[0, 0.108, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                <circleGeometry args={[0.34, 22]} />
+                <ToyMaterial color={TOY.lemon} glow emissiveIntensity={STAGE_LOOK.glowLamp} />
+              </mesh>
+              <Starburst />
+            </>
+          )}
           {isListener && (
             <mesh position={[0, 0.12, 0]} rotation={[-Math.PI / 2, 0, Math.PI / 4]}>
               <circleGeometry args={[0.22, 20]} />
@@ -260,7 +269,7 @@ function FloorTiles({ theme }: { theme: SongTheme }) {
         args={[SIZE_X + 0.55, 0.28, SIZE_Z + 0.55]}
         radius={0.14}
         position={[0, -0.22, (STAGE_BOUNDS.zBack + STAGE_BOUNDS.zFront) / 2]}
-        color={mixHex(TOY.peach, theme.floor, 0.35)}
+        color={mixHex(TOY.peach, liftPastel(theme.floor, TOY.mint, 0.5), 0.18)}
         silicone
       />
       {tiles}
@@ -345,7 +354,7 @@ function Backdrop({ accent }: { accent: string }) {
         args={[12.2, 3.4, 0.28]}
         radius={0.16}
         position={[0, 2.05, 0.18]}
-        color={mixHex(TOY.sky, accent, 0.12)}
+        color={mixHex(TOY.sky, accent, 0.08)}
         silicone
       />
       <Block args={[13.6, 0.28, 0.4]} radius={0.12} position={[0, 4.2, 0.1]} color={TOY.lilac} />
@@ -514,22 +523,6 @@ function Flora() {
   )
 }
 
-function CornerLamp({ position }: { position: [number, number, number] }) {
-  return (
-    <group position={position}>
-      <Block args={[0.28, 0.16, 0.28]} radius={0.07} position={[0, 0.08, 0]} color={TOY.lilac} />
-      <mesh position={[0, 0.2, 0]} rotation={[-0.9, 0, 0]}>
-        <sphereGeometry args={[0.12, 16, 12, 0, Math.PI]} />
-        <ToyMaterial color={TOY.spotlight} glow emissiveIntensity={STAGE_LOOK.glowLamp} />
-      </mesh>
-      <mesh position={[0, 0.28, 0.02]}>
-        <sphereGeometry args={[0.09, 14, 14]} />
-        <ToyMaterial color="#ffd8a8" glow emissiveIntensity={STAGE_LOOK.glowLamp} />
-      </mesh>
-    </group>
-  )
-}
-
 function FairyLights() {
   const left = -STAGE_BOUNDS.x - 0.08
   const right = STAGE_BOUNDS.x + 0.08
@@ -579,11 +572,11 @@ function HangingStars() {
 
 function SkyWash({ theme }: { theme: SongTheme }) {
   const orbs: Array<[number, number, number, number, string]> = [
-    [-7.2, 3.4, -9.5, 1.6, mixHex('#f4b8d0', theme.horizon, 0.35)],
-    [6.4, 4.2, -10.2, 1.9, mixHex('#c8b8f0', theme.sky, 0.4)],
-    [0.4, 5.6, -11, 1.3, mixHex('#ffd6a8', theme.horizon, 0.3)],
-    [-3.5, 5.1, -10.6, 1.1, mixHex(TOY.pink, theme.fog, 0.25)],
-    [3.8, 2.6, -9.8, 1.4, mixHex(TOY.lavender, theme.sky, 0.3)],
+    [-7.2, 3.4, -9.5, 1.6, mixHex(TOY.pink, liftPastel(theme.horizon, TOY.cream, 0.4), 0.28)],
+    [6.4, 4.2, -10.2, 1.9, mixHex(TOY.lavender, liftPastel(theme.sky, TOY.sky, 0.45), 0.28)],
+    [0.4, 5.6, -11, 1.3, mixHex(TOY.peach, liftPastel(theme.horizon, TOY.lemon, 0.35), 0.25)],
+    [-3.5, 5.1, -10.6, 1.1, mixHex(TOY.pink, TOY.cream, 0.2)],
+    [3.8, 2.6, -9.8, 1.4, mixHex(TOY.lavender, TOY.sky, 0.25)],
   ]
 
   return (
@@ -593,7 +586,12 @@ function SkyWash({ theme }: { theme: SongTheme }) {
         <meshBasicMaterial side={BackSide} depthWrite={false}>
           <GradientTexture
             stops={[0, 0.4, 0.72, 1]}
-            colors={[theme.horizon, theme.sky, theme.fog, '#f2e0f0']}
+            colors={[
+              liftPastel(theme.horizon, TOY.cream, 0.55),
+              liftPastel(theme.sky, TOY.sky, 0.58),
+              liftPastel(theme.fog, TOY.sky, 0.5),
+              '#f8eef8',
+            ]}
             size={64}
           />
         </meshBasicMaterial>
@@ -603,7 +601,11 @@ function SkyWash({ theme }: { theme: SongTheme }) {
         <meshBasicMaterial depthWrite={false}>
           <GradientTexture
             stops={[0, 0.45, 1]}
-            colors={[mixHex('#f7c8dc', theme.horizon, 0.4), theme.sky, mixHex('#b8d4f4', theme.fog, 0.35)]}
+            colors={[
+              mixHex(TOY.pink, liftPastel(theme.horizon, TOY.cream, 0.35), 0.35),
+              liftPastel(theme.sky, TOY.sky, 0.4),
+              mixHex(TOY.sky, liftPastel(theme.fog, TOY.lavender, 0.3), 0.3),
+            ]}
             size={48}
           />
         </meshBasicMaterial>
@@ -639,10 +641,7 @@ export function StageEnvironment({ theme }: { theme: SongTheme }) {
       <Backdrop accent={theme.accent} />
       <Flora />
       <FairyLights />
-      <CornerLamp position={[-STAGE_BOUNDS.x + 0.35, 0, STAGE_BOUNDS.zFront - 0.35]} />
-      <CornerLamp position={[STAGE_BOUNDS.x - 0.35, 0, STAGE_BOUNDS.zFront - 0.35]} />
-      <CornerLamp position={[-STAGE_BOUNDS.x + 0.35, 0, STAGE_BOUNDS.zBack + 0.45]} />
-      <CornerLamp position={[STAGE_BOUNDS.x - 0.35, 0, STAGE_BOUNDS.zBack + 0.45]} />
+      <StageFootlights />
     </group>
   )
 }
