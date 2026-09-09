@@ -22,7 +22,7 @@ export function SoftToyIbl() {
       </mesh>
       <Lightformer
         form="rect"
-        intensity={2.6}
+        intensity={3.4}
         color="#fff3dc"
         scale={[3.6, 2.2, 1]}
         position={[6.4, 8.2, 4.6]}
@@ -30,7 +30,7 @@ export function SoftToyIbl() {
       />
       <Lightformer
         form="rect"
-        intensity={0.55}
+        intensity={0.75}
         color="#c4dcff"
         scale={[2.8, 2, 1]}
         position={[-6.2, 3.4, 2.2]}
