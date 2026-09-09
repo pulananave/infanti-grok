@@ -91,7 +91,7 @@ function StageCharacter({
       onPointerDown={(event) => {
         event.stopPropagation()
         event.nativeEvent.preventDefault()
-        beginMoveDrag(instance.id, instance.instrument, event.clientX, event.clientY)
+        beginMoveDrag(instance.id, instance.instrument, instance.type, event.clientX, event.clientY)
       }}
     >
       <mesh position={[0, 0.55, 0]} visible={false}>
@@ -100,7 +100,7 @@ function StageCharacter({
       </mesh>
       <Humanoid
         characterId={instance.characterId}
-        instrument={instance.instrument}
+        instrument={instance.type}
         muted={instance.muted}
         playing
         bpm={bpm}
@@ -122,7 +122,7 @@ function GrabPlane() {
         if (!nearest) return
         event.stopPropagation()
         event.nativeEvent.preventDefault()
-        beginMoveDrag(nearest.id, nearest.instrument, event.clientX, event.clientY)
+        beginMoveDrag(nearest.id, nearest.instrument, nearest.type, event.clientX, event.clientY)
       }}
     >
       <planeGeometry args={[STAGE_BOUNDS.x * 2.1, STAGE_BOUNDS.zFront - STAGE_BOUNDS.zBack + 0.6]} />
@@ -155,7 +155,7 @@ function SpawnPreview({ bpm }: { bpm: number }) {
 
   return (
     <group ref={marker}>
-      <Humanoid characterId={drag.characterId} instrument={drag.instrument} ghost bpm={bpm} />
+      <Humanoid characterId={drag.characterId} instrument={drag.iconType} ghost bpm={bpm} />
     </group>
   )
 }

@@ -24,7 +24,7 @@ export function DragLayer() {
       const instance = state.instances.find((item) => item.id === id)
       if (!instance) return
       event.preventDefault()
-      state.beginMoveDrag(id, instance.instrument, event.clientX, event.clientY)
+      state.beginMoveDrag(id, instance.instrument, instance.type, event.clientX, event.clientY)
     }
     const onMove = (event: PointerEvent) => {
       if (!useGame.getState().drag) return
@@ -57,7 +57,7 @@ export function DragLayer() {
 
   return (
     <div className="drag-ghost" style={{ left: drag.clientX, top: drag.clientY }}>
-      <InstrumentIcon instrument={drag.instrument} />
+      <InstrumentIcon instrument={drag.iconType} />
     </div>
   )
 }

@@ -28,9 +28,7 @@ pintinho_melo_trumpete.ogg
 sapo_mar_picolo.ogg
 ```
 
-`src/config/songs.json` points at these exact filenames via each stem’s `file` field. Do not invent paths.
-
-To rebuild the JSON from the files on disk (character + compassos rules live in the script):
+`src/config/songs.json` points at these exact filenames via each stem’s `file` field. Character ownership, `bars`, `type`, and volume ranges come from `src/config/audio-configs/*.cfg`. Do not invent stems that are not in those configs.
 
 ```bash
 npm run sync-audio
