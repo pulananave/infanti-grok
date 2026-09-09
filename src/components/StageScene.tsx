@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { ContactShadows } from '@react-three/drei'
-import { Bloom, EffectComposer } from '@react-three/postprocessing'
+import { Bloom, EffectComposer, N8AO, SMAA } from '@react-three/postprocessing'
 import * as THREE from 'three'
 import { getSong } from '../config/loadConfig'
 import { useGame } from '../state/gameStore'
@@ -16,6 +16,7 @@ import {
 import { STAGE_LOOK } from '../theme/stageLook'
 import { Humanoid } from './Humanoid'
 import { StageDecor } from './StageDecor'
+import { StageLights } from './StageLighting'
 import type { SongId, SongTheme, StageInstance } from '../types'
 
 function SceneBridge() {
@@ -33,31 +34,7 @@ function SceneBridge() {
 }
 
 function Lights({ theme }: { theme: SongTheme }) {
-  return (
-    <>
-      <color attach="background" args={[theme.sky]} />
-      <fog attach="fog" args={[theme.fog, 18, 36]} />
-      <ambientLight intensity={STAGE_LOOK.ambient} color={STAGE_LOOK.ambientColor} />
-      <hemisphereLight args={[theme.horizon, STAGE_LOOK.hemiGround, STAGE_LOOK.hemi]} />
-      <directionalLight
-        position={STAGE_LOOK.keyPosition}
-        intensity={STAGE_LOOK.key}
-        color={STAGE_LOOK.keyColor}
-        castShadow
-        shadow-mapSize={[STAGE_LOOK.shadowMapSize, STAGE_LOOK.shadowMapSize]}
-        shadow-bias={-0.0008}
-        shadow-normalBias={0.025}
-        shadow-camera-near={1}
-        shadow-camera-far={22}
-        shadow-camera-left={-7.5}
-        shadow-camera-right={7.5}
-        shadow-camera-top={7.5}
-        shadow-camera-bottom={-7.5}
-      />
-      <directionalLight position={[-4.6, 3.2, 2.6]} intensity={STAGE_LOOK.fillCool} color={STAGE_LOOK.fillCoolColor} />
-      <directionalLight position={[1.4, 3.6, -5.4]} intensity={STAGE_LOOK.fillWarm} color={STAGE_LOOK.fillWarmColor} />
-    </>
-  )
+  return <StageLights theme={theme} />
 }
 
 function pickNearestCharacter(point: { x: number; z: number }) {
@@ -94,8 +71,8 @@ function StageCharacter({
         beginMoveDrag(instance.id, instance.instrument, instance.type, event.clientX, event.clientY)
       }}
     >
-      <mesh position={[0, 0.55, 0]} visible={false}>
-        <sphereGeometry args={[0.95, 12, 12]} />
+      <mesh position={[0, 0.7, 0]} visible={false}>
+        <sphereGeometry args={[1.15, 12, 12]} />
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
       <Humanoid
@@ -174,12 +151,25 @@ function CameraRig() {
 function StagePost() {
   return (
     <EffectComposer multisampling={0} enableNormalPass={false}>
+      {STAGE_LOOK.ssao ? (
+        <N8AO
+          aoRadius={STAGE_LOOK.ssaoRadius}
+          intensity={STAGE_LOOK.ssaoIntensity}
+          distanceFalloff={1.15}
+          quality="medium"
+          halfRes
+          color="#3a2048"
+        />
+      ) : (
+        <></>
+      )}
       <Bloom
         luminanceThreshold={STAGE_LOOK.bloomThreshold}
         luminanceSmoothing={STAGE_LOOK.bloomSmoothing}
         intensity={STAGE_LOOK.bloomIntensity}
         mipmapBlur
       />
+      <SMAA />
     </EffectComposer>
   )
 }
@@ -194,7 +184,7 @@ export function StageScene() {
     <Canvas
       className="stage-canvas"
       shadows="soft"
-      dpr={[1, 1.5]}
+      dpr={STAGE_LOOK.dpr}
       camera={{ position: [0, 5.4, 8.4], fov: 42, near: 0.1, far: 48 }}
       onPointerMissed={() => undefined}
       onCreated={({ gl, raycaster, camera }) => {
@@ -226,9 +216,9 @@ export function StageScene() {
         opacity={STAGE_LOOK.contactOpacity}
         scale={14}
         blur={STAGE_LOOK.contactBlur}
-        far={3.2}
-        resolution={256}
-        color="#4a2d58"
+        far={STAGE_LOOK.contactFar}
+        resolution={STAGE_LOOK.contactResolution}
+        color="#3a2048"
       />
       <GrabPlane />
       <mesh position={LISTENER_POSITION.toArray()} visible={false}>

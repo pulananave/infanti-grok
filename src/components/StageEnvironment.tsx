@@ -70,7 +70,7 @@ function Block({
     <RoundedBox
       args={args}
       radius={Math.min(radius ?? maxR * 0.55, maxR)}
-      smoothness={3}
+      smoothness={STAGE_LOOK.boxSmoothness}
       position={position}
       rotation={rotation}
       castShadow={castShadow}
@@ -623,7 +623,7 @@ export function StageEnvironment({ theme }: { theme: SongTheme }) {
         <SkyWash theme={theme} />
         <HangingStars />
         <Sparkles
-          count={28}
+          count={STAGE_LOOK.quality === 'desktop' ? 48 : 28}
           scale={[12, 3.6, 9]}
           size={2.4}
           speed={0.18}
