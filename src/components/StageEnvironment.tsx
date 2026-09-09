@@ -1,9 +1,11 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useRef, type Ref } from 'react'
+import { useFrame } from '@react-three/fiber'
 import { GradientTexture, RoundedBox, Sparkles } from '@react-three/drei'
-import { BackSide, Group } from 'three'
+import { BackSide, Color, Group, MeshPhysicalMaterial } from 'three'
+import { audioEngine } from '../audio/AudioEngine'
 import { STAGE_BOUNDS } from '../state/sceneBridge'
+import { beatToTile, FLOOR_COLS, FLOOR_ROWS, tileIndex } from '../theme/floorGrid'
 import { STAGE_LOOK } from '../theme/stageLook'
-import { StageFootlights } from './StageFootlights'
 import { TOY, ToyMaterial, liftPastel, mixHex, tileColor, tileSurface } from '../theme/toy'
 import type { SongTheme } from '../types'
 import { BackdropUnlocks } from './BackdropUnlocks'
@@ -24,13 +26,18 @@ function RenderLayer({ layer, children }: { layer: number; children: React.React
   return <group ref={group}>{children}</group>
 }
 
-const COLS = 11
-const ROWS = 8
+const COLS = FLOOR_COLS
+const ROWS = FLOOR_ROWS
 const SIZE_X = STAGE_BOUNDS.x * 2
 const SIZE_Z = STAGE_BOUNDS.zFront - STAGE_BOUNDS.zBack
 const STEP_X = SIZE_X / COLS
 const STEP_Z = SIZE_Z / ROWS
 const TILE_Y = 0.2
+const TILE_COUNT = COLS * ROWS
+const BEAT_EMIT = 0.24
+const BEAT_TINT = 0.16
+const BEAT_HIGHLIGHT = new Color('#fff6d8')
+const BEAT_EMISSIVE = new Color('#fff3c4')
 
 function tilePos(ix: number, iz: number): [number, number, number] {
   const x = -STAGE_BOUNDS.x + STEP_X * (ix + 0.5)
@@ -52,6 +59,7 @@ function Block({
   clearcoat,
   castShadow = false,
   receiveShadow = true,
+  materialRef,
 }: {
   args: [number, number, number]
   radius?: number
@@ -66,6 +74,7 @@ function Block({
   clearcoat?: number
   castShadow?: boolean
   receiveShadow?: boolean
+  materialRef?: Ref<MeshPhysicalMaterial>
 }) {
   const maxR = Math.min(...args) * 0.42
   return (
@@ -86,6 +95,7 @@ function Block({
         emissiveIntensity={emissiveIntensity}
         roughness={roughness}
         clearcoat={clearcoat}
+        materialRef={materialRef}
       />
     </RoundedBox>
   )
@@ -193,10 +203,39 @@ function iconFor(ix: number, iz: number) {
 }
 
 function FloorTiles({ theme }: { theme: SongTheme }) {
+  const mats = useRef<(MeshPhysicalMaterial | null)[]>(Array.from({ length: TILE_COUNT }, () => null))
+  const bases = useRef<(Color | null)[]>(Array.from({ length: TILE_COUNT }, () => null))
+  const glow = useRef(new Float32Array(TILE_COUNT))
   const midCol = 5
   const midRow = 3
   const listenRow = ROWS - 1
   const tiles = []
+
+  useFrame((_, dt) => {
+    const playing = audioEngine.isAudible()
+    const { ix: beatX, iz: beatZ } = beatToTile(playing ? audioEngine.getBeatIndex() : 0)
+    const active = playing ? tileIndex(beatX, beatZ) : -1
+    const ease = 1 - Math.exp(-dt * 9)
+    for (let i = 0; i < TILE_COUNT; i += 1) {
+      const target = i === active ? 1 : 0
+      const next = glow.current[i] + (target - glow.current[i]) * ease
+      glow.current[i] = next
+      const mat = mats.current[i]
+      if (!mat) continue
+      if (next < 0.002 && mat.emissiveIntensity < 0.002) {
+        if (mat.emissiveIntensity !== 0) {
+          mat.emissiveIntensity = 0
+          const base = bases.current[i]
+          if (base) mat.color.copy(base)
+        }
+        continue
+      }
+      mat.emissive.copy(BEAT_EMISSIVE)
+      mat.emissiveIntensity = next * BEAT_EMIT
+      const base = bases.current[i]
+      if (base) mat.color.copy(base).lerp(BEAT_HIGHLIGHT, next * BEAT_TINT)
+    }
+  })
 
   for (let ix = 0; ix < COLS; ix += 1) {
     for (let iz = 0; iz < ROWS; iz += 1) {
@@ -212,6 +251,7 @@ function FloorTiles({ theme }: { theme: SongTheme }) {
         TOY.cream,
         surface.tint * 0.45,
       )
+      const index = tileIndex(ix, iz)
       tiles.push(
         <group key={`${ix}-${iz}`} position={pos}>
           <Block
@@ -222,6 +262,15 @@ function FloorTiles({ theme }: { theme: SongTheme }) {
             roughness={surface.roughness}
             clearcoat={surface.clearcoat}
             receiveShadow
+            emissive="#fff3c4"
+            emissiveIntensity={0}
+            materialRef={(mat) => {
+              mats.current[index] = mat
+              if (!mat) return
+              const stored = bases.current[index] ?? new Color()
+              stored.set(color)
+              bases.current[index] = stored
+            }}
           />
           {isCenter && (
             <>
@@ -641,7 +690,6 @@ export function StageEnvironment({ theme }: { theme: SongTheme }) {
       <Backdrop accent={theme.accent} />
       <Flora />
       <FairyLights />
-      <StageFootlights />
     </group>
   )
 }

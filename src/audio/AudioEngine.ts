@@ -17,6 +17,21 @@ function createAudioContext(): AudioContext {
   return new Ctor()
 }
 
+function createPanner(ctx: AudioContext, initialPan: number): StereoPannerNode | null {
+  try {
+    if (typeof ctx.createStereoPanner !== 'function') return null
+    const panner = ctx.createStereoPanner()
+    panner.pan.value = clampPan(initialPan)
+    return panner
+  } catch {
+    return null
+  }
+}
+
+function clampPan(value: number): number {
+  return Math.max(-1, Math.min(1, value))
+}
+
 function decodeAudioData(ctx: AudioContext, bytes: ArrayBuffer): Promise<AudioBuffer> {
   const copy = bytes.slice(0)
   return new Promise((resolve, reject) => {
@@ -46,6 +61,7 @@ class StemVoice {
   private readonly ctx: AudioContext
   private readonly output: GainNode
   readonly gain: GainNode
+  private readonly panner: StereoPannerNode | null
   private readonly buffer: AudioBuffer
   private readonly loopDuration: number
   private nextLoopTime: number
@@ -60,6 +76,7 @@ class StemVoice {
     loopDuration: number,
     transportStart: number,
     initialGain: number,
+    initialPan = 0,
   ) {
     this.ctx = ctx
     this.buffer = buffer
@@ -67,7 +84,13 @@ class StemVoice {
     this.output = ctx.createGain()
     this.gain = ctx.createGain()
     this.gain.gain.value = initialGain
-    this.gain.connect(this.output)
+    this.panner = createPanner(ctx, initialPan)
+    if (this.panner) {
+      this.gain.connect(this.panner)
+      this.panner.connect(this.output)
+    } else {
+      this.gain.connect(this.output)
+    }
     this.output.connect(destination)
 
     const now = ctx.currentTime
@@ -82,6 +105,14 @@ class StemVoice {
 
   setGain(value: number) {
     this.gain.gain.setTargetAtTime(value, this.ctx.currentTime, 0.03)
+  }
+
+  setPan(value: number) {
+    this.panner?.pan.setTargetAtTime(clampPan(value), this.ctx.currentTime, 0.03)
+  }
+
+  getPan(): number {
+    return this.panner?.pan.value ?? 0
   }
 
   stop() {
@@ -99,6 +130,7 @@ class StemVoice {
     }
     this.sources = []
     this.gain.disconnect()
+    this.panner?.disconnect()
     this.output.disconnect()
   }
 
@@ -194,6 +226,28 @@ export class AudioEngine {
     return this.transportStart !== null
   }
 
+  /** Transport is live and the context is actually sounding. */
+  isAudible(): boolean {
+    return (
+      this.transportStart !== null &&
+      this.voices.size > 0 &&
+      !!this.ctx &&
+      this.ctx.state === 'running'
+    )
+  }
+
+  getBpm(): number {
+    return this.bpm
+  }
+
+  /** Whole beats since transport start (4/4, BPM). 0 when the stage is silent. */
+  getBeatIndex(): number {
+    if (this.transportStart === null || !this.ctx) return 0
+    const elapsed = Math.max(0, this.ctx.currentTime - this.transportStart)
+    const beatSec = 60 / Math.max(this.bpm, 1)
+    return Math.floor(elapsed / beatSec)
+  }
+
   stopAndReset() {
     for (const voice of this.voices.values()) {
       voice.stop()
@@ -207,9 +261,10 @@ export class AudioEngine {
     paths: string[],
     meta: VoiceMeta,
     gain: number,
+    pan = 0,
   ): Promise<void> {
     this.chain = this.chain
-      .then(() => this.addStemNow(id, paths, meta, gain))
+      .then(() => this.addStemNow(id, paths, meta, gain, pan))
       .catch((error) => {
         console.warn('[infanti] addStem failed', error)
       })
@@ -228,6 +283,15 @@ export class AudioEngine {
 
   setGain(id: string, value: number) {
     this.voices.get(id)?.setGain(value)
+  }
+
+  setPan(id: string, value: number) {
+    this.voices.get(id)?.setPan(value)
+  }
+
+  getPan(id: string): number | null {
+    const voice = this.voices.get(id)
+    return voice ? voice.getPan() : null
   }
 
   async preload(stems: { paths: string[]; meta: VoiceMeta }[]): Promise<void> {
@@ -294,6 +358,7 @@ export class AudioEngine {
     paths: string[],
     meta: VoiceMeta,
     gain: number,
+    pan = 0,
   ): Promise<void> {
     let ctx = await this.ensureContext()
     if (!this.master) return
@@ -327,6 +392,7 @@ export class AudioEngine {
       this.loopDuration(meta.compassos),
       this.transportStart,
       gain,
+      pan,
     )
     this.voices.set(id, voice)
   }
