@@ -77,10 +77,10 @@ function StageCharacter({
       </mesh>
       {STAGE_LOOK.quality === 'desktop' ? (
         <pointLight
-          position={[0, 0.14, 0.2]}
-          intensity={0.42}
+          position={[0, 0.1, 0.32]}
+          intensity={0.78}
           color={STAGE_LOOK.footlightColor}
-          distance={2.35}
+          distance={2.55}
           decay={2}
           castShadow={false}
         />

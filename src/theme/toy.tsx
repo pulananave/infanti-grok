@@ -15,12 +15,12 @@ export const TOY = {
   lavender: '#c9a8f8',
   lilac: '#c4b0ff',
   /** Peach terracotta — never muddy wood brown. */
-  trunk: '#f2a070',
+  trunk: '#ff9e6a',
   fruit: '#ff6b88',
   cloud: '#fffaf4',
   spotlight: '#ff9a58',
   ink: '#4a3270',
-  wall: '#9ed8f8',
+  wall: '#b8eaff',
 } as const
 
 const TILE_CYCLE = [TOY.peach, TOY.mint, TOY.babyBlue, TOY.pink, TOY.lemon, TOY.lavender, TOY.coral] as const

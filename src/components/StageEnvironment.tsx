@@ -587,10 +587,10 @@ function SkyWash({ theme }: { theme: SongTheme }) {
           <GradientTexture
             stops={[0, 0.4, 0.72, 1]}
             colors={[
-              liftPastel(theme.horizon, TOY.cream, 0.4),
-              liftPastel(theme.sky, TOY.sky, 0.42),
-              liftPastel(theme.fog, TOY.lavender, 0.35),
-              '#f6eaf8',
+              liftPastel(theme.horizon, TOY.cream, 0.55),
+              liftPastel(theme.sky, TOY.sky, 0.58),
+              liftPastel(theme.fog, TOY.sky, 0.5),
+              '#f8eef8',
             ]}
             size={64}
           />
