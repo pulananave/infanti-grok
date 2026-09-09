@@ -1,9 +1,26 @@
+import { useLayoutEffect, useRef } from 'react'
 import { GradientTexture, RoundedBox, Sparkles } from '@react-three/drei'
-import { BackSide } from 'three'
+import { BackSide, Group } from 'three'
 import { STAGE_BOUNDS } from '../state/sceneBridge'
 import { STAGE_LOOK } from '../theme/stageLook'
 import { TOY, ToyMaterial, mixHex, tileColor, tileSurface } from '../theme/toy'
 import type { SongTheme } from '../types'
+
+/** Background-only meshes (sky dome, sparkles) stay off the shadow cameras. */
+function RenderLayer({ layer, children }: { layer: number; children: React.ReactNode }) {
+  const group = useRef<Group>(null)
+  useLayoutEffect(() => {
+    const apply = () => {
+      group.current?.traverse((obj) => {
+        obj.layers.set(layer)
+      })
+    }
+    apply()
+    const id = requestAnimationFrame(apply)
+    return () => cancelAnimationFrame(id)
+  }, [layer])
+  return <group ref={group}>{children}</group>
+}
 
 const COLS = 11
 const ROWS = 8
@@ -153,7 +170,7 @@ function Starburst() {
       {[0, 45, 90, 135].map((deg) => (
         <mesh key={deg} rotation={[-Math.PI / 2, 0, (deg * Math.PI) / 180]}>
           <boxGeometry args={[0.11, 0.7, 0.045]} />
-          <ToyMaterial color={TOY.lemon} glow emissiveIntensity={STAGE_LOOK.glowIcon} />
+          <ToyMaterial color={TOY.lemon} roughness={0.62} />
         </mesh>
       ))}
       <mesh rotation={[-Math.PI / 2, 0, Math.PI / 4]}>
@@ -602,26 +619,28 @@ function SkyWash({ theme }: { theme: SongTheme }) {
 export function StageEnvironment({ theme }: { theme: SongTheme }) {
   return (
     <group>
-      <SkyWash theme={theme} />
+      <RenderLayer layer={2}>
+        <SkyWash theme={theme} />
+        <HangingStars />
+        <Sparkles
+          count={28}
+          scale={[12, 3.6, 9]}
+          size={2.4}
+          speed={0.18}
+          opacity={0.22}
+          color="#fff3c4"
+          position={[0, 1.6, -0.4]}
+        />
+      </RenderLayer>
       <FloorTiles theme={theme} />
       <Seating />
       <Backdrop accent={theme.accent} />
       <Flora />
       <FairyLights />
-      <HangingStars />
       <CornerLamp position={[-STAGE_BOUNDS.x + 0.35, 0, STAGE_BOUNDS.zFront - 0.35]} />
       <CornerLamp position={[STAGE_BOUNDS.x - 0.35, 0, STAGE_BOUNDS.zFront - 0.35]} />
       <CornerLamp position={[-STAGE_BOUNDS.x + 0.35, 0, STAGE_BOUNDS.zBack + 0.45]} />
       <CornerLamp position={[STAGE_BOUNDS.x - 0.35, 0, STAGE_BOUNDS.zBack + 0.45]} />
-      <Sparkles
-        count={28}
-        scale={[12, 3.6, 9]}
-        size={2.4}
-        speed={0.18}
-        opacity={0.22}
-        color="#fff3c4"
-        position={[0, 1.6, -0.4]}
-      />
     </group>
   )
 }
