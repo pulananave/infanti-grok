@@ -87,6 +87,7 @@ export type DragState =
       type: 'spawn'
       characterId: CharacterId
       instrument: string
+      genre?: string
       clientX: number
       clientY: number
     }

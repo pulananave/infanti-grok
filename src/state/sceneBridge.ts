@@ -94,6 +94,11 @@ export const STAGE_BOUNDS = {
   zFront: FLOOR_Z_FRONT,
 }
 
+export function depthScale(z: number): number {
+  const t = THREE.MathUtils.inverseLerp(FLOOR_Z_FRONT, FLOOR_Z_BACK, z)
+  return THREE.MathUtils.lerp(1.05, 0.84, THREE.MathUtils.clamp(t, 0, 1))
+}
+
 export function nearestInstanceId(
   point: { x: number; z: number },
   instances: { id: string; position: [number, number, number] }[],

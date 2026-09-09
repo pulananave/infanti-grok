@@ -14,6 +14,7 @@ export function StageScreen() {
 
   return (
     <div className="stage-screen">
+      <img className="stage-backdrop" src="/runtime-2d/stage/stage-bg.jpg" alt="" draggable={false} />
       <StageScene />
       <div className="hud-top">
         <HomeButton />
