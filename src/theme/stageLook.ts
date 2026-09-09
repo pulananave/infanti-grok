@@ -1,44 +1,128 @@
 /**
- * Mobile-landscape look knobs for the 3D toy stage.
- * Tune here rather than scattering magic numbers across lights/bloom/materials.
+ * Stage look knobs. Desktop is the default budget (this game runs in a
+ * computer browser). Mobile is a conservative fallback if we detect a phone.
  */
-export const STAGE_LOOK = {
-  /** Weak warm ambient so the key light can sculpt volume. */
+export type QualityPreset = 'desktop' | 'mobile'
+
+function detectQualityPreset(): QualityPreset {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') return 'desktop'
+  const ua = navigator.userAgent || ''
+  const phone = /Android|iPhone|iPod/i.test(ua) && !/iPad/i.test(ua)
+  const coarse = window.matchMedia?.('(pointer: coarse)').matches ?? false
+  if (phone && coarse && window.innerWidth < 900) return 'mobile'
+  return 'desktop'
+}
+
+export const QUALITY_PRESET: QualityPreset = detectQualityPreset()
+
+const DESKTOP = {
+  quality: 'desktop' as const,
+  ambient: 0.16,
+  ambientColor: '#ffe6cc',
+  hemi: 0.22,
+  hemiGround: '#7fa88c',
+  key: 1.78,
+  keyColor: '#fff4e4',
+  keyPosition: [6.2, 7.2, 5.0] as [number, number, number],
+  fillCool: 0.2,
+  fillCoolColor: '#b7d8ff',
+  fillWarm: 0.14,
+  fillWarmColor: '#ffd2c4',
+  rim: 0.38,
+  rimColor: '#ffe4c4',
+  rimPosition: [-4.2, 3.4, -5.2] as [number, number, number],
+  shadowMapSize: 2048,
+  softShadows: true,
+  softShadowSize: 16,
+  softShadowSamples: 16,
+  softShadowFocus: 0.6,
+  dpr: [1, 2] as [number, number],
+  exposure: 1.08,
+  bloomThreshold: 0.9,
+  bloomSmoothing: 0.4,
+  bloomIntensity: 0.26,
+  contactOpacity: 0.55,
+  contactBlur: 1.7,
+  contactResolution: 1024,
+  contactFar: 3.6,
+  ssao: true,
+  ssaoIntensity: 0.85,
+  ssaoRadius: 0.42,
+  envResolution: 256,
+  envIntensity: 0.18,
+  roughness: 0.56,
+  roughnessGlow: 0.46,
+  clearcoat: 0.44,
+  clearcoatGlow: 0.12,
+  clearcoatRoughness: 0.32,
+  sheen: 0.52,
+  sheenRoughness: 0.58,
+  envMapIntensity: 0.42,
+  specularIntensity: 0.48,
+  normalStrength: 0.16,
+  bodySegments: 32,
+  boxSmoothness: 5,
+  glowDefault: 0.32,
+  glowOrb: 0.38,
+  glowLamp: 0.46,
+  glowIcon: 0.28,
+  glowStar: 0.26,
+  glowFlower: 0.2,
+}
+
+const MOBILE = {
+  quality: 'mobile' as const,
   ambient: 0.14,
   ambientColor: '#ffe6cc',
-  /** Sky/ground bounce; keep below the key so it does not flatten the grid. */
   hemi: 0.24,
   hemiGround: '#7fa88c',
-  /** Single shadow-casting sun, slightly raking so forms read. */
   key: 1.55,
   keyColor: '#fff4e4',
   keyPosition: [6.2, 7.2, 5.0] as [number, number, number],
-  /** Soft colored fills — not extra point lights. */
   fillCool: 0.12,
   fillCoolColor: '#b7d8ff',
   fillWarm: 0.08,
   fillWarmColor: '#ffd2c4',
-  /** PCF soft shadow map edge length (512 stays cheap on phones). */
+  rim: 0.18,
+  rimColor: '#ffe4c4',
+  rimPosition: [-4.2, 3.4, -5.2] as [number, number, number],
   shadowMapSize: 512,
-  /** ACES exposure after the dimmer ambient. */
+  softShadows: false,
+  softShadowSize: 16,
+  softShadowSamples: 8,
+  softShadowFocus: 0.6,
+  dpr: [1, 1.5] as [number, number],
   exposure: 1.06,
   bloomThreshold: 0.92,
   bloomSmoothing: 0.34,
   bloomIntensity: 0.22,
   contactOpacity: 0.45,
   contactBlur: 2.2,
-  /** Default silicone/clay response (not mirrors). */
+  contactResolution: 256,
+  contactFar: 3.2,
+  ssao: false,
+  ssaoIntensity: 0.5,
+  ssaoRadius: 0.4,
+  envResolution: 64,
+  envIntensity: 0.12,
   roughness: 0.7,
   roughnessGlow: 0.5,
   clearcoat: 0.26,
   clearcoatGlow: 0.1,
+  clearcoatRoughness: 0.48,
   sheen: 0.2,
+  sheenRoughness: 0.8,
   envMapIntensity: 0.28,
-  /** Emissive accents — bloom picks these up without blowing pastels. */
+  specularIntensity: 0.32,
+  normalStrength: 0,
+  bodySegments: 16,
+  boxSmoothness: 3,
   glowDefault: 0.36,
   glowOrb: 0.42,
   glowLamp: 0.5,
   glowIcon: 0.32,
   glowStar: 0.3,
   glowFlower: 0.24,
-} as const
+}
+
+export const STAGE_LOOK = QUALITY_PRESET === 'mobile' ? MOBILE : DESKTOP

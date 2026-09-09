@@ -4,6 +4,7 @@ import { RoundedBox } from '@react-three/drei'
 import type { Group } from 'three'
 import { CHARACTERS } from '../config/characters'
 import { instrumentKind } from '../config/instruments'
+import { STAGE_LOOK } from '../theme/stageLook'
 import { ToyMaterial } from '../theme/toy'
 import type { CharacterId, CharacterLook, LookFeature } from '../types'
 
@@ -22,12 +23,14 @@ function Mat({
   emissive,
   emissiveIntensity,
   roughness,
+  smooth = false,
 }: {
   color: string
   opacity?: number
   emissive?: string
   emissiveIntensity?: number
   roughness?: number
+  smooth?: boolean
 }) {
   return (
     <ToyMaterial
@@ -37,6 +40,7 @@ function Mat({
       emissiveIntensity={emissiveIntensity}
       roughness={roughness}
       silicone
+      normalStrength={smooth ? 0 : undefined}
     />
   )
 }
@@ -71,11 +75,11 @@ function BodyMesh({ look, color, opacity }: { look: CharacterLook; color: string
     return (
       <group>
         <mesh position={[0, y - r * 0.12, 0]} scale={[1.22, 0.95, 1.08]} castShadow receiveShadow>
-          <sphereGeometry args={[r, 20, 20]} />
+          <sphereGeometry args={[r, STAGE_LOOK.bodySegments, STAGE_LOOK.bodySegments]} />
           <Mat color={color} opacity={opacity} roughness={0.78} />
         </mesh>
         <mesh position={[0, y + r * 0.48, 0]} scale={[0.82, 0.82, 0.82]} castShadow receiveShadow>
-          <sphereGeometry args={[r * 0.74, 18, 18]} />
+          <sphereGeometry args={[r * 0.74, STAGE_LOOK.bodySegments - 4, STAGE_LOOK.bodySegments - 4]} />
           <Mat color={color} opacity={opacity} roughness={0.78} />
         </mesh>
       </group>
@@ -86,11 +90,11 @@ function BodyMesh({ look, color, opacity }: { look: CharacterLook; color: string
     return (
       <group>
         <mesh position={[0, y + 0.05, 0.03]} scale={[1.02, 1.08, 1]} castShadow receiveShadow>
-          <sphereGeometry args={[r * 0.98, 20, 20]} />
+          <sphereGeometry args={[r * 0.98, STAGE_LOOK.bodySegments, STAGE_LOOK.bodySegments]} />
           <Mat color={color} opacity={opacity} />
         </mesh>
         <mesh position={[0, y - r * 0.62, -0.05]} scale={[0.82, 0.88, 0.86]} castShadow receiveShadow>
-          <sphereGeometry args={[r * 0.68, 16, 16]} />
+          <sphereGeometry args={[r * 0.68, STAGE_LOOK.bodySegments - 6, STAGE_LOOK.bodySegments - 6]} />
           <Mat color={color} opacity={opacity} />
         </mesh>
       </group>
@@ -110,7 +114,7 @@ function BodyMesh({ look, color, opacity }: { look: CharacterLook; color: string
 
   return (
     <mesh position={[0, y, 0]} scale={scale} castShadow receiveShadow>
-      <sphereGeometry args={[r, 22, 22]} />
+      <sphereGeometry args={[r, STAGE_LOOK.bodySegments, STAGE_LOOK.bodySegments]} />
       <Mat color={color} opacity={opacity} roughness={form === 'onion' ? 0.62 : 0.74} />
     </mesh>
   )
@@ -252,15 +256,15 @@ function Eyes({ look, opacity }: { look: CharacterLook; opacity: number }) {
       <group position={[0, y, z]}>
         <mesh castShadow>
           <sphereGeometry args={[size, 16, 16]} />
-          <Mat color={look.scleraColor ?? '#fff8f0'} opacity={opacity} roughness={0.35} />
+          <Mat color={look.scleraColor ?? '#fff8f0'} opacity={opacity} roughness={0.28} smooth />
         </mesh>
         <mesh position={[0, 0, size * 0.55]}>
           <sphereGeometry args={[size * 0.55, 12, 12]} />
-          <Mat color={look.irisColor ?? look.accentColor} opacity={opacity} />
+          <Mat color={look.irisColor ?? look.accentColor} opacity={opacity} smooth />
         </mesh>
         <mesh position={[0, 0, size * 0.85]}>
           <sphereGeometry args={[size * 0.22, 10, 10]} />
-          <Mat color={dark} opacity={opacity} />
+          <Mat color={dark} opacity={opacity} smooth />
         </mesh>
       </group>
     )
@@ -278,11 +282,11 @@ function Eyes({ look, opacity }: { look: CharacterLook; opacity: number }) {
             </mesh>
             <mesh position={[0, stalkH + 0.02, 0.02]} castShadow>
               <sphereGeometry args={[size, 14, 14]} />
-              <Mat color={look.scleraColor ?? '#f6efe6'} opacity={opacity} roughness={0.32} />
+              <Mat color={look.scleraColor ?? '#f6efe6'} opacity={opacity} roughness={0.28} smooth />
             </mesh>
             <mesh position={[0, stalkH + 0.015, size * 0.55]}>
               <sphereGeometry args={[size * 0.42, 10, 10]} />
-              <Mat color={look.irisColor ?? dark} opacity={opacity} />
+              <Mat color={look.irisColor ?? dark} opacity={opacity} smooth />
             </mesh>
             <mesh position={[0, stalkH + size * 0.55, 0.01]} scale={[1.15, 0.45, 1.1]}>
               <sphereGeometry args={[size * 0.95, 12, 12]} />
@@ -301,7 +305,7 @@ function Eyes({ look, opacity }: { look: CharacterLook; opacity: number }) {
           <group key={side} position={[s * side, y, z * 0.55]}>
             <mesh castShadow>
               <sphereGeometry args={[size, 14, 14]} />
-              <Mat color={look.scleraColor ?? '#effde6'} opacity={opacity} roughness={0.4} />
+              <Mat color={look.scleraColor ?? '#effde6'} opacity={opacity} roughness={0.32} smooth />
             </mesh>
             <mesh rotation={[0, 0, 0]} position={[0, 0, size * 0.72]} scale={[1.1, 0.28, 0.2]}>
               <capsuleGeometry args={[0.012, 0.04, 3, 6]} />
@@ -322,11 +326,11 @@ function Eyes({ look, opacity }: { look: CharacterLook; opacity: number }) {
             <>
               <mesh>
                 <sphereGeometry args={[size, 12, 12]} />
-                <Mat color={sclera} opacity={opacity} roughness={0.38} />
+                <Mat color={sclera} opacity={opacity} roughness={0.3} smooth />
               </mesh>
               <mesh position={[0, 0, size * 0.55]}>
                 <sphereGeometry args={[size * 0.38, 10, 10]} />
-                <Mat color={dark} opacity={opacity} />
+                <Mat color={dark} opacity={opacity} smooth />
               </mesh>
             </>
           ) : (

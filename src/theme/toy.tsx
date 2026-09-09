@@ -1,5 +1,6 @@
 import type { MeshPhysicalMaterialProps } from '@react-three/fiber'
 import { STAGE_LOOK } from './stageLook'
+import { getToyNormalMap, normalScale } from './toyNormals'
 
 export const TOY = {
   mint: '#8ee0c4',
@@ -32,8 +33,8 @@ export function tileColor(ix: number, iz: number, accent: string, floor: string)
 export function tileSurface(ix: number, iz: number): { roughness: number; clearcoat: number; tint: number } {
   const n = (ix * 19 + iz * 37) % 16
   return {
-    roughness: 0.64 + (n / 15) * 0.18,
-    clearcoat: 0.16 + ((n * 3) % 8) * 0.016,
+    roughness: 0.52 + (n / 15) * 0.2,
+    clearcoat: STAGE_LOOK.clearcoat * 0.45 + ((n * 3) % 8) * 0.02,
     tint: (n % 7) / 110,
   }
 }
@@ -63,6 +64,8 @@ type ToyMatProps = {
   glow?: boolean
   roughness?: number
   clearcoat?: number
+  /** 0 skips the shared clay/plush normal. */
+  normalStrength?: number
 }
 
 export function ToyMaterial({
@@ -74,30 +77,39 @@ export function ToyMaterial({
   glow = false,
   roughness,
   clearcoat,
+  normalStrength,
 }: ToyMatProps) {
   const rough = roughness ?? (glow ? STAGE_LOOK.roughnessGlow : STAGE_LOOK.roughness)
   const coat = clearcoat ?? (glow ? STAGE_LOOK.clearcoatGlow : STAGE_LOOK.clearcoat)
   const emitColor = glow && emissive === '#000000' ? color : emissive
   const emit = glow ? (emissiveIntensity > 0 ? emissiveIntensity : STAGE_LOOK.glowDefault) : emissiveIntensity
+  const nStrength = normalStrength ?? (glow ? 0 : STAGE_LOOK.normalStrength)
+  const normalMap = nStrength > 0 ? getToyNormalMap() : null
 
   const props = {
     color,
     roughness: rough,
     metalness: 0,
     clearcoat: coat,
-    clearcoatRoughness: 0.48,
+    clearcoatRoughness: STAGE_LOOK.clearcoatRoughness,
     sheen: silicone ? STAGE_LOOK.sheen : 0.06,
-    sheenRoughness: 0.8,
+    sheenRoughness: STAGE_LOOK.sheenRoughness,
     sheenColor: color,
-    ior: 1.4,
-    specularIntensity: 0.32,
-    envMapIntensity: glow ? 0.12 : STAGE_LOOK.envMapIntensity,
+    ior: 1.46,
+    specularIntensity: STAGE_LOOK.specularIntensity,
+    envMapIntensity: glow ? 0.1 : STAGE_LOOK.envMapIntensity,
     transparent: opacity < 1,
     opacity,
     depthWrite: opacity >= 1,
     emissive: emitColor,
     emissiveIntensity: emit,
     toneMapped: !glow,
+    ...(normalMap
+      ? {
+          normalMap,
+          normalScale: normalScale(nStrength),
+        }
+      : {}),
   } satisfies MeshPhysicalMaterialProps
 
   return <meshPhysicalMaterial {...props} />
