@@ -13,6 +13,10 @@ const raycaster = new THREE.Raycaster()
 const ndc = new THREE.Vector2()
 const floorPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0)
 const hit = new THREE.Vector3()
+const projectScratch = new THREE.Vector3()
+
+type Pickable = { id: string; object: THREE.Object3D }
+const pickables: Pickable[] = []
 
 export function registerScene(nextCamera: THREE.Camera, nextCanvas: HTMLCanvasElement) {
   camera = nextCamera
@@ -22,16 +26,79 @@ export function registerScene(nextCamera: THREE.Camera, nextCanvas: HTMLCanvasEl
 export function unregisterScene() {
   camera = null
   canvas = null
+  pickables.length = 0
 }
 
-export function projectToFloor(clientX: number, clientY: number): THREE.Vector3 | null {
-  if (!camera || !canvas) return null
+export function registerPickable(id: string, object: THREE.Object3D) {
+  const existing = pickables.find((item) => item.id === id)
+  if (existing) {
+    existing.object = object
+    return
+  }
+  pickables.push({ id, object })
+}
+
+export function unregisterPickable(id: string) {
+  const index = pickables.findIndex((item) => item.id === id)
+  if (index >= 0) pickables.splice(index, 1)
+}
+
+function setPointerNdc(clientX: number, clientY: number): boolean {
+  if (!camera || !canvas) return false
   const rect = canvas.getBoundingClientRect()
-  if (rect.width === 0 || rect.height === 0) return null
+  if (rect.width === 0 || rect.height === 0) return false
   ndc.set(
     ((clientX - rect.left) / rect.width) * 2 - 1,
     -((clientY - rect.top) / rect.height) * 2 + 1,
   )
+  return true
+}
+
+function instanceIdFromObject(object: THREE.Object3D): string | null {
+  let current: THREE.Object3D | null = object
+  while (current) {
+    const id = current.userData?.instanceId
+    if (typeof id === 'string' && id.length > 0) return id
+    const registered = pickables.find((item) => item.object === current)
+    if (registered) return registered.id
+    current = current.parent
+  }
+  return null
+}
+
+/** Raycast the pointer against registered character meshes (visible skin), not a loose floor radius. */
+export function pickInstanceAt(clientX: number, clientY: number): string | null {
+  if (!camera || !setPointerNdc(clientX, clientY) || pickables.length === 0) return null
+  raycaster.setFromCamera(ndc, camera)
+  const hits = raycaster.intersectObjects(
+    pickables.map((item) => item.object),
+    true,
+  )
+  for (const entry of hits) {
+    if (!entry.object.visible) continue
+    const id = instanceIdFromObject(entry.object)
+    if (id) return id
+  }
+  return null
+}
+
+export function instanceScreenPoint(
+  position: [number, number, number],
+  height = 0.55,
+): { x: number; y: number } | null {
+  if (!camera || !canvas) return null
+  const rect = canvas.getBoundingClientRect()
+  if (rect.width === 0 || rect.height === 0) return null
+  camera.updateMatrixWorld()
+  projectScratch.set(position[0], height, position[2]).project(camera)
+  return {
+    x: rect.left + (projectScratch.x * 0.5 + 0.5) * rect.width,
+    y: rect.top + (-projectScratch.y * 0.5 + 0.5) * rect.height,
+  }
+}
+
+export function projectToFloor(clientX: number, clientY: number): THREE.Vector3 | null {
+  if (!camera || !setPointerNdc(clientX, clientY)) return null
   raycaster.setFromCamera(ndc, camera)
   if (!raycaster.ray.intersectPlane(floorPlane, hit)) return null
   return hit.clone()

@@ -80,6 +80,35 @@ await sleep(500)
 const afterSpawn = await page.evaluate(() => window.__infanti.getState().instances.length)
 if (afterSpawn !== 1) throw new Error(`spawn failed, instances=${afterSpawn}`)
 
+const missX = canvasBox.x + canvasBox.width * 0.82
+const missY = canvasBox.y + canvasBox.height * 0.28
+const missHit = await page.evaluate((x, y) => window.__infanti.pickInstanceAt(x, y), missX, missY)
+if (missHit) throw new Error(`empty space hit character: ${missHit}`)
+
+const nearMiss = await page.evaluate(() => {
+  const instance = window.__infanti.getState().instances[0]
+  const [x, , z] = instance.position
+  const screen = window.__infanti.instanceScreenPoint([x, 0, z + 1.15], 0.02)
+  if (!screen) return { hit: 'no-screen' }
+  return { hit: window.__infanti.pickInstanceAt(screen.x, screen.y), screen }
+})
+if (nearMiss.hit) throw new Error(`old oversized radius still hits: ${JSON.stringify(nearMiss)}`)
+
+await page.mouse.move(missX, missY)
+await page.mouse.down()
+await sleep(60)
+const missDrag = await page.evaluate(() => window.__infanti.getState().drag)
+await page.mouse.up()
+if (missDrag) throw new Error(`empty-space click started drag: ${JSON.stringify(missDrag)}`)
+
+const skin = await page.evaluate(() => {
+  const instance = window.__infanti.getState().instances[0]
+  return window.__infanti.instanceScreenPoint(instance.position, 0.55)
+})
+if (!skin) throw new Error('missing character screen point')
+const skinHit = await page.evaluate((x, y) => window.__infanti.pickInstanceAt(x, y), skin.x, skin.y)
+if (!skinHit) throw new Error(`skin click missed character at ${JSON.stringify(skin)}`)
+
 const debugHit = await page.evaluate((x, y) => {
   const state = window.__infanti.getState()
   const el = document.elementFromPoint(x, y)
@@ -89,15 +118,15 @@ const debugHit = await page.evaluate((x, y) => {
     className: el?.className,
     id: el?.id,
   }
-}, dropX, dropY)
-console.log('debug after spawn', JSON.stringify(debugHit), { dropX, dropY })
+}, skin.x, skin.y)
+console.log('debug after spawn', JSON.stringify(debugHit), { skin, missHit })
 
 const trayBox = await page.$eval('[data-tray]', (el) => {
   const r = el.getBoundingClientRect()
   return { x: r.left + r.width / 2, y: r.top + r.height / 2, top: r.top, height: r.height }
 })
 
-await page.mouse.move(dropX, dropY)
+await page.mouse.move(skin.x, skin.y)
 await page.mouse.down()
 await sleep(80)
 const duringDown = await page.evaluate(() => window.__infanti.getState().drag)
