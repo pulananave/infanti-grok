@@ -55,7 +55,7 @@ await page.waitForSelector('.tray-slot')
 await sleep(400)
 
 const slotCount = await page.$$eval('.tray-slot', (els) => els.length)
-if (slotCount < 8) throw new Error(`tray too small: ${slotCount}`)
+if (slotCount !== 9) throw new Error(`expected 9 tray characters, got ${slotCount}`)
 
 const slots = await page.$$('.tray-slot')
 await slots[0].click()
@@ -129,10 +129,10 @@ if (restored < 2) throw new Error(`instrument did not return to balloon: ${resto
 const combo = await page.evaluate(async () => {
   const api = window.__infanti.getState()
   const pairs = [
-    ['boogar', 'pop_bateria'],
-    ['ceval', 'pop_baixo'],
-    ['dan', 'pop_gtr_base'],
-    ['esper', 'pop_piano'],
+    ['ceval', 'pop_bateria'],
+    ['dan', 'pop_baixo'],
+    ['grompy', 'pop_gtr_base'],
+    ['teewong', 'pop_piano'],
   ]
   let x = -1.6
   for (const [characterId, instrument] of pairs) {
