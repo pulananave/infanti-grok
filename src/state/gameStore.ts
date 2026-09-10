@@ -341,7 +341,10 @@ export const useGame = create<GameState>((set, get) => ({
   removeInstance: (id) => {
     audioEngine.removeStem(id)
     const instances = get().instances.filter((item) => item.id !== id)
-    set({ instances })
+    set({
+      instances,
+      stageNotice: instances.length >= MAX_STAGE_INSTANCES ? get().stageNotice : null,
+    })
   },
 
   dismissPrize: () => set({ prize: null }),
