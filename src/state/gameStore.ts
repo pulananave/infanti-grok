@@ -34,6 +34,7 @@ interface GameState {
   selectSong: (id: SongId) => Promise<void>
   exitToMenu: () => void
   clearStage: () => void
+  notifyStageFull: () => void
   toggleBalloon: (characterId: CharacterId) => void
   closeBalloon: () => void
   beginSpawnDrag: (characterId: CharacterId, instrument: string, x: number, y: number) => void
@@ -153,7 +154,16 @@ export const useGame = create<GameState>((set, get) => ({
     })
   },
 
+  notifyStageFull: () => {
+    flashFull(set)
+  },
+
   toggleBalloon: (characterId) => {
+    if (get().instances.length >= MAX_STAGE_INSTANCES) {
+      flashFull(set)
+      set({ balloonCharacterId: null })
+      return
+    }
     set({
       balloonCharacterId: get().balloonCharacterId === characterId ? null : characterId,
     })
@@ -284,11 +294,14 @@ export const useGame = create<GameState>((set, get) => ({
 
     const nextInstances = [...instances, instance]
     const awards = refreshAwards(nextInstances, song.id, get().awarded)
+    const stageFull = nextInstances.length >= MAX_STAGE_INSTANCES
     set({
       instances: nextInstances,
       awarded: awards.awarded,
       prize: awards.prize ?? get().prize,
+      balloonCharacterId: stageFull ? null : get().balloonCharacterId,
     })
+    if (stageFull) flashFull(set)
 
     audioEngine.unlock()
     await audioEngine.addStem(

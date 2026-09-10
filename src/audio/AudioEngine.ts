@@ -1,8 +1,8 @@
 const LOOKAHEAD = 0.15
 const SCHEDULE_AHEAD = 1.25
 
-/** Visuals look this far ahead of the audible transport so tiles/characters meet the hit. */
-export const VISUAL_BEAT_LEAD_SEC = 0.055
+/** Visuals look this far ahead of the audible transport so tiles/characters meet the hit (~75ms). */
+export const VISUAL_BEAT_LEAD_SEC = 0.075
 
 interface VoiceMeta {
   compassos: number
