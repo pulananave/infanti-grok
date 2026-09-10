@@ -25,6 +25,8 @@ if (typeof window !== 'undefined' && new URLSearchParams(window.location.search)
         audio: {
           isAudible: () => boolean
           getBeatIndex: () => number
+          getVisualBeatIndex: () => number
+          getVisualBeatPhase: () => number
           getPan: (id: string) => number | null
         }
       }
@@ -38,6 +40,8 @@ if (typeof window !== 'undefined' && new URLSearchParams(window.location.search)
     audio: {
       isAudible: () => audioEngine.isAudible(),
       getBeatIndex: () => audioEngine.getBeatIndex(),
+      getVisualBeatIndex: () => audioEngine.getVisualBeatIndex(),
+      getVisualBeatPhase: () => audioEngine.getVisualBeatPhase(),
       getPan: (id) => audioEngine.getPan(id),
     },
   }
