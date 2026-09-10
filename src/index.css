@@ -140,6 +140,14 @@ button {
   pointer-events: none;
 }
 
+.hud-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
 .home-btn,
 .song-chip {
   pointer-events: auto;
@@ -147,6 +155,24 @@ button {
   color: #2b1654;
   border-radius: 999px;
   box-shadow: var(--shadow);
+}
+
+.stage-notice {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 6;
+  pointer-events: none;
+  background: #fff7e8;
+  color: #2b1654;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  animation: pop 0.28s ease;
+  white-space: nowrap;
 }
 
 .home-btn {

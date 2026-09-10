@@ -19,6 +19,8 @@ import {
   volumeForPosition,
 } from './sceneBridge'
 
+export const MAX_STAGE_INSTANCES = 9
+
 interface GameState {
   screen: 'menu' | 'stage'
   songId: SongId | null
@@ -27,9 +29,11 @@ interface GameState {
   drag: DragState
   awarded: ComboShape[]
   prize: PrizeEvent | null
+  stageNotice: 'full' | null
   lastInteractAt: number
   selectSong: (id: SongId) => Promise<void>
   exitToMenu: () => void
+  clearStage: () => void
   toggleBalloon: (characterId: CharacterId) => void
   closeBalloon: () => void
   beginSpawnDrag: (characterId: CharacterId, instrument: string, x: number, y: number) => void
@@ -46,6 +50,17 @@ interface GameState {
   removeInstance: (id: string) => void
   dismissPrize: () => void
   usedInstrumentsFor: (characterId: CharacterId) => string[]
+}
+
+let noticeTimer: number | null = null
+
+function flashFull(set: (partial: Partial<GameState>) => void) {
+  if (noticeTimer != null) window.clearTimeout(noticeTimer)
+  set({ stageNotice: 'full' })
+  noticeTimer = window.setTimeout(() => {
+    useGame.setState({ stageNotice: null })
+    noticeTimer = null
+  }, 1600)
 }
 
 function newId(): string {
@@ -80,6 +95,7 @@ export const useGame = create<GameState>((set, get) => ({
   drag: null,
   awarded: [],
   prize: null,
+  stageNotice: null,
   lastInteractAt: 0,
 
   selectSong: async (id) => {
@@ -97,6 +113,7 @@ export const useGame = create<GameState>((set, get) => ({
       drag: null,
       awarded: [],
       prize: null,
+      stageNotice: null,
       lastInteractAt: 0,
     })
     void audioEngine.preload(
@@ -121,6 +138,18 @@ export const useGame = create<GameState>((set, get) => ({
       drag: null,
       awarded: [],
       prize: null,
+      stageNotice: null,
+    })
+  },
+
+  clearStage: () => {
+    audioEngine.stopAndReset()
+    set({
+      instances: [],
+      balloonCharacterId: null,
+      drag: null,
+      prize: null,
+      stageNotice: null,
     })
   },
 
@@ -134,6 +163,10 @@ export const useGame = create<GameState>((set, get) => ({
 
   beginSpawnDrag: (characterId, instrument, x, y) => {
     audioEngine.unlock()
+    if (get().instances.length >= MAX_STAGE_INSTANCES) {
+      flashFull(set)
+      return
+    }
     const song = getSong(get().songId)
     const stem = song ? findStem(song, characterId, instrument) : undefined
     set({
@@ -204,6 +237,10 @@ export const useGame = create<GameState>((set, get) => ({
 
     const hit = projectToFloor(x, y)
     if (!hit || !isOnStageFloor(hit)) return
+    if (get().instances.length >= MAX_STAGE_INSTANCES) {
+      flashFull(set)
+      return
+    }
     const placed = clampToFloor(hit)
     await get().placeStem(drag.characterId, drag.instrument, [placed.x, 0, placed.z])
   },
@@ -212,6 +249,11 @@ export const useGame = create<GameState>((set, get) => ({
     const { songId, instances } = get()
     const song = getSong(songId)
     if (!song) return
+
+    if (instances.length >= MAX_STAGE_INSTANCES) {
+      flashFull(set)
+      return
+    }
 
     const alreadyUsed = instances.some(
       (item) => item.characterId === characterId && item.instrument === instrument,
