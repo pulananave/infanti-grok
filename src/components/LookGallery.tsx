@@ -6,6 +6,7 @@ import { CHARACTER_ORDER, CHARACTERS } from '../config/characters'
 import { STAGE_LOOK } from '../theme/stageLook'
 import { Humanoid } from './Humanoid'
 import { StageLights } from './StageLighting'
+import { TexPilotBadge } from './TexPilotBadge'
 
 export function LookGallery() {
   const top = CHARACTER_ORDER.slice(0, 6)
@@ -14,6 +15,9 @@ export function LookGallery() {
     <div className="app" style={{ background: '#1a0f30' }}>
       <div style={{ position: 'absolute', top: 10, left: 14, zIndex: 2, color: '#fff7e8', fontWeight: 700 }}>
         Character looks
+        <div style={{ marginTop: 8 }}>
+          <TexPilotBadge />
+        </div>
       </div>
       <Canvas
         shadows="soft"

@@ -1,7 +1,7 @@
 import type { Ref } from 'react'
 import type { MeshPhysicalMaterialProps } from '@react-three/fiber'
-import type { MeshPhysicalMaterial } from 'three'
-import { STAGE_LOOK } from './stageLook'
+import type { MeshPhysicalMaterial, Texture } from 'three'
+import { QUALITY_PRESET, STAGE_LOOK } from './stageLook'
 import { getToyNormalMap, normalScale } from './toyNormals'
 
 export const TOY = {
@@ -74,6 +74,9 @@ type ToyMatProps = {
   clearcoat?: number
   /** 0 skips the shared clay/plush normal. */
   normalStrength?: number
+  map?: Texture | null
+  normalMap?: Texture | null
+  sheenColor?: string
   materialRef?: Ref<MeshPhysicalMaterial>
 }
 
@@ -87,14 +90,20 @@ export function ToyMaterial({
   roughness,
   clearcoat,
   normalStrength,
+  map,
+  normalMap: normalMapOverride,
+  sheenColor,
   materialRef,
 }: ToyMatProps) {
   const rough = roughness ?? (glow ? STAGE_LOOK.roughnessGlow : STAGE_LOOK.roughness)
   const coat = clearcoat ?? (glow ? STAGE_LOOK.clearcoatGlow : STAGE_LOOK.clearcoat)
   const emitColor = glow && emissive === '#000000' ? color : emissive
   const emit = glow ? (emissiveIntensity > 0 ? emissiveIntensity : STAGE_LOOK.glowDefault) : emissiveIntensity
-  const nStrength = normalStrength ?? (glow ? 0 : STAGE_LOOK.normalStrength)
-  const normalMap = nStrength > 0 ? getToyNormalMap() : null
+  const fileNormal = normalMapOverride ?? null
+  const nStrength =
+    normalStrength ??
+    (fileNormal ? (QUALITY_PRESET === 'mobile' ? 0.22 : 0.48) : glow ? 0 : STAGE_LOOK.normalStrength)
+  const normalMap = fileNormal ?? (nStrength > 0 ? getToyNormalMap() : null)
 
   const props = {
     color,
@@ -104,7 +113,8 @@ export function ToyMaterial({
     clearcoatRoughness: STAGE_LOOK.clearcoatRoughness,
     sheen: silicone ? STAGE_LOOK.sheen : 0.06,
     sheenRoughness: STAGE_LOOK.sheenRoughness,
-    sheenColor: color,
+    sheenColor: sheenColor ?? color,
+    ...(map ? { map } : {}),
     ior: 1.46,
     specularIntensity: STAGE_LOOK.specularIntensity,
     envMapIntensity: glow ? 0.1 : STAGE_LOOK.envMapIntensity,

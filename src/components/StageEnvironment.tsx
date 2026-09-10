@@ -6,6 +6,7 @@ import { audioEngine } from '../audio/AudioEngine'
 import { STAGE_BOUNDS } from '../state/sceneBridge'
 import { beatToTile, FLOOR_COLS, FLOOR_ROWS, tileIndex } from '../theme/floorGrid'
 import { STAGE_LOOK } from '../theme/stageLook'
+import { getFloorMaps, useTexPilot, type PilotMaps } from '../theme/texPilot'
 import { TOY, ToyMaterial, liftPastel, mixHex, tileColor, tileSurface } from '../theme/toy'
 import type { SongTheme } from '../types'
 import { BackdropUnlocks } from './BackdropUnlocks'
@@ -63,6 +64,7 @@ function Block({
   castShadow = false,
   receiveShadow = true,
   materialRef,
+  maps,
 }: {
   args: [number, number, number]
   radius?: number
@@ -78,6 +80,7 @@ function Block({
   castShadow?: boolean
   receiveShadow?: boolean
   materialRef?: Ref<MeshPhysicalMaterial>
+  maps?: PilotMaps | null
 }) {
   const maxR = Math.min(...args) * 0.42
   return (
@@ -98,6 +101,8 @@ function Block({
         emissiveIntensity={emissiveIntensity}
         roughness={roughness}
         clearcoat={clearcoat}
+        map={maps?.map}
+        normalMap={maps?.normalMap}
         materialRef={materialRef}
       />
     </RoundedBox>
@@ -206,6 +211,8 @@ function iconFor(ix: number, iz: number) {
 }
 
 function FloorTiles({ theme }: { theme: SongTheme }) {
+  const texPilot = useTexPilot()
+  const floorMaps = texPilot ? getFloorMaps() : null
   const mats = useRef<(MeshPhysicalMaterial | null)[]>(Array.from({ length: TILE_COUNT }, () => null))
   const bases = useRef<(Color | null)[]>(Array.from({ length: TILE_COUNT }, () => null))
   const glow = useRef(new Float32Array(TILE_COUNT))
@@ -271,6 +278,7 @@ function FloorTiles({ theme }: { theme: SongTheme }) {
             receiveShadow
             emissive="#fff3c4"
             emissiveIntensity={0}
+            maps={floorMaps}
             materialRef={(mat) => {
               mats.current[index] = mat
               if (!mat) return
@@ -327,6 +335,7 @@ function FloorTiles({ theme }: { theme: SongTheme }) {
         position={[0, -0.22, (STAGE_BOUNDS.zBack + STAGE_BOUNDS.zFront) / 2]}
         color={mixHex(TOY.peach, liftPastel(theme.floor, TOY.mint, 0.5), 0.18)}
         silicone
+        maps={floorMaps}
       />
       {tiles}
     </group>

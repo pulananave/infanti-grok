@@ -3,12 +3,17 @@ import { audioEngine } from './audio/AudioEngine'
 import { SongMenu } from './components/SongMenu'
 import { StageScreen } from './components/StageScreen'
 import { useGame } from './state/gameStore'
+import { preloadTexPilot } from './theme/texPilot'
 
 const LookGallery = lazy(() => import('./components/LookGallery').then((m) => ({ default: m.LookGallery })))
 const SHOW_LOOKS = new URLSearchParams(window.location.search).has('looks')
 
 export default function App() {
   const screen = useGame((s) => s.screen)
+
+  useEffect(() => {
+    preloadTexPilot()
+  }, [])
 
   useEffect(() => {
     if (SHOW_LOOKS) return

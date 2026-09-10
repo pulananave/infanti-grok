@@ -1,11 +1,28 @@
 # Texturas e imagens (Jelly Band / Infanti)
 
-Palco e personagens **não usam** albedo/normal/roughness/HDR/IBL em ficheiro.
-Materiais são procedurais (`ToyMaterial` + normal gerado em canvas em `src/theme/toyNormals.ts`).
+Palco e personagens usam materiais procedurais (`ToyMaterial` + normal em canvas em
+`src/theme/toyNormals.ts`), **exceto o piloto híbrido** (`/?texPilot=1`):
+Boogar e os quadrados do chão leem albedo/normal compactos em `public/textures/`.
 O IBL é um `Environment` do drei com Lightformers (céu pastel), sem `.hdr`/`.exr`.
-O céu do fundo é `GradientTexture` gerado. Sem PNG/JPG/WebP/KTX em runtime 3D.
+O céu do fundo é `GradientTexture` gerado.
+
+## Piloto híbrido (`?texPilot=1`)
+
+Geradas por `scripts/gen-tex-pilot.py` a partir das cores oficiais do sheet
+Coral Pudge Plush (`#FF8C73`, `#FFB6A0`, `#2A012D`).
+
+- `public/textures/boogar/albedo.png` (512, fibra oficial do sheet)
+- `public/textures/boogar/normal.png` (512)
+- `public/textures/floor/silicone_albedo.png` (512)
+- `public/textures/floor/silicone_normal.png` (512)
 
 ## Runtime (servidas de `public/`)
+
+### Piloto híbrido (só com `?texPilot=1`)
+- `public/textures/boogar/albedo.png`
+- `public/textures/boogar/normal.png`
+- `public/textures/floor/silicone_albedo.png`
+- `public/textures/floor/silicone_normal.png`
 
 ### Favicon
 - `public/favicon.svg`
