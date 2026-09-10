@@ -1,6 +1,9 @@
 const LOOKAHEAD = 0.15
 const SCHEDULE_AHEAD = 1.25
 
+/** Visuals look this far ahead of the audible transport so tiles/characters meet the hit. */
+export const VISUAL_BEAT_LEAD_SEC = 0.055
+
 interface VoiceMeta {
   compassos: number
   instrument: string
@@ -242,10 +245,29 @@ export class AudioEngine {
 
   /** Whole beats since transport start (4/4, BPM). 0 when the stage is silent. */
   getBeatIndex(): number {
+    return Math.floor(this.transportElapsed() / this.beatDuration())
+  }
+
+  /**
+   * Same clock as getBeatIndex, advanced by a small look-ahead so floor highlight
+   * and character bob land on the audible transient instead of after it.
+   */
+  getVisualBeatIndex(leadSec = VISUAL_BEAT_LEAD_SEC): number {
+    return Math.floor(this.getVisualBeatPhase(leadSec))
+  }
+
+  /** Fractional beats on the visual clock (same lead as getVisualBeatIndex). */
+  getVisualBeatPhase(leadSec = VISUAL_BEAT_LEAD_SEC): number {
+    return this.transportElapsed(leadSec) / this.beatDuration()
+  }
+
+  private beatDuration(): number {
+    return 60 / Math.max(this.bpm, 1)
+  }
+
+  private transportElapsed(leadSec = 0): number {
     if (this.transportStart === null || !this.ctx) return 0
-    const elapsed = Math.max(0, this.ctx.currentTime - this.transportStart)
-    const beatSec = 60 / Math.max(this.bpm, 1)
-    return Math.floor(elapsed / beatSec)
+    return Math.max(0, this.ctx.currentTime - this.transportStart + leadSec)
   }
 
   stopAndReset() {

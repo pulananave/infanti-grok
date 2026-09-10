@@ -40,10 +40,8 @@ function Lights({ theme }: { theme: SongTheme }) {
 
 function StageCharacter({
   instance,
-  bpm,
 }: {
   instance: StageInstance
-  bpm: number
 }) {
   const group = useRef<THREE.Group>(null)
   const beginMoveDrag = useGame((s) => s.beginMoveDrag)
@@ -72,13 +70,12 @@ function StageCharacter({
         instrument={instance.type}
         muted={instance.muted}
         playing
-        bpm={bpm}
       />
     </group>
   )
 }
 
-function SpawnPreview({ bpm }: { bpm: number }) {
+function SpawnPreview() {
   const drag = useGame((s) => s.drag)
   const marker = useRef<THREE.Group>(null)
 
@@ -102,7 +99,7 @@ function SpawnPreview({ bpm }: { bpm: number }) {
 
   return (
     <group ref={marker}>
-      <Humanoid characterId={drag.characterId} instrument={drag.iconType} ghost bpm={bpm} />
+      <Humanoid characterId={drag.characterId} instrument={drag.iconType} ghost />
     </group>
   )
 }
@@ -178,9 +175,9 @@ export function StageScene() {
       <Lights theme={song.theme} />
       <StageDecor songId={songId} theme={song.theme} />
       {instances.map((instance) => (
-        <StageCharacter key={instance.id} instance={instance} bpm={song.bpm} />
+        <StageCharacter key={instance.id} instance={instance} />
       ))}
-      <SpawnPreview bpm={song.bpm} />
+      <SpawnPreview />
       <ContactShadows
         position={[0, 0.02, 0]}
         opacity={STAGE_LOOK.contactOpacity}

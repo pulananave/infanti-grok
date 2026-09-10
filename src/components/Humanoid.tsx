@@ -2,6 +2,7 @@ import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { RoundedBox } from '@react-three/drei'
 import type { Group } from 'three'
+import { audioEngine } from '../audio/AudioEngine'
 import { CHARACTERS } from '../config/characters'
 import { instrumentKind } from '../config/instruments'
 import { STAGE_LOOK } from '../theme/stageLook'
@@ -13,7 +14,6 @@ interface Props {
   instrument?: string
   muted?: boolean
   playing?: boolean
-  bpm?: number
   ghost?: boolean
 }
 
@@ -810,7 +810,6 @@ export function Humanoid({
   instrument,
   muted = false,
   playing = false,
-  bpm = 120,
   ghost = false,
 }: Props) {
   const group = useRef<Group>(null)
@@ -819,11 +818,12 @@ export function Humanoid({
   const color = muted ? '#8a8496' : look.bodyColor
   const bodyY = bodyCenterY(look)
 
-  useFrame(({ clock }) => {
+  useFrame(() => {
     if (!group.current) return
-    const bounce =
-      playing && !muted && !ghost ? Math.abs(Math.sin(clock.elapsedTime * Math.PI * (bpm / 60))) * 0.07 : 0
-    group.current.position.y = bounce
+    const live = playing && !muted && !ghost && audioEngine.isAudible()
+    group.current.position.y = live
+      ? Math.abs(Math.sin(audioEngine.getVisualBeatPhase() * Math.PI)) * 0.07
+      : 0
   })
 
   const armSlots = look.armCount === 4 ? ([0, 1] as const) : ([0] as const)

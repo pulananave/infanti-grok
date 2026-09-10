@@ -36,7 +36,7 @@ export function LookGallery() {
           const x = (index - 2.5) * 1.35
           return (
             <group key={id} position={[x, 0, 0.6]}>
-              <Humanoid characterId={id} playing bpm={110} />
+              <Humanoid characterId={id} playing />
               <Html position={[0, 1.35, 0]} center>
                 <div style={{ color: '#2b1654', fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap' }}>
                   {CHARACTERS[id].name}
@@ -49,7 +49,7 @@ export function LookGallery() {
           const x = (index - 2) * 1.35
           return (
             <group key={id} position={[x, 0, -1.4]}>
-              <Humanoid characterId={id} playing bpm={110} />
+              <Humanoid characterId={id} playing />
               <Html position={[0, 1.35, 0]} center>
                 <div style={{ color: '#2b1654', fontSize: 12, fontWeight: 700, whiteSpace: 'nowrap' }}>
                   {CHARACTERS[id].name}
