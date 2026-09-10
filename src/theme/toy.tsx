@@ -1,4 +1,6 @@
+import type { Ref } from 'react'
 import type { MeshPhysicalMaterialProps } from '@react-three/fiber'
+import type { MeshPhysicalMaterial } from 'three'
 import { STAGE_LOOK } from './stageLook'
 import { getToyNormalMap, normalScale } from './toyNormals'
 
@@ -72,6 +74,7 @@ type ToyMatProps = {
   clearcoat?: number
   /** 0 skips the shared clay/plush normal. */
   normalStrength?: number
+  materialRef?: Ref<MeshPhysicalMaterial>
 }
 
 export function ToyMaterial({
@@ -84,6 +87,7 @@ export function ToyMaterial({
   roughness,
   clearcoat,
   normalStrength,
+  materialRef,
 }: ToyMatProps) {
   const rough = roughness ?? (glow ? STAGE_LOOK.roughnessGlow : STAGE_LOOK.roughness)
   const coat = clearcoat ?? (glow ? STAGE_LOOK.clearcoatGlow : STAGE_LOOK.clearcoat)
@@ -118,5 +122,5 @@ export function ToyMaterial({
       : {}),
   } satisfies MeshPhysicalMaterialProps
 
-  return <meshPhysicalMaterial {...props} />
+  return <meshPhysicalMaterial ref={materialRef} {...props} />
 }

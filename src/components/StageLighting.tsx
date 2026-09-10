@@ -1,34 +1,8 @@
-import { useLayoutEffect, useRef } from 'react'
 import { Environment, Lightformer, SoftShadows } from '@react-three/drei'
-import { BackSide, Object3D, type DirectionalLight } from 'three'
+import { BackSide } from 'three'
 import { STAGE_LOOK } from '../theme/stageLook'
 import { liftPastel, mixHex, TOY } from '../theme/toy'
 import type { SongTheme } from '../types'
-
-function ApronUplight() {
-  const light = useRef<DirectionalLight>(null)
-  const target = useRef<Object3D>(null)
-
-  useLayoutEffect(() => {
-    if (!light.current || !target.current) return
-    light.current.target = target.current
-    target.current.position.set(0, 1.15, -0.35)
-    target.current.updateMatrixWorld()
-  }, [])
-
-  return (
-    <>
-      <directionalLight
-        ref={light}
-        position={[0, 0.16, 3.55]}
-        intensity={STAGE_LOOK.apronIntensity}
-        color={STAGE_LOOK.apronColor}
-        castShadow={false}
-      />
-      <object3D ref={target} position={[0, 1.15, -0.35]} />
-    </>
-  )
-}
 
 /**
  * High-key pastel IBL. A bright sky shell plus small lemon/cyan/pink formers
@@ -111,7 +85,6 @@ export function StageLights({ theme }: { theme: Pick<SongTheme, 'sky' | 'horizon
       <directionalLight position={[-4.8, 3.4, 2.8]} intensity={STAGE_LOOK.fillCool} color={STAGE_LOOK.fillCoolColor} />
       <directionalLight position={[1.6, 3.8, -5.6]} intensity={STAGE_LOOK.fillWarm} color={STAGE_LOOK.fillWarmColor} />
       <directionalLight position={STAGE_LOOK.rimPosition} intensity={STAGE_LOOK.rim} color={STAGE_LOOK.rimColor} />
-      <ApronUplight />
       {STAGE_LOOK.softShadows ? (
         <SoftShadows
           size={STAGE_LOOK.softShadowSize}

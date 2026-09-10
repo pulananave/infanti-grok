@@ -14,6 +14,7 @@ import {
   isOnStageFloor,
   isOverBlockingUi,
   isOverTray,
+  panForPosition,
   projectToFloor,
   volumeForPosition,
 } from './sceneBridge'
@@ -257,6 +258,7 @@ export const useGame = create<GameState>((set, get) => ({
         genre: instance.genre,
       },
       volumeForPosition(position, instance),
+      panForPosition(position),
     )
   },
 
@@ -268,6 +270,7 @@ export const useGame = create<GameState>((set, get) => ({
     const current = instances.find((item) => item.id === id)
     if (!current) return
     audioEngine.setGain(id, current.muted ? 0 : volumeForPosition(position, current))
+    audioEngine.setPan(id, panForPosition(position))
   },
 
   toggleMute: (id) => {

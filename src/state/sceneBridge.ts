@@ -156,6 +156,17 @@ export function volumeForPosition(
   return THREE.MathUtils.lerp(NEAR_GAIN, FAR_GAIN, t)
 }
 
+/**
+ * Horizontal stereo pan from stage X.
+ * Stage edges map to roughly ±1; a mild cubic keeps the center more centered
+ * so dragging near the middle does not slam the stem left/right.
+ */
+export function panForPosition(position: THREE.Vector3 | [number, number, number]): number {
+  const x = Array.isArray(position) ? position[0] : position.x
+  const linear = THREE.MathUtils.clamp(x / FLOOR_X, -1, 1)
+  return linear * (0.72 + 0.28 * linear * linear)
+}
+
 export function isOverBlockingUi(clientX: number, clientY: number): boolean {
   const el = document.elementFromPoint(clientX, clientY)
   if (!el) return false
