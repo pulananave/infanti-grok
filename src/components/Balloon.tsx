@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useState } from 'react'
 import { audioEngine } from '../audio/AudioEngine'
 import { CHARACTERS } from '../config/characters'
 import { getSong, stemsForCharacter } from '../config/loadConfig'
-import { availableStems, useGame } from '../state/gameStore'
+import { MAX_STAGE_INSTANCES, availableStems, useGame } from '../state/gameStore'
 import { InstrumentIcon } from './InstrumentIcon'
 
 export function Balloon() {
@@ -41,7 +41,7 @@ export function Balloon() {
     return () => window.removeEventListener('resize', onResize)
   }, [balloonCharacterId])
 
-  if (!balloonCharacterId) return null
+  if (!balloonCharacterId || instances.length >= MAX_STAGE_INSTANCES) return null
   const song = getSong(songId)
   if (!song) return null
 

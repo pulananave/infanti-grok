@@ -220,6 +220,10 @@ button {
   touch-action: none;
 }
 
+.tray-slot:disabled {
+  opacity: 1;
+}
+
 .tray-lente {
   position: absolute;
   inset: 0;
@@ -330,12 +334,30 @@ button {
   min-width: 220px;
 }
 
+.tray.is-full {
+  filter: grayscale(0.45) saturate(0.55);
+  opacity: 0.58;
+}
+
+.tray.is-full .tray-slot {
+  cursor: default;
+}
+
+.tray.is-full .tray-slot:disabled {
+  cursor: default;
+}
+
 .tray.drop-target {
   background: linear-gradient(180deg, transparent, rgba(255, 229, 106, 0.28) 18%, rgba(255, 229, 106, 0.55));
 }
 
 .tray.drop-target .tray-slot {
   transform: scale(1.06);
+}
+
+.tray.is-full.drop-target {
+  filter: none;
+  opacity: 1;
 }
 
 .prize-gift {
