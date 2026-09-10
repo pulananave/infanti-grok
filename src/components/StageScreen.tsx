@@ -6,6 +6,7 @@ import { ClearStageButton } from './ClearStageButton'
 import { HomeButton } from './HomeButton'
 import { PrizeOverlay } from './PrizeOverlay'
 import { StageScene } from './StageScene'
+import { TexPilotBadge } from './TexPilotBadge'
 import { Tray } from './Tray'
 
 export function StageScreen() {
@@ -21,7 +22,10 @@ export function StageScreen() {
           <HomeButton />
           <ClearStageButton />
         </div>
-        <div className="song-chip">{song?.title ?? 'Infanti'}</div>
+        <div className="hud-right">
+          <div className="song-chip">{song?.title ?? 'Infanti'}</div>
+          <TexPilotBadge />
+        </div>
       </div>
       {notice === 'full' && (
         <div className="stage-notice" data-ui>

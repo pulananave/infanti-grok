@@ -148,6 +148,28 @@ button {
   pointer-events: auto;
 }
 
+.hud-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.tex-pilot-chip {
+  pointer-events: auto;
+  background: #ffe56a;
+  color: #2b1654;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  max-width: min(280px, 70vw);
+  line-height: 1.2;
+  text-align: right;
+}
+
 .home-btn,
 .song-chip {
   pointer-events: auto;

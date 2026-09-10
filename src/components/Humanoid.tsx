@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { createContext, useContext, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { RoundedBox } from '@react-three/drei'
 import type { Group } from 'three'
@@ -6,8 +6,16 @@ import { audioEngine } from '../audio/AudioEngine'
 import { CHARACTERS } from '../config/characters'
 import { instrumentKind } from '../config/instruments'
 import { STAGE_LOOK } from '../theme/stageLook'
+import { getBoogarMaps, useTexPilot } from '../theme/texPilot'
 import { ToyMaterial } from '../theme/toy'
 import type { CharacterId, CharacterLook, LookFeature } from '../types'
+
+const BoogarPlush = createContext(false)
+
+function isBoogarSkin(color: string) {
+  const hex = color.replace('#', '').toLowerCase()
+  return hex === 'ff8c73' || hex === '8a8496'
+}
 
 interface Props {
   characterId: CharacterId
@@ -32,9 +40,15 @@ function Mat({
   roughness?: number
   smooth?: boolean
 }) {
+  const plush = useContext(BoogarPlush) && !smooth && isBoogarSkin(color)
+  const maps = plush ? getBoogarMaps() : null
+  const muted = color.replace('#', '').toLowerCase() === '8a8496'
   return (
     <ToyMaterial
-      color={color}
+      color={maps ? (muted ? color : '#ffffff') : color}
+      sheenColor={muted ? color : maps ? '#FF8C73' : color}
+      map={maps?.map}
+      normalMap={maps?.normalMap}
       opacity={opacity}
       emissive={emissive}
       emissiveIntensity={emissiveIntensity}
@@ -827,24 +841,27 @@ export function Humanoid({
   })
 
   const armSlots = look.armCount === 4 ? ([0, 1] as const) : ([0] as const)
+  const plush = useTexPilot() && characterId === 'boogar'
 
   return (
-    <group ref={group} scale={look.height}>
-      <Limb look={look} opacity={opacity} side={-1} kind="leg" />
-      <Limb look={look} opacity={opacity} side={1} kind="leg" />
-      <BodyMesh look={look} color={color} opacity={opacity} />
-      {armSlots.map((index) => (
-        <group key={index}>
-          <Limb look={look} opacity={opacity} side={-1} kind="arm" index={index} />
-          <Limb look={look} opacity={opacity} side={1} kind="arm" index={index} />
-        </group>
-      ))}
-      <Eyes look={look} opacity={opacity} />
-      <Brows look={look} opacity={opacity} />
-      <Mouth look={look} opacity={opacity} />
-      <Features look={look} opacity={opacity} />
-      <Tail look={look} opacity={opacity} />
-      <HeldInstrument instrument={instrument} bodyY={bodyY} />
-    </group>
+    <BoogarPlush.Provider value={plush}>
+      <group ref={group} scale={look.height}>
+        <Limb look={look} opacity={opacity} side={-1} kind="leg" />
+        <Limb look={look} opacity={opacity} side={1} kind="leg" />
+        <BodyMesh look={look} color={color} opacity={opacity} />
+        {armSlots.map((index) => (
+          <group key={index}>
+            <Limb look={look} opacity={opacity} side={-1} kind="arm" index={index} />
+            <Limb look={look} opacity={opacity} side={1} kind="arm" index={index} />
+          </group>
+        ))}
+        <Eyes look={look} opacity={opacity} />
+        <Brows look={look} opacity={opacity} />
+        <Mouth look={look} opacity={opacity} />
+        <Features look={look} opacity={opacity} />
+        <Tail look={look} opacity={opacity} />
+        <HeldInstrument instrument={instrument} bodyY={bodyY} />
+      </group>
+    </BoogarPlush.Provider>
   )
 }
