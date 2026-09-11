@@ -302,23 +302,22 @@ button {
 
 .balloon {
   --balloon-w: min(468px, 80vw);
-  --balloon-h: calc(var(--balloon-w) * 371.34 / 782.75);
-  /* Matches padding: 14px top + 50px bottom (tip + inset). */
-  --balloon-inner-h: calc(var(--balloon-h) - 64px);
-  /* ~86% of the inner body so glyphs fill the yellow height with leftover chrome. */
-  --instrument-icon-size: calc(var(--balloon-inner-h) * 0.86);
+  --balloon-pad-x: 16px;
+  --balloon-gap: 6px;
+  /* Four square icons plus gaps, so a typical character still fits in one row. */
+  --instrument-icon-size: calc((var(--balloon-w) - 2 * var(--balloon-pad-x) - 3 * var(--balloon-gap)) / 4);
   position: absolute;
   z-index: 6;
   display: flex;
   align-items: center;
   justify-content: center;
   width: var(--balloon-w);
-  height: var(--balloon-h);
-  min-height: var(--balloon-h);
+  /* Hug the icon row so glyphs fill the yellow body (SVG scales with the box). */
+  height: auto;
   background: url('/assets/balloon/BALAO_CENTRO.svg') center / 100% 100% no-repeat;
   border-radius: 0;
-  /* Extra bottom padding keeps icons in the body above the center tip. */
-  padding: 14px 18px 50px;
+  /* Bottom padding clears the speech tip; top/side keep a comfortable inset. */
+  padding: 12px var(--balloon-pad-x) 48px;
   box-shadow: none;
   touch-action: none;
 }
@@ -333,11 +332,10 @@ button {
 .balloon-grid {
   display: flex;
   flex-wrap: nowrap;
-  gap: 8px;
-  justify-content: flex-start;
+  gap: var(--balloon-gap, 6px);
+  justify-content: safe center;
   align-items: center;
-  width: max-content;
-  max-width: 100%;
+  width: 100%;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
