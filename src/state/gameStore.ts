@@ -276,11 +276,7 @@ export const useGame = create<GameState>((set, get) => ({
       return
     }
     const placed = clampToFloor(hit)
-    const before = get().instances.length
     await get().placeStem(drag.characterId, drag.instrument, [placed.x, 0, placed.z])
-    if (get().instances.length > before && get().balloonCharacterId) {
-      scheduleBalloonAutoClose()
-    }
   },
 
   placeStem: async (characterId, instrument, position) => {
@@ -332,6 +328,8 @@ export const useGame = create<GameState>((set, get) => ({
     if (stageFull) {
       clearBalloonCloseTimer()
       flashFull(set)
+    } else if (get().balloonCharacterId) {
+      scheduleBalloonAutoClose()
     }
 
     audioEngine.unlock()
