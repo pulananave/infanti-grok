@@ -313,6 +313,7 @@ button {
   align-items: center;
   justify-content: center;
   width: var(--balloon-w);
+  height: var(--balloon-h);
   min-height: var(--balloon-h);
   background: url('/assets/balloon/BALAO_CENTRO.svg') center / 100% 100% no-repeat;
   border-radius: 0;
@@ -331,14 +332,24 @@ button {
 
 .balloon-grid {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 8px;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  width: 100%;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.balloon-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .instrument-btn {
+  flex: 0 0 var(--instrument-icon-size, 68px);
   width: var(--instrument-icon-size, 68px);
   height: var(--instrument-icon-size, 68px);
   border-radius: 21px;
