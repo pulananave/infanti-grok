@@ -39,10 +39,11 @@ function withoutSong(albums: AlbumConfig[], songId: string): AlbumConfig[] {
 }
 
 function withSongInAlbum(albums: AlbumConfig[], songId: string, albumId: string): AlbumConfig[] {
+  const currentAlbum = albums.find((album) => album.songIds.includes(songId))
+  if (currentAlbum?.id === albumId) return albums
   const cleaned = withoutSong(albums, songId)
   const target = cleaned.find((album) => album.id === albumId) ?? cleaned[0]
   if (!target) return cleaned
-  if (target.songIds.includes(songId)) return cleaned
   return cleaned.map((album) =>
     album.id === target.id ? { ...album, songIds: [...album.songIds, songId] } : album,
   )

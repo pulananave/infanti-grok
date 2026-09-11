@@ -326,7 +326,7 @@ export function SongEditor({ onClose }: { onClose: () => void }) {
           ))}
           <button
             type="button"
-            className="editor-add"
+            className="editor-add editor-add-album"
             onClick={() => {
               const album = createAlbum('Novo álbum')
               setAlbumNameDraft((current) => ({ ...current, [album.id]: album.name }))
@@ -524,7 +524,7 @@ export function SongEditor({ onClose }: { onClose: () => void }) {
                 ))}
                 <button
                   type="button"
-                  className="editor-add"
+                  className="editor-add editor-add-limit"
                   onClick={() =>
                     setDraft((current) =>
                       current
@@ -700,7 +700,7 @@ export function SongEditor({ onClose }: { onClose: () => void }) {
                 </datalist>
                 <button
                   type="button"
-                  className="editor-add"
+                  className="editor-add editor-add-stem"
                   onClick={() => {
                     setDraft((current) => {
                       if (!current) return current
@@ -800,7 +800,7 @@ function AlbumBlock({
           </li>
         ))}
       </ul>
-      <button type="button" className="editor-add" onClick={onCreate}>
+      <button type="button" className="editor-add editor-add-song" onClick={onCreate}>
         + Nova música
       </button>
     </section>
