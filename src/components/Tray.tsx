@@ -70,7 +70,6 @@ export function Tray() {
                 toggleBalloon(id)
               }}
             >
-              <span className="tray-lente" aria-hidden />
               <HumanoidFace characterId={id} ativo={ativo} />
             </button>
           )
