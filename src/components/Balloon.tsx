@@ -5,12 +5,15 @@ import { getSong, stemsForCharacter } from '../config/loadConfig'
 import { MAX_STAGE_INSTANCES, availableStems, useGame } from '../state/gameStore'
 import { InstrumentIcon } from './InstrumentIcon'
 
+/** Matches `.balloon` max width in `index.css` (~30% larger than the old 360px). */
+const BALLOON_MAX_WIDTH = 468
+
 export function Balloon() {
   const balloonCharacterId = useGame((s) => s.balloonCharacterId)
   const songId = useGame((s) => s.songId)
   const instances = useGame((s) => s.instances)
   const beginSpawnDrag = useGame((s) => s.beginSpawnDrag)
-  const [anchor, setAnchor] = useState({ left: 80, bottom: 86, tail: 50 })
+  const [anchor, setAnchor] = useState({ left: 80, bottom: 86 })
 
   useLayoutEffect(() => {
     if (!balloonCharacterId) return
@@ -20,14 +23,12 @@ export function Balloon() {
 
     const slotRect = slot.getBoundingClientRect()
     const trayRect = tray.getBoundingClientRect()
-    const width = Math.min(360, window.innerWidth * 0.8)
+    const width = Math.min(BALLOON_MAX_WIDTH, window.innerWidth * 0.8)
     const center = slotRect.left + slotRect.width / 2
     const left = Math.min(Math.max(8, center - width / 2), window.innerWidth - width - 8)
-    const tail = ((center - left) / width) * 100
     setAnchor({
       left,
       bottom: window.innerHeight - trayRect.top + 10,
-      tail: Math.min(88, Math.max(12, tail)),
     })
   }, [balloonCharacterId, instances.length])
 
@@ -56,11 +57,10 @@ export function Balloon() {
       style={{
         left: anchor.left,
         bottom: anchor.bottom,
-        ['--tail-x' as string]: `${anchor.tail}%`,
       }}
     >
       {remaining.length === 0 ? (
-        <div style={{ textAlign: 'center', color: '#2b1654', fontWeight: 600, padding: 8 }}>
+        <div className="balloon-empty">
           {total === 0 ? look.name : '• • •'}
         </div>
       ) : (
