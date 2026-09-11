@@ -24,6 +24,8 @@ O alvo visual é **paisagem no celular**. Em retrato o jogo ainda abre, com um a
 
 ## Canções
 
+As 5 canções de fábrica pertencem ao álbum **Cancioneiro Popular** (`albums` em `src/config/songs.json`).
+
 | Canção | BPM | pasta MEGA / prefixo |
 | --- | --- | --- |
 | Dona Aranha | 114 | `infanti_dona_aranha` / `aranha` (alias `dona_aranha`) |
@@ -84,9 +86,23 @@ Regras:
 
 Depois de editar, rode `npm run dev` ou `npm run build`.
 
+## Editor no menu (criar / editar / apagar)
+
+Na tela inicial, o botão **Editor** abre um painel em tela cheia (não é o palco). Lá dá para:
+
+- ver álbuns → canções
+- editar todos os campos que já existem na config (`id`, título, aliases, BPM, compassos, pasta, prefixo, tema, `instrumentUseLimit`, stems e os 3 combos)
+- criar canção nova ou duplicar uma existente
+- apagar com confirmação
+- criar / renomear / apagar álbuns
+
+**Persistência:** o navegador não consegue gravar `songs.json` no repositório. O editor guarda um *overlay* em `localStorage` (`infanti.catalog.v1`) por cima do arquivo enviado no build. As 5 canções originais continuam no JSON; edições, criações e exclusões ficam neste aparelho até “Restaurar originais”. Use **Exportar JSON** para copiar o catálogo mesclado de volta para o repo se quiser tornar a mudança permanente.
+
+Áudio de canções novas ainda precisa dos `.ogg` em `public/audio/<pasta>/`. Sem arquivo, a canção aparece no menu mas a faixa não toca.
+
 ## Editar músicas e personagens
 
-`src/config/songs.json` define BPM, tema do palco e cada stem:
+`src/config/songs.json` define álbuns, BPM, tema do palco e cada stem:
 
 ```json
 {

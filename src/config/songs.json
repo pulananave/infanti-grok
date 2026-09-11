@@ -1,4 +1,17 @@
 {
+  "albums": [
+    {
+      "id": "cancioneiro-popular",
+      "name": "Cancioneiro Popular",
+      "songIds": [
+        "aranha",
+        "canoa",
+        "coelho",
+        "pintinho",
+        "sapo"
+      ]
+    }
+  ],
   "songs": [
     {
       "id": "aranha",

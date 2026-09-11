@@ -265,7 +265,14 @@ for (const meta of CONFIG_SONGS) {
   songs.push(song)
 }
 
-await writeFile(songsPath, `${JSON.stringify({ songs }, null, 2)}\n`)
+const albums = existing.albums ?? [
+  {
+    id: 'cancioneiro-popular',
+    name: 'Cancioneiro Popular',
+    songIds: songs.map((song) => song.id),
+  },
+]
+await writeFile(songsPath, `${JSON.stringify({ albums, songs }, null, 2)}\n`)
 
 for (const song of songs) {
   const counts = Object.fromEntries(
