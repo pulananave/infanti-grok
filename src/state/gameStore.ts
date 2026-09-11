@@ -20,6 +20,7 @@ import {
 } from './sceneBridge'
 
 export const MAX_STAGE_INSTANCES = 9
+export const BALLOON_AUTOCLOSE_MS = 2000
 
 interface GameState {
   screen: 'menu' | 'stage'
@@ -54,6 +55,22 @@ interface GameState {
 }
 
 let noticeTimer: number | null = null
+let balloonCloseTimer: number | null = null
+
+function clearBalloonCloseTimer() {
+  if (balloonCloseTimer != null) {
+    window.clearTimeout(balloonCloseTimer)
+    balloonCloseTimer = null
+  }
+}
+
+function scheduleBalloonAutoClose() {
+  clearBalloonCloseTimer()
+  balloonCloseTimer = window.setTimeout(() => {
+    balloonCloseTimer = null
+    useGame.setState({ balloonCharacterId: null })
+  }, BALLOON_AUTOCLOSE_MS)
+}
 
 function flashFull(set: (partial: Partial<GameState>) => void) {
   if (noticeTimer != null) window.clearTimeout(noticeTimer)
@@ -106,6 +123,7 @@ export const useGame = create<GameState>((set, get) => ({
     audioEngine.stopAndReset()
     audioEngine.setBpm(song.bpm)
     await audioEngine.ensureContext()
+    clearBalloonCloseTimer()
     set({
       screen: 'stage',
       songId: song.id,
@@ -131,6 +149,7 @@ export const useGame = create<GameState>((set, get) => ({
 
   exitToMenu: () => {
     audioEngine.stopAndReset()
+    clearBalloonCloseTimer()
     set({
       screen: 'menu',
       songId: null,
@@ -145,6 +164,7 @@ export const useGame = create<GameState>((set, get) => ({
 
   clearStage: () => {
     audioEngine.stopAndReset()
+    clearBalloonCloseTimer()
     set({
       instances: [],
       balloonCharacterId: null,
@@ -159,6 +179,7 @@ export const useGame = create<GameState>((set, get) => ({
   },
 
   toggleBalloon: (characterId) => {
+    clearBalloonCloseTimer()
     if (get().instances.length >= MAX_STAGE_INSTANCES) {
       flashFull(set)
       set({ balloonCharacterId: null })
@@ -169,7 +190,10 @@ export const useGame = create<GameState>((set, get) => ({
     })
   },
 
-  closeBalloon: () => set({ balloonCharacterId: null }),
+  closeBalloon: () => {
+    clearBalloonCloseTimer()
+    set({ balloonCharacterId: null })
+  },
 
   beginSpawnDrag: (characterId, instrument, x, y) => {
     audioEngine.unlock()
@@ -301,7 +325,12 @@ export const useGame = create<GameState>((set, get) => ({
       prize: awards.prize ?? get().prize,
       balloonCharacterId: stageFull ? null : get().balloonCharacterId,
     })
-    if (stageFull) flashFull(set)
+    if (stageFull) {
+      clearBalloonCloseTimer()
+      flashFull(set)
+    } else if (get().balloonCharacterId) {
+      scheduleBalloonAutoClose()
+    }
 
     audioEngine.unlock()
     await audioEngine.addStem(
