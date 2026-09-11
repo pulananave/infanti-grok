@@ -301,17 +301,23 @@ button {
 }
 
 .balloon {
+  --balloon-w: min(468px, 80vw);
+  --balloon-pad-x: 16px;
+  --balloon-gap: 6px;
+  /* Four square icons plus gaps, so a typical character still fits in one row. */
+  --instrument-icon-size: calc((var(--balloon-w) - 2 * var(--balloon-pad-x) - 3 * var(--balloon-gap)) / 4);
   position: absolute;
   z-index: 6;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: min(468px, 80vw);
-  min-height: calc(min(468px, 80vw) * 371.34 / 782.75);
+  width: var(--balloon-w);
+  /* Hug the icon row so glyphs fill the yellow body (SVG scales with the box). */
+  height: auto;
   background: url('/assets/balloon/BALAO_CENTRO.svg') center / 100% 100% no-repeat;
   border-radius: 0;
-  /* Extra bottom padding keeps icons in the body above the center tip. */
-  padding: 29px 36px 75px;
+  /* Bottom padding clears the speech tip; top/side keep a comfortable inset. */
+  padding: 12px var(--balloon-pad-x) 48px;
   box-shadow: none;
   touch-action: none;
 }
@@ -325,14 +331,25 @@ button {
 
 .balloon-grid {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
+  flex-wrap: nowrap;
+  gap: var(--balloon-gap, 6px);
+  justify-content: safe center;
+  align-items: center;
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.balloon-grid::-webkit-scrollbar {
+  display: none;
 }
 
 .instrument-btn {
-  width: 68px;
-  height: 68px;
+  flex: 0 0 var(--instrument-icon-size, 68px);
+  width: var(--instrument-icon-size, 68px);
+  height: var(--instrument-icon-size, 68px);
   border-radius: 21px;
   background: transparent;
   display: grid;
@@ -340,6 +357,16 @@ button {
   pointer-events: auto;
   touch-action: none;
   box-shadow: none;
+  overflow: hidden;
+}
+
+.balloon .instrument-icon {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  max-width: var(--instrument-icon-size);
+  max-height: var(--instrument-icon-size);
 }
 
 .instrument-btn svg,
@@ -352,6 +379,17 @@ button {
   object-fit: contain;
   pointer-events: none;
   display: block;
+}
+
+.balloon .instrument-btn img,
+.balloon .instrument-icon img,
+.balloon .instrument-btn svg,
+.balloon .instrument-icon svg {
+  /* Explicit px (not %) so tall SVGs like guitar/bass cannot use intrinsic height. */
+  width: calc(var(--instrument-icon-size) * 0.94);
+  height: calc(var(--instrument-icon-size) * 0.94);
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .instrument-btn img,
