@@ -19,12 +19,12 @@ export function StageScreen() {
       <StageScene />
       <div className="hud-top">
         <div className="hud-left">
-          <HomeButton />
-          <ClearStageButton />
-        </div>
-        <div className="hud-right">
           <div className="song-chip">{song?.title ?? 'Infanti'}</div>
           <TexPilotBadge />
+        </div>
+        <div className="hud-right hud-rail">
+          <HomeButton />
+          <ClearStageButton />
         </div>
       </div>
       {notice === 'full' && (
