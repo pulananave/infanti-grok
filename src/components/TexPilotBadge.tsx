@@ -12,7 +12,7 @@ export function TexPilotBadge() {
       onClick={() => setTexPilot(!on)}
       aria-pressed={on}
     >
-      {on ? 'Pilot texturas · Boogar + chão' : 'Pilot · silicone procedural'}
+      {on ? 'Pilot atlas · Boogar sheet + chão' : 'Pilot · silicone procedural'}
     </button>
   )
 }

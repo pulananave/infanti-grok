@@ -8,11 +8,29 @@ O céu do fundo é `GradientTexture` gerado.
 
 ## Piloto híbrido (`?texPilot=1`)
 
-Geradas por `scripts/gen-tex-pilot.py` a partir das cores oficiais do sheet
-Coral Pudge Plush (`#FF8C73`, `#FFB6A0`, `#2A012D`).
+`scripts/gen-tex-pilot.py` projecta o sheet oficial Coral Pudge
+(`scripts/refs/boogar-character.png`, release `jelly-character-sheets`)
+para um atlas UV 1024. Não é só cor+ruído: cara, barriga, braço, pata e
+garra vêm de recortes do sheet.
 
-- `public/textures/boogar/albedo.png` (512, fibra oficial do sheet)
-- `public/textures/boogar/normal.png` (512)
+Atlas (`public/textures/boogar/albedo.png`, flipY=true):
+
+| Ilha | UV | Região do sheet |
+| --- | --- | --- |
+| `body` | u 0–1, v 0.50–1.00 | unwrap equirectangular: frente @ u=0.25 (cara neutral + barriga), perfil, costas |
+| `arm` | 0.02–0.23 × 0.27–0.48 | braço da pose de acção + ponta #2A012D |
+| `leg` | 0.27–0.48 × 0.27–0.48 | perna da pose |
+| `ear` | 0.52–0.73 × 0.27–0.48 | orelha do tile Neutral |
+| `claw` | 0.77–0.98 × 0.27–0.48 | close-up de resina polida |
+| `hand` | 0.02–0.23 × 0.02–0.23 | pata com garras |
+| `earInner` | 0.27–0.48 × 0.02–0.23 | fibra barriga `#FFB6A0` |
+
+Com `texPilot`, Boogar esconde olhos/sobrancelha/boca procedurais — a cara
+lida no albedo. Os outros 10 monstros continuam procedurais. O chão do #20
+mantém-se.
+
+- `public/textures/boogar/albedo.png` (1024, atlas v2)
+- `public/textures/boogar/normal.png` (1024)
 - `public/textures/floor/silicone_albedo.png` (512)
 - `public/textures/floor/silicone_normal.png` (512)
 
@@ -89,6 +107,8 @@ Coral Pudge Plush (`#FF8C73`, `#FFB6A0`, `#2A012D`).
 - `public/instrument_icons/VIOLINO.svg`
 
 ## Cópias de origem (não carregadas em runtime)
+`scripts/refs/boogar-character.png` — sheet oficial (release `jelly-character-sheets`).
+`scripts/refs/boogar-fiber.png` — swatch de fibra para o chão / fill.
 `assets/tray-icons/` — pack original; o app usa `public/icons/monsters/`.
 - `assets/tray-icons/ICONE_BOOGAR_ATIVO.png`
 - `assets/tray-icons/ICONE_BOOGAR_ATIVO.svg`
