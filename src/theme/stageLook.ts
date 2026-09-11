@@ -71,6 +71,8 @@ const DESKTOP = {
   glowIcon: 0.28,
   glowStar: 0.3,
   glowFlower: 0.22,
+  /** Branco gelo — base slab under/around the beat-grid tiles. */
+  floor: '#f3f7fb',
 }
 
 const MOBILE = {
@@ -129,6 +131,8 @@ const MOBILE = {
   glowIcon: 0.32,
   glowStar: 0.34,
   glowFlower: 0.26,
+  /** Branco gelo — base slab under/around the beat-grid tiles. */
+  floor: '#f3f7fb',
 }
 
 export const STAGE_LOOK = QUALITY_PRESET === 'mobile' ? MOBILE : DESKTOP
