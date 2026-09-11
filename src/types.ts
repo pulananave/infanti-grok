@@ -1,4 +1,10 @@
-export type SongId = 'aranha' | 'canoa' | 'coelho' | 'pintinho' | 'sapo'
+export type SongId = string
+
+export interface AlbumConfig {
+  id: string
+  name: string
+  songIds: string[]
+}
 
 export type CharacterId =
   | 'boogar'

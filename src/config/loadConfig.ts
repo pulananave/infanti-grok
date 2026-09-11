@@ -1,21 +1,8 @@
-import combosData from './combos.json'
-import songsData from './songs.json'
 import { CHARACTER_ORDER } from './characters'
-import type { CharacterId, ComboShape, SongConfig, SongId, StemConfig } from '../types'
+import type { CharacterId, ComboShape, SongConfig, StemConfig } from '../types'
 
-interface SongsFile {
-  songs: SongConfig[]
-}
-
-type CombosFile = Record<string, Record<ComboShape, string[]>>
-
-export const SONGS: SongConfig[] = (songsData as SongsFile).songs
-export const COMBOS = combosData as CombosFile
-
-export function getSong(id: string | null | undefined): SongConfig | undefined {
-  if (!id) return undefined
-  return SONGS.find((song) => song.id === id || song.aliases.includes(id))
-}
+export { getCombos, getSong } from '../state/catalogStore'
+export { SHIPPED_SONGS as SONGS, SHIPPED_COMBOS as COMBOS } from './catalog'
 
 export function songCharacters(song: SongConfig): CharacterId[] {
   const present = new Set(song.stems.map((stem) => stem.character))
@@ -49,18 +36,6 @@ export function stemAudioCandidates(song: SongConfig, stem: StemConfig): string[
     }
   }
   return [...new Set(paths)]
-}
-
-export function getCombos(songId: SongId | string): Record<ComboShape, string[]> {
-  const song = getSong(songId)
-  const key = song?.id ?? songId
-  return (
-    COMBOS[key] ?? {
-      circle: [],
-      square: [],
-      triangle: [],
-    }
-  )
 }
 
 export const COMBO_SHAPES: ComboShape[] = ['circle', 'square', 'triangle']

@@ -43,8 +43,10 @@ button {
 }
 
 .song-menu {
+  height: 100%;
   min-height: 100%;
   padding: 18px 18px 20px;
+  overflow-y: auto;
   background:
     radial-gradient(circle at 15% 20%, #ff8dc7 0%, transparent 32%),
     radial-gradient(circle at 90% 10%, #5ee0c4 0%, transparent 28%),
@@ -54,10 +56,42 @@ button {
   gap: 12px;
 }
 
+.brand.song-menu-top {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.editor-launch {
+  flex-shrink: 0;
+  background: #ffe56a;
+  color: #2b1654;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+}
+
 .brand {
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.album-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.album-heading {
+  margin: 4px 2px 0;
+  color: #fff7e8;
+  font-size: clamp(15px, 2.2vw, 20px);
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 
 .brand h1 {
@@ -76,7 +110,7 @@ button {
 
 .song-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
   gap: 10px;
   flex: 1;
   align-content: center;
@@ -495,5 +529,329 @@ button {
   to {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+.song-editor {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  background: #20103a;
+  color: #fff7e8;
+  user-select: text;
+  -webkit-user-select: text;
+  overflow: hidden;
+}
+
+.song-editor input,
+.song-editor select,
+.song-editor textarea,
+.song-editor button {
+  font-family: inherit;
+}
+
+.song-editor input,
+.song-editor select {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  padding: 7px 9px;
+  background: #fff7e8;
+  color: #2b1654;
+}
+
+.song-editor-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #2b1654;
+  box-shadow: var(--shadow);
+}
+
+.song-editor-bar p {
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: #ffe56a;
+}
+
+.song-editor-bar-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.editor-banner {
+  margin: 0;
+  padding: 8px 14px;
+  background: #5ee0c4;
+  color: #2b1654;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.editor-banner.is-error {
+  background: #ff8dc7;
+}
+
+.song-editor-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) 1fr;
+  overflow: hidden;
+}
+
+.editor-nav {
+  overflow: auto;
+  padding: 10px;
+  background: rgba(255, 247, 232, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.editor-album {
+  background: rgba(20, 8, 40, 0.35);
+  border-radius: 16px;
+  padding: 8px;
+}
+
+.editor-album-head {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.editor-album ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.editor-album li {
+  border-radius: 12px;
+  background: rgba(255, 247, 232, 0.08);
+  padding: 4px;
+}
+
+.editor-album li.is-selected {
+  outline: 2px solid #ffe56a;
+}
+
+.editor-song-pick {
+  width: 100%;
+  text-align: left;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.editor-song-pick span,
+.editor-song-tools {
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.editor-song-tools {
+  display: flex;
+  gap: 8px;
+  padding: 0 8px 4px;
+}
+
+.editor-song-tools button {
+  text-decoration: underline;
+}
+
+.editor-form-wrap {
+  overflow: auto;
+  padding: 12px 14px 20px;
+}
+
+.editor-empty {
+  max-width: 420px;
+  padding: 24px 8px;
+  color: #ffe56a;
+}
+
+.editor-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 920px;
+}
+
+.editor-form-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.editor-form-head h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.editor-form-head-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.editor-form fieldset {
+  border: 1px solid rgba(255, 247, 232, 0.16);
+  border-radius: 16px;
+  margin: 0;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.editor-form legend {
+  padding: 0 6px;
+  color: #ffe56a;
+  font-weight: 700;
+}
+
+.editor-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.editor-wide {
+  grid-column: 1 / -1;
+}
+
+.editor-color span {
+  display: flex;
+  gap: 6px;
+}
+
+.editor-color input[type='color'] {
+  width: 42px;
+  padding: 2px;
+}
+
+.editor-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.editor-limit-row,
+.editor-combo-row {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 6px;
+  align-items: center;
+}
+
+.editor-limit-row {
+  grid-template-columns: 1fr 80px auto;
+}
+
+.editor-combo-row {
+  grid-template-columns: 90px repeat(4, minmax(0, 1fr));
+}
+
+.stem-card {
+  grid-column: 1 / -1;
+  background: rgba(255, 247, 232, 0.06);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.stem-card-toggle {
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.stem-card-body {
+  padding: 8px 10px 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+}
+
+.editor-primary,
+.editor-danger,
+.editor-add,
+.editor-ghost {
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 700;
+}
+
+.editor-primary {
+  background: #ffe56a;
+  color: #2b1654;
+}
+
+.editor-danger {
+  background: #ff8dc7;
+  color: #2b1654;
+}
+
+.editor-add {
+  background: rgba(94, 224, 196, 0.2);
+  color: #5ee0c4;
+}
+
+.editor-ghost {
+  background: rgba(255, 247, 232, 0.12);
+}
+
+.editor-modal {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 8, 40, 0.55);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.editor-modal-card {
+  background: #fff7e8;
+  color: #2b1654;
+  border-radius: 20px;
+  padding: 18px;
+  max-width: 420px;
+  box-shadow: var(--shadow);
+}
+
+@media (max-width: 760px), (max-height: 430px) {
+  .song-editor-body {
+    grid-template-columns: 1fr;
+  }
+
+  .editor-nav {
+    max-height: 38%;
+  }
+
+  .editor-combo-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .song-editor-bar {
+    flex-wrap: wrap;
+  }
+
+  .song-editor-bar-actions {
+    margin-left: 0;
   }
 }
