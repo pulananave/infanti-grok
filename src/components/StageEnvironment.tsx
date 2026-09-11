@@ -333,7 +333,7 @@ function FloorTiles({ theme }: { theme: SongTheme }) {
         args={[SIZE_X + 0.55, 0.28, SIZE_Z + 0.55]}
         radius={0.14}
         position={[0, -0.22, (STAGE_BOUNDS.zBack + STAGE_BOUNDS.zFront) / 2]}
-        color={mixHex(TOY.peach, liftPastel(theme.floor, TOY.mint, 0.5), 0.18)}
+        color={STAGE_LOOK.floor}
         silicone
         maps={floorMaps}
       />
