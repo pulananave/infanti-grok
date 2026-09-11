@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
+  ClampToEdgeWrapping,
   LinearFilter,
   LinearMipmapLinearFilter,
   NoColorSpace,
@@ -7,6 +8,7 @@ import {
   SRGBColorSpace,
   Texture,
   TextureLoader,
+  type Wrapping,
 } from 'three'
 import { QUALITY_PRESET } from './stageLook'
 
@@ -64,13 +66,13 @@ function getLoader() {
   return loader
 }
 
-function loadMap(url: string, kind: 'color' | 'normal', flipY: boolean): Texture {
-  const key = `${url}:${kind}:${flipY ? 1 : 0}`
+function loadMap(url: string, kind: 'color' | 'normal', flipY: boolean, wrap: Wrapping = RepeatWrapping): Texture {
+  const key = `${url}:${kind}:${flipY ? 1 : 0}:${wrap}`
   const hit = cache.get(key)
   if (hit) return hit
   const tex = getLoader().load(url)
-  tex.wrapS = RepeatWrapping
-  tex.wrapT = RepeatWrapping
+  tex.wrapS = wrap
+  tex.wrapT = wrap
   tex.repeat.set(1, 1)
   tex.anisotropy = QUALITY_PRESET === 'mobile' ? 2 : 4
   tex.minFilter = LinearMipmapLinearFilter
@@ -85,8 +87,8 @@ function loadMap(url: string, kind: 'color' | 'normal', flipY: boolean): Texture
 
 export function getBoogarMaps(): PilotMaps {
   return {
-    map: loadMap('/textures/boogar/albedo.png', 'color', false),
-    normalMap: loadMap('/textures/boogar/normal.png', 'normal', false),
+    map: loadMap('/textures/boogar/albedo.png', 'color', true, ClampToEdgeWrapping),
+    normalMap: loadMap('/textures/boogar/normal.png', 'normal', true, ClampToEdgeWrapping),
   }
 }
 

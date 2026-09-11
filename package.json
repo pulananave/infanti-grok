@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "audio": "node scripts/check-audio.mjs",
     "sync-audio": "node scripts/sync-songs-from-audio.mjs",
-    "e2e": "node scripts/e2e.mjs"
+    "e2e": "node scripts/e2e.mjs",
+    "tex-pilot": "python3 scripts/gen-tex-pilot.py"
   },
   "dependencies": {
     "@react-three/drei": "^9.122.0",
