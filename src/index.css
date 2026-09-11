@@ -348,6 +348,7 @@ button {
   pointer-events: auto;
   touch-action: none;
   box-shadow: none;
+  overflow: hidden;
 }
 
 .balloon .instrument-icon {
@@ -355,6 +356,8 @@ button {
   place-items: center;
   width: 100%;
   height: 100%;
+  max-width: var(--instrument-icon-size);
+  max-height: var(--instrument-icon-size);
 }
 
 .instrument-btn svg,
@@ -373,9 +376,11 @@ button {
 .balloon .instrument-icon img,
 .balloon .instrument-btn svg,
 .balloon .instrument-icon svg {
-  /* Small inset so glyphs are not edge-to-edge inside the hit target. */
-  width: 94%;
-  height: 94%;
+  /* Explicit px (not %) so tall SVGs like guitar/bass cannot use intrinsic height. */
+  width: calc(var(--instrument-icon-size) * 0.94);
+  height: calc(var(--instrument-icon-size) * 0.94);
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .instrument-btn img,
