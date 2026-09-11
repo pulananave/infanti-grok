@@ -110,7 +110,7 @@ button {
 
 .song-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 10px;
   flex: 1;
   align-content: center;
@@ -612,6 +612,13 @@ button {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.editor-add-album,
+.editor-album .editor-add-song {
+  position: sticky;
+  bottom: 0;
+  background: #2b1654;
 }
 
 .editor-album {

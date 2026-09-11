@@ -278,6 +278,13 @@ export function SongEditor({ onClose }: { onClose: () => void }) {
           <p>Álbuns, canções e faixas — as crianças continuam a jogar pelo menu.</p>
         </div>
         <div className="song-editor-bar-actions">
+          <button
+            type="button"
+            className="editor-primary editor-create"
+            onClick={() => handleCreateSong(draft?.albumId || albums[0]?.id || '')}
+          >
+            Nova música
+          </button>
           <button type="button" className="editor-ghost" onClick={handleExport}>
             Exportar JSON
           </button>
@@ -339,8 +346,8 @@ export function SongEditor({ onClose }: { onClose: () => void }) {
         <section className="editor-form-wrap">
           {!draft ? (
             <div className="editor-empty">
-              <p>Escolhe uma canção à esquerda ou cria uma nova.</p>
-              <p>Podes mudar título, BPM, tema, faixas, limites e os 3 combos de prémio.</p>
+              <p>Escolha uma canção à esquerda ou crie uma nova.</p>
+              <p>Pode mudar título, BPM, tema, faixas, limites e os 3 combos de prêmio.</p>
             </div>
           ) : (
             <form
@@ -356,7 +363,7 @@ export function SongEditor({ onClose }: { onClose: () => void }) {
                   <button type="button" className="editor-ghost" onClick={() => setPendingDelete(draft.song.id)}>
                     Apagar
                   </button>
-                  <button type="submit" className="editor-primary">
+                  <button type="submit" className="editor-primary editor-save">
                     Salvar
                   </button>
                 </div>
