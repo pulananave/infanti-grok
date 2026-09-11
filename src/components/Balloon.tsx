@@ -6,7 +6,8 @@ import { MAX_STAGE_INSTANCES, availableStems, useGame } from '../state/gameStore
 import { InstrumentIcon } from './InstrumentIcon'
 
 const EDGE_PAD = 8
-const TIP_INSET = 28
+/** Matches scaled `.balloon` corner radius so the tip stays on the body. */
+const TIP_INSET = Math.round(28 * 0.85)
 
 export function Balloon() {
   const balloonCharacterId = useGame((s) => s.balloonCharacterId)

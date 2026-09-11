@@ -301,11 +301,16 @@ button {
 }
 
 .balloon {
-  /* Icon size stays the PR #28 token (4 icons in the old 468px balloon). */
+  /* PR #28 icon token, then 15% smaller chrome + icons together. */
+  --balloon-scale: 0.85;
   --balloon-icon-ref-w: min(468px, 80vw);
-  --balloon-pad-x: 20px;
-  --balloon-gap: 8px;
-  --instrument-icon-size: calc((var(--balloon-icon-ref-w) - 2 * 16px - 3 * 6px) / 4);
+  --balloon-pad-x: calc(20px * var(--balloon-scale));
+  --balloon-pad-y: calc(12px * var(--balloon-scale));
+  --balloon-gap: calc(8px * var(--balloon-scale));
+  --balloon-radius: calc(28px * var(--balloon-scale));
+  --balloon-tip-w: calc(58px * var(--balloon-scale));
+  --balloon-tip-h: calc(40px * var(--balloon-scale));
+  --instrument-icon-size: calc((var(--balloon-icon-ref-w) - 2 * 16px - 3 * 6px) / 4 * var(--balloon-scale));
   --balloon-tip-x: 50%;
   --balloon-yellow: #ede371;
   position: absolute;
@@ -320,7 +325,7 @@ button {
   background: transparent;
   border-radius: 0;
   /* Tip hangs in this padding so the pointer keeps its native aspect. */
-  padding: 0 0 38px;
+  padding: 0 0 calc(38px * var(--balloon-scale));
   overflow: visible;
   box-shadow: none;
   touch-action: none;
@@ -332,8 +337,8 @@ button {
   align-items: center;
   justify-content: center;
   background: var(--balloon-yellow);
-  border-radius: 28px;
-  padding: 12px var(--balloon-pad-x);
+  border-radius: var(--balloon-radius);
+  padding: var(--balloon-pad-y) var(--balloon-pad-x);
   min-width: 0;
   max-width: 100%;
 }
@@ -344,8 +349,8 @@ button {
   left: var(--balloon-tip-x);
   bottom: 0;
   z-index: 1;
-  width: 58px;
-  height: 40px;
+  width: var(--balloon-tip-w);
+  height: var(--balloon-tip-h);
   transform: translateX(-50%);
   background: url('/assets/balloon/BALAO_PONTA.svg') center / contain no-repeat;
   pointer-events: none;
@@ -355,8 +360,8 @@ button {
   text-align: center;
   color: #2b1654;
   font-weight: 600;
-  padding: 8px 16px;
-  min-width: 88px;
+  padding: calc(8px * var(--balloon-scale, 0.85)) calc(16px * var(--balloon-scale, 0.85));
+  min-width: calc(88px * var(--balloon-scale, 0.85));
 }
 
 .balloon-grid {
