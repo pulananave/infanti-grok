@@ -301,17 +301,23 @@ button {
 }
 
 .balloon {
+  --balloon-w: min(468px, 80vw);
+  --balloon-h: calc(var(--balloon-w) * 371.34 / 782.75);
+  /* Matches padding: 29px top + 75px bottom (tip + inset). */
+  --balloon-inner-h: calc(var(--balloon-h) - 104px);
+  /* ~82% of the inner body — fills the height without touching the chrome. */
+  --instrument-icon-size: calc(var(--balloon-inner-h) * 0.82);
   position: absolute;
   z-index: 6;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: min(468px, 80vw);
-  min-height: calc(min(468px, 80vw) * 371.34 / 782.75);
+  width: var(--balloon-w);
+  min-height: var(--balloon-h);
   background: url('/assets/balloon/BALAO_CENTRO.svg') center / 100% 100% no-repeat;
   border-radius: 0;
   /* Extra bottom padding keeps icons in the body above the center tip. */
-  padding: 29px 36px 75px;
+  padding: 29px 28px 75px;
   box-shadow: none;
   touch-action: none;
 }
@@ -326,13 +332,15 @@ button {
 .balloon-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .instrument-btn {
-  width: 68px;
-  height: 68px;
+  width: var(--instrument-icon-size, 68px);
+  height: var(--instrument-icon-size, 68px);
   border-radius: 21px;
   background: transparent;
   display: grid;
@@ -340,6 +348,13 @@ button {
   pointer-events: auto;
   touch-action: none;
   box-shadow: none;
+}
+
+.balloon .instrument-icon {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .instrument-btn svg,
@@ -352,6 +367,15 @@ button {
   object-fit: contain;
   pointer-events: none;
   display: block;
+}
+
+.balloon .instrument-btn img,
+.balloon .instrument-icon img,
+.balloon .instrument-btn svg,
+.balloon .instrument-icon svg {
+  /* Small inset so glyphs are not edge-to-edge inside the hit target. */
+  width: 94%;
+  height: 94%;
 }
 
 .instrument-btn img,
