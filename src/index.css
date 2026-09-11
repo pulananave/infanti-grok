@@ -303,10 +303,10 @@ button {
 .balloon {
   --balloon-w: min(468px, 80vw);
   --balloon-h: calc(var(--balloon-w) * 371.34 / 782.75);
-  /* Matches padding: 29px top + 75px bottom (tip + inset). */
-  --balloon-inner-h: calc(var(--balloon-h) - 104px);
-  /* ~82% of the inner body — fills the height without touching the chrome. */
-  --instrument-icon-size: calc(var(--balloon-inner-h) * 0.82);
+  /* Matches padding: 14px top + 50px bottom (tip + inset). */
+  --balloon-inner-h: calc(var(--balloon-h) - 64px);
+  /* ~86% of the inner body so glyphs fill the yellow height with leftover chrome. */
+  --instrument-icon-size: calc(var(--balloon-inner-h) * 0.86);
   position: absolute;
   z-index: 6;
   display: flex;
@@ -318,7 +318,7 @@ button {
   background: url('/assets/balloon/BALAO_CENTRO.svg') center / 100% 100% no-repeat;
   border-radius: 0;
   /* Extra bottom padding keeps icons in the body above the center tip. */
-  padding: 29px 28px 75px;
+  padding: 14px 18px 50px;
   box-shadow: none;
   touch-action: none;
 }
