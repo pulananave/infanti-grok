@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useRef } from 'react'
+import { createContext, useContext, useLayoutEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { RoundedBox } from '@react-three/drei'
 import type { Group } from 'three'
@@ -866,6 +866,14 @@ export function Humanoid({
   const opacity = ghost ? 0.42 : muted ? 0.55 : 1
   const color = muted ? '#8a8496' : look.bodyColor
   const bodyY = bodyCenterY(look)
+
+  useLayoutEffect(() => {
+    const root = group.current
+    if (!root || !ghost) return
+    root.traverse((obj) => {
+      if ((obj as { isMesh?: boolean }).isMesh) obj.castShadow = false
+    })
+  }, [ghost, characterId, instrument])
 
   useFrame(() => {
     if (!group.current) return

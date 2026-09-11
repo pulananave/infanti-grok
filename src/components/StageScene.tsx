@@ -144,6 +144,7 @@ function StagePost() {
 export function StageScene() {
   const songId = useGame((s) => s.songId) as SongId | null
   const instances = useGame((s) => s.instances)
+  const dragging = useGame((s) => s.drag != null)
   const song = getSong(songId)
   if (!song || !songId) return null
 
@@ -178,15 +179,17 @@ export function StageScene() {
         <StageCharacter key={instance.id} instance={instance} />
       ))}
       <SpawnPreview />
-      <ContactShadows
-        position={[0, 0.02, 0]}
-        opacity={STAGE_LOOK.contactOpacity}
-        scale={14}
-        blur={STAGE_LOOK.contactBlur}
-        far={STAGE_LOOK.contactFar}
-        resolution={STAGE_LOOK.contactResolution}
-        color={STAGE_LOOK.contactColor}
-      />
+      {!dragging && (
+        <ContactShadows
+          position={[0, 0.02, 0]}
+          opacity={STAGE_LOOK.contactOpacity}
+          scale={14}
+          blur={STAGE_LOOK.contactBlur}
+          far={STAGE_LOOK.contactFar}
+          resolution={STAGE_LOOK.contactResolution}
+          color={STAGE_LOOK.contactColor}
+        />
+      )}
       <mesh position={LISTENER_POSITION.toArray()} visible={false}>
         <sphereGeometry args={[0.05]} />
         <meshBasicMaterial />
