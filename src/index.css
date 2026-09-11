@@ -301,41 +301,69 @@ button {
 }
 
 .balloon {
-  --balloon-w: min(468px, 80vw);
-  --balloon-pad-x: 16px;
-  --balloon-gap: 6px;
-  /* Four square icons plus gaps, so a typical character still fits in one row. */
-  --instrument-icon-size: calc((var(--balloon-w) - 2 * var(--balloon-pad-x) - 3 * var(--balloon-gap)) / 4);
+  /* Icon size stays the PR #28 token (4 icons in the old 468px balloon). */
+  --balloon-icon-ref-w: min(468px, 80vw);
+  --balloon-pad-x: 20px;
+  --balloon-gap: 8px;
+  --instrument-icon-size: calc((var(--balloon-icon-ref-w) - 2 * 16px - 3 * 6px) / 4);
+  --balloon-tip-x: 50%;
+  --balloon-yellow: #ede371;
   position: absolute;
   z-index: 6;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--balloon-w);
-  /* Hug the icon row so glyphs fill the yellow body (SVG scales with the box). */
+  flex-direction: column;
+  align-items: stretch;
+  /* Grow with the icon row; clamp on narrow landscape, then the grid may scroll. */
+  width: fit-content;
+  max-width: min(92vw, calc(100vw - 16px));
   height: auto;
-  background: url('/assets/balloon/BALAO_CENTRO.svg') center / 100% 100% no-repeat;
+  background: transparent;
   border-radius: 0;
-  /* Bottom padding clears the speech tip; top/side keep a comfortable inset. */
-  padding: 12px var(--balloon-pad-x) 48px;
+  /* Tip hangs in this padding so the pointer keeps its native aspect. */
+  padding: 0 0 30px;
   box-shadow: none;
   touch-action: none;
+}
+
+.balloon-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--balloon-yellow);
+  border-radius: 28px;
+  padding: 12px var(--balloon-pad-x);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.balloon::after {
+  content: '';
+  position: absolute;
+  left: var(--balloon-tip-x);
+  bottom: 0;
+  width: 50px;
+  height: 32px;
+  transform: translateX(-50%);
+  background: url('/assets/balloon/BALAO_PONTA.svg') center / contain no-repeat;
+  pointer-events: none;
 }
 
 .balloon-empty {
   text-align: center;
   color: #2b1654;
   font-weight: 600;
-  padding: 8px;
+  padding: 8px 16px;
+  min-width: 88px;
 }
 
 .balloon-grid {
   display: flex;
   flex-wrap: nowrap;
-  gap: var(--balloon-gap, 6px);
+  gap: var(--balloon-gap, 8px);
   justify-content: safe center;
   align-items: center;
-  width: 100%;
+  width: max-content;
+  max-width: 100%;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
