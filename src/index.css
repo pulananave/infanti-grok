@@ -246,27 +246,18 @@ button {
   opacity: 1;
 }
 
-.tray-lente {
-  position: absolute;
-  inset: 0;
-  border-radius: 18px;
-  background: url('/icons/monsters/LENTE.svg') center / cover no-repeat;
-  box-shadow: var(--shadow);
-}
-
 .tray-monster {
   position: relative;
   z-index: 1;
-  width: 86%;
-  height: 86%;
-  margin: 7%;
+  width: 100%;
+  height: 100%;
   display: block;
   pointer-events: none;
 }
 
-.tray-slot.open .tray-lente,
-.tray-slot.ativo .tray-lente {
-  box-shadow: 0 0 0 3px #ffe56a, var(--shadow);
+.tray-slot.open,
+.tray-slot.ativo {
+  box-shadow: 0 0 0 3px #ffe56a;
 }
 
 .balloon {
