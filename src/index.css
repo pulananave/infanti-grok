@@ -320,9 +320,11 @@ button {
   background: transparent;
   border-radius: 0;
   /* Tip hangs in this padding so the pointer keeps its native aspect. */
-  padding: 0 0 30px;
+  padding: 0 0 38px;
+  overflow: visible;
   box-shadow: none;
   touch-action: none;
+  filter: drop-shadow(0 3px 8px rgba(43, 22, 84, 0.16));
 }
 
 .balloon-body {
@@ -341,8 +343,9 @@ button {
   position: absolute;
   left: var(--balloon-tip-x);
   bottom: 0;
-  width: 50px;
-  height: 32px;
+  z-index: 1;
+  width: 58px;
+  height: 40px;
   transform: translateX(-50%);
   background: url('/assets/balloon/BALAO_PONTA.svg') center / contain no-repeat;
   pointer-events: none;
