@@ -9,7 +9,8 @@ export interface MonsterIconSet {
 /**
  * Tray chip mapping from the original ICONE_* pack.
  * Named pack icons keep their official names.
- * Numbered leftovers fill gobu / dan / esper (MONSTRO04/05/07).
+ * Numbered leftovers: Esper = orange + big lips (MONSTRO04),
+ * Dan = teal + horns (MONSTRO05), Gobu = green + large eyes (MONSTRO07).
  * Zoem and Gerarda have no pack art — HumanoidFace falls back to a soft placeholder.
  */
 export const MONSTER_ICON_MAP: Record<CharacterId, MonsterIconSet | null> = {
@@ -44,9 +45,9 @@ export const MONSTER_ICON_MAP: Record<CharacterId, MonsterIconSet | null> = {
     source: 'ICONE_TEEWONG',
   },
   gobu: {
-    idle: '/icons/monsters/ICONE_MONSTRO04.svg',
-    ativo: '/icons/monsters/ICONE_MONSTRO04_ATIVO.svg',
-    source: 'ICONE_MONSTRO04',
+    idle: '/icons/monsters/ICONE_MONSTRO07.svg',
+    ativo: '/icons/monsters/ICONE_MONSTRO07_ATIVO.svg',
+    source: 'ICONE_MONSTRO07',
   },
   dan: {
     idle: '/icons/monsters/ICONE_MONSTRO05.svg',
@@ -54,9 +55,9 @@ export const MONSTER_ICON_MAP: Record<CharacterId, MonsterIconSet | null> = {
     source: 'ICONE_MONSTRO05',
   },
   esper: {
-    idle: '/icons/monsters/ICONE_MONSTRO07.svg',
-    ativo: '/icons/monsters/ICONE_MONSTRO07_ATIVO.svg',
-    source: 'ICONE_MONSTRO07',
+    idle: '/icons/monsters/ICONE_MONSTRO04.svg',
+    ativo: '/icons/monsters/ICONE_MONSTRO04_ATIVO.svg',
+    source: 'ICONE_MONSTRO04',
   },
   zoem: null,
   gerarda: null,
